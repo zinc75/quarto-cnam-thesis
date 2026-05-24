@@ -1,0 +1,54 @@
+# Chapter 2 Title
+
+{{< lipsum 1 >}} This chapter presents the experimental results.
+
+## Experimental Setup
+
+{{< lipsum 1 >}}
+
+### Measurement Configuration
+
+{{< lipsum 1 >}}
+
+#### Instrumentation
+
+{{< lipsum 1 >}}
+
+## Results
+
+@tbl-results shows the measured values for different configurations.
+
+| Group             | Configuration | Frequency (Hz) | Damping (%) |
+|:------------------|:-------------|:--------------:|:-----------:|
+| [Group 1]{rs=2}   | Config. A    | 125.3 ± 0.5    | 2.1         |
+| ^                 | Config. B    | 187.6 ± 0.8    | 3.4         |
+| ===               |              |                |             |
+| Group 2           | Config. C    | 243.1 ± 1.2    | 1.8         |
+
+: Experimental results for the tested configurations. {#tbl-results}
+
+## Discussion
+
+{{< lipsum 1 >}} [@Eriksson2016].
+
+The frequency response $H(\omega)$ of the model described in @eq-motion is shown in @fig-freqresp.
+
+![Frequency response $H(\omega)$ — example Markdown figure.](../../images/placeholder.png){#fig-freqresp width=80%}
+
+{{< lipsum 1 >}}
+
+## Summary
+
+{{< lipsum 1 >}} [@Morand1995].
+
+
+::: {.callout-note}
+Note that there are five types of callouts, including:
+`note`, `warning`, `important`, `tip`, and `caution`.
+:::
+
+::: {.callout-tip}
+## Tip with Title
+
+This is an example of a callout with a title.
+:::

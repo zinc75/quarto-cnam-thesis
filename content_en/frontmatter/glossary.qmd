@@ -1,0 +1,25 @@
+# Glossary {.unnumbered .toc-black}
+
+```{=latex}
+% Displays main glossary terms (type=main, declared with the 'terme' shortcode).
+% \glsaddall: includes entries not cited via \gls{} in the text.
+\ifdefined\printnoidxglossary
+  {%
+    \glsaddall%
+    \renewcommand{\glossarysection}[2][]{}%
+    \printnoidxglossary[type=main]%
+  }
+\else
+  \begin{center}
+    \small\itshape
+    Enable \texttt{glossaire: true} in \texttt{\_quarto.yml}\\
+    and define your terms in\\
+    \texttt{content\_en/frontmatter/glossaire-entries.qmd}.
+  \end{center}
+\fi
+```
+
+<!-- HTML: table generated from gloss_lookup (populated by glossaire-entries.qmd). -->
+::: {.content-visible when-format="html"}
+{{< gloss-html main >}}
+:::

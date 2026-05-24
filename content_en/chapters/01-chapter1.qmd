@@ -1,0 +1,54 @@
+# A Chapter Title That Is Far Too Long to Fit in the Running Header {short-title="Chapter 1"}
+
+{{< lipsum 1 >}} This chapter presents the theoretical foundations of our approach [@Zhou2015].
+
+## Section Title
+
+{{< lipsum 1 >}}
+
+### Subsection 1.1
+
+{{< lipsum 1 >}}
+
+#### Sub-subsection 1.1.1
+
+{{< lipsum 1 >}}
+
+## Mathematical Model
+
+The equation of motion of a single-degree-of-freedom system is:
+
+$$
+m\ddot{x}(t) + c\dot{x}(t) + kx(t) = f(t)
+$$ {#eq-motion}
+
+where $m$ is the mass, $c$ the viscous damping coefficient and $k$ the stiffness. In the frequency domain, @eq-motion becomes:
+
+$$
+H(\omega) = \frac{1}{k - m\omega^2 + \mathrm{i}\,c\omega}
+$$
+
+## Illustration
+
+@fig-example shows a typical simulation result.
+
+:::{#fig-example}
+```{=latex}
+\centering
+\fbox{\rule{0pt}{3cm}\rule{8cm}{0pt}}
+```
+
+::: {.content-visible when-format="html"}
+::: {.fig-pdf-placeholder}
+*(TikZ / PGFplots figure — available in the PDF version)*
+:::
+:::
+
+Example figure with raw LaTeX content (TikZ, PGFplots…) — replace with actual figure.
+:::
+
+## A Subsection with an Overly Long Title {short-title="Short title"}
+
+{{< lipsum 1 >}} [@Patil2015].
+
+{{< lipsum 1 >}}

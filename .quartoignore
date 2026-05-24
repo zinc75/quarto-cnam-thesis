@@ -1,0 +1,7 @@
+# Fichiers exclus du `quarto use template` (non copiés dans le projet utilisateur)
+_reference/
+CLAUDE.md
+.github/
+README.md
+README.fr.md
+_glossaire-entries.tex

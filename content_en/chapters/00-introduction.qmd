@@ -1,0 +1,7 @@
+# Introduction {.unnumbered}
+
+{{< lipsum 1 >}}
+
+Example citation: the method described in [@Zhou2015] was extended in [@Patil2015]. For a general introduction, see [@Morand1995].
+
+{{< lipsum 1 >}}

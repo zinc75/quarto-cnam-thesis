@@ -1,0 +1,50 @@
+# Quarto
+.quarto/
+_these_fr/
+_thesis-en/
+
+# LaTeX artefacts
+*.aux
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.fls
+*.fot
+*.maf
+*.mtc
+*.mtc*
+*.xmpdata
+pdfa.xmpi
+
+# BibTeX
+*.blg
+*.bbl
+
+# Index
+*.idx
+*.ilg
+*.ind
+
+# macOS
+.DS_Store
+
+# R
+.Rhistory
+.RData
+
+/.quarto/
+**/*.quarto_ipynb
+
+# Generated glossary files (produced by shortcodes.lua at render time)
+_glossaire-entries.tex
+**/_glossaire-entries.tex
+**/_gloss-acr.html
+**/_gloss-main.html
+
+# Generated LaTeX files (keep-tex: true)
+these_*.tex
+
+# Generated HTML library assets
+site_libs/

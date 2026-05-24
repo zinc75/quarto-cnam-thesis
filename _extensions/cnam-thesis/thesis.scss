@@ -1,0 +1,856 @@
+/*-- scss:defaults --*/
+$primary:              #d20025;   // Rouge Cnam (redHESAM)
+$link-color:           #b8001f;
+$font-family-sans-serif: "Lato", "Helvetica Neue", Arial, sans-serif;
+$font-size-base:       1rem;
+$line-height-base:     1.65;
+$body-bg:              #f2f4f7;   // cool neutral page background / fond de page gris neutre frais
+$body-color:           #222222;
+
+/*-- scss:rules --*/
+
+// ── Layout constants / Constantes de mise en page ─────────────────────────────
+
+$topbar-h:          120px;   // desktop header height / hauteur de l'en-tête sur grand écran
+$topbar-h-mobile:    56px;   // mobile header height / hauteur compacte sur mobile
+$sidebar-l-w:       300px;   // left (nav) sidebar width / largeur de la barre de navigation
+$sidebar-r-w:       255px;   // right (TOC) sidebar width / largeur de la barre TOC
+$sidebar-gap:        12px;   // gap between sidebar and viewport edge / écart avec le bord de fenêtre
+$sidebar-content-gap: 8px;   // gap between sidebar edge and content column / écart avec la colonne de contenu
+
+// ── Global ────────────────────────────────────────────────────────────────────
+
+// Text selection tint / Teinte de sélection de texte
+::selection {
+  background: rgba(210, 0, 37, 0.12);
+}
+
+// Mobile: white body so shadow card effect doesn't show on narrow viewports.
+// Mobile : fond blanc pour que l'effet carte n'apparaisse pas sur petits écrans.
+@media (max-width: 767.98px) {
+  body { background: #ffffff; }
+}
+
+// ── Top header bar (scrolls with the page) / Barre d'en-tête (défile avec la page) ──
+
+// Override Quarto's fixed-top + headroom so the header scrolls normally.
+// Only sidebars are sticky — the header is a regular in-flow block.
+// Annuler le fixed-top + headroom de Quarto ; seules les sidebars sont sticky.
+#quarto-header {
+  position: relative !important;   // override .fixed-top / annule .fixed-top
+  transform: none !important;      // disable headroom translate / désactive headroom
+  transition: none !important;
+  background: #ffffff;
+  border-bottom: 3px solid $primary;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08);
+}
+
+// Quarto sets cursor:pointer on the secondary-nav (it was a clickable sidebar-toggle
+// area). Our topbar is informational — restore the default arrow cursor on the
+// non-interactive zones only, leaving buttons and links untouched.
+// Quarto met cursor:pointer sur la secondary-nav. Notre barre est informative :
+// on rétablit le curseur flèche sur les zones non interactives uniquement.
+.quarto-secondary-nav { cursor: default; }
+.cnam-topbar-center   { cursor: default; }
+.cnam-topbar-left .cnam-topbar-logo-img { cursor: default; }
+
+// Quarto's JS injects body { padding-top: <header-height> } at runtime for .fixed-top.
+// Since our header is no longer fixed, that offset must be zeroed out.
+// Le JS de Quarto injecte body { padding-top } à l'exécution pour .fixed-top ;
+// l'en-tête n'étant plus fixe, ce décalage doit être annulé.
+body {
+  padding-top: 0 !important;
+  margin-top:  0 !important;
+}
+
+@media (min-width: 992px) {
+  // Show secondary nav on desktop (Quarto hides it at ≥ 992px by default).
+  // Afficher la barre secondaire sur grand écran (Quarto la masque à ≥ 992px).
+  .quarto-secondary-nav {
+    display: flex !important;
+  }
+}
+
+// Secondary nav height: tall on desktop, compact on mobile.
+// Hauteur de la barre secondaire : grande sur grand écran, compacte sur mobile.
+.quarto-secondary-nav {
+  min-height: $topbar-h-mobile;
+
+  @media (min-width: 992px) {
+    min-height: $topbar-h;
+  }
+}
+
+// ── Custom topbar (logo | title | author), built by header-setup.html ─────────
+// Barre personnalisée (logo | titre | auteur), construite par header-setup.html
+
+.cnam-topbar-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 1.5rem;
+  gap: 1rem;
+}
+
+// Left zone: hamburger (mobile-only) + Cnam logo
+// Zone gauche : hamburger (mobile seulement) + logo Cnam
+.cnam-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+
+  .cnam-topbar-logo-img {
+    height: 64px;          // desktop: topbar is 120px tall
+    object-fit: contain;
+    display: block;
+
+    @media (max-width: 991.98px) {
+      height: 38px;        // tablet/mobile: topbar shrinks to 56px
+    }
+
+    @media (max-width: 479px) {
+      height: 32px;        // small phones
+    }
+  }
+
+  // Hamburger visible on mobile, hidden on desktop (sidebar always shown).
+  // Hamburger visible sur mobile, masqué sur grand écran (barre toujours visible).
+  .quarto-btn-toggle {
+    @media (min-width: 992px) {
+      display: none !important;
+    }
+  }
+}
+
+// Center zone: thesis title — same font as chapter headings in the body (Lato).
+// Zone centrale : titre — même police que les titres de chapitres dans le corps (Lato).
+.cnam-topbar-center {
+  flex: 1;
+  text-align: center;
+  font-family: $font-family-sans-serif;   // Lato — same as h1/h2
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: 0.01em;
+  line-height: 1.28;
+  // Clamp to 2 lines on small desktop viewports.
+  // Limiter à 2 lignes sur les petits écrans de bureau.
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  @media (max-width: 767.98px) {
+    display: none;   // hidden on small mobile / masqué sur petit mobile
+  }
+}
+
+// Right zone: Quarto's search button (opens the detached search modal on mobile).
+// Hidden on desktop — the sidebar already has an inline search box there.
+// Zone droite : bouton de recherche Quarto (ouvre le modal de recherche sur mobile).
+// Masqué sur grand écran — la barre latérale a déjà une recherche inline.
+.cnam-topbar-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  // Quarto's own CSS already hides .quarto-search-button on desktop; we add an
+  // extra guard here to be safe.
+  // La CSS de Quarto masque déjà .quarto-search-button sur grand écran.
+  @media (min-width: 992px) {
+    display: none;
+  }
+
+  .quarto-search-button {
+    color: #444;
+    background: transparent;
+    border: none;
+    padding: 0.4rem 0.5rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover { color: $primary; }
+  }
+}
+
+// ── Page layout: flex row + sticky glass sidebars ────────────────────────────
+// position:sticky keeps sidebars in the normal document flow — no JS-measured
+// offsets needed, no conflict with headroom, no risk of sliding under the header.
+// position:sticky maintient les barres dans le flux normal du document —
+// aucun décalage JS nécessaire, aucun conflit avec headroom.
+
+@media (min-width: 992px) {
+  // Switch Quarto's CSS Grid to a simple flex row so the three columns
+  // (sidebar | content | margin-sidebar) sit side by side and sticky works.
+  // Passer la grille CSS de Quarto à flex-row pour que les trois colonnes
+  // soient côte à côte et que sticky fonctionne.
+  #quarto-content {
+    display: flex !important;
+    align-items: flex-start;          // REQUIRED: prevents stretch, enables sticky
+    padding: 1.5rem #{$sidebar-gap} 0 !important;
+    gap: #{$sidebar-content-gap * 2};
+  }
+
+  // DOM order: sidebar | glass | margin-sidebar | main.
+  // Visual order: sidebar | main | margin-sidebar.
+  // nav.page-navigation is moved inside main by repositionPageNav() in header-setup.html.
+  // Ordre DOM : sidebar | glass | margin-sidebar | main.
+  // nav.page-navigation est déplacé dans main par repositionPageNav() via header-setup.html.
+  main.content           { order: 2; flex: 1; min-width: 0; }
+  #quarto-margin-sidebar { order: 3; }
+
+  // Mobile glass overlay — not needed on desktop.
+  // Superposition de verre mobile — inutile sur grand écran.
+  #quarto-sidebar-glass { display: none !important; }
+}
+
+// Content column: frosted glass card, same visual vocabulary as the sidebars.
+// Slightly more opaque than sidebars for comfortable reading.
+// Colonne de contenu : carte verre dépoli, même vocabulaire visuel que les barres latérales.
+// Légèrement plus opaque que les barres pour une lecture confortable.
+main.content {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  // Frosted glass / Verre dépoli
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.60);
+  border-radius: 14px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.09),
+    0 1px 4px rgba(0, 0, 0, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+  // Breathing room so text never touches the container walls.
+  // Marge intérieure pour que le texte ne touche pas les bords du conteneur.
+  padding: 2rem 2.5rem;
+
+  @media (max-width: 767.98px) {
+    max-width: none;
+    border-radius: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    background: #ffffff;
+    box-shadow: none;
+    padding: 1.25rem 1rem 2rem;
+  }
+}
+
+// ── Liquid glass sidebars / Panneaux de verre liquide ────────────────────────
+
+@mixin glass-panel {
+  // Frosted glass: semi-transparent white + backdrop blur.
+  // Verre dépoli : blanc semi-transparent + flou d'arrière-plan.
+  background: rgba(250, 251, 254, 0.72);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 14px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.09),
+    0 1px 4px rgba(0, 0, 0, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+  overflow-y: auto;
+  // Thin scrollbar / Barre de défilement fine
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+  }
+}
+
+@media (min-width: 992px) {
+  // Left navigation sidebar / Barre latérale de navigation gauche
+  #quarto-sidebar {
+    @include glass-panel;
+    position: sticky;
+    top: $sidebar-gap;   // header scrolls away — stick to viewport top + gap
+    // order:1 matches DOM order — no explicit declaration needed.
+    flex: 0 0 $sidebar-l-w;
+    max-height: calc(100vh - #{$sidebar-gap * 2});
+    z-index: 300;
+
+    // Make all child backgrounds transparent so the backdrop-filter shows through.
+    // Rendre tous les fonds enfants transparents pour que le backdrop-filter soit visible.
+    nav,
+    .sidebar-header,
+    .sidebar-menu-container {
+      background: transparent !important;
+      background-color: transparent !important;
+    }
+  }
+
+  // Right TOC sidebar / Barre latérale TOC droite
+  #quarto-margin-sidebar {
+    @include glass-panel;
+    position: sticky;
+    top: $sidebar-gap;   // header scrolls away — stick to viewport top + gap
+    flex: 0 0 $sidebar-r-w;
+    max-height: calc(100vh - #{$sidebar-gap * 2});
+    z-index: 300;
+    padding: 1rem 0.75rem;
+  }
+
+  // Hide right panel when its TOC has no items (no subsections on this page).
+  // With flex, display:none automatically collapses the column — no padding hack needed.
+  // Avec flex, display:none réduit automatiquement la colonne — pas besoin de padding.
+  #quarto-margin-sidebar:not(:has(#TOC li)) {
+    display: none;
+  }
+}
+
+// Mobile: restore Quarto's default appearance — no glass, no sticky.
+// Mobile : rétablir l'apparence par défaut — pas de verre, pas de sticky.
+@media (max-width: 991.98px) {
+  #quarto-sidebar {
+    position: relative !important;
+    border-radius: 0;
+    background: #ffffff !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    border: none;
+    max-height: none !important;
+    top: auto !important;
+  }
+}
+
+// ── Sidebar navigation content / Contenu de navigation dans la barre ──────────
+
+.sidebar-title {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: $primary;
+  font-weight: 700;
+}
+
+.sidebar-item-text {
+  font-size: 0.87rem;
+}
+
+// Active sidebar item / Élément actif dans la barre latérale
+.sidebar-item-text.active,
+.sidebar-navigation .active > .sidebar-item-text {
+  color: $primary;
+  font-weight: 600;
+}
+
+// ── PDF download button at the bottom of the sidebar ──────────────────────────
+// Injected by header-setup.html; replaces the small icon in the sidebar header.
+// Injecté par header-setup.html ; remplace la petite icône dans l'en-tête de la barre.
+
+// Thin rule above the button to separate it from the nav list.
+// Filet fin au-dessus du bouton pour le séparer de la liste de navigation.
+.sidebar-pdf-wrapper {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.75rem 0.6rem 0.65rem;
+}
+
+// Full-width outlined button: red border + icon, fills red on hover.
+// Bouton contour pleine largeur : bord rouge + icône, fond rouge au survol.
+.sidebar-pdf-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid rgba(210, 0, 37, 0.55);
+  border-radius: 8px;
+  color: $primary !important;
+  font-size: 0.79rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none !important;
+  background: rgba(210, 0, 37, 0.04);
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+              box-shadow 0.18s ease;
+
+  .bi { font-size: 0.95rem; line-height: 1; }
+
+  &:hover {
+    background: $primary;
+    border-color: $primary;
+    color: #ffffff !important;
+    box-shadow: 0 3px 10px rgba(210, 0, 37, 0.28);
+  }
+}
+
+// ── Bookkeeping headings (navigation-only, no visual content) ─────────────────
+// h1 elements marked .unlisted serve only to tell Quarto's chapter-numbering engine
+// that a page is unnumbered. They carry no visible content — hide them.
+// These appear on: index.qmd (home page), tables.qmd, glossaire-entries.qmd.
+// Les h1 marqués .unlisted servent uniquement à indiquer à Quarto qu'une page est
+// non numérotée. Ils n'ont pas de contenu visible — on les masque.
+h1.unlisted {
+  display: none;
+}
+
+// ── Title block ───────────────────────────────────────────────────────────────
+
+.quarto-title-block {
+  border-left: 4px solid $primary;
+  padding-left: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.quarto-title h1.title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.3;
+}
+
+// ── HTML cover page ───────────────────────────────────────────────────────────
+
+// Logo bar — Cnam logo left, optional co-institution logo right
+// Barre de logos — Cnam à gauche, co-institution à droite si cotutelle
+.cnam-logo-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0 1.5rem;
+  border-bottom: 2px solid #e8e8e8;
+  margin-bottom: 2rem;
+
+  img {
+    height: 56px;
+    object-fit: contain;
+  }
+}
+
+// Red "Thèse de doctorat" banner / Bandeau rouge
+.thesis-header-banner {
+  background: linear-gradient(135deg, #d20025 0%, #a80020 100%);
+  color: white;
+  text-align: center;
+  padding: 0.75rem 2rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(210, 0, 37, 0.3);
+}
+
+// Thesis metadata paragraphs / Paragraphes de métadonnées de la thèse
+.thesis-meta {
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 2;
+  margin: 0 0 1.75rem;
+
+  p { margin: 0.15rem 0; }
+}
+
+// ── Call-to-action button on the cover page ───────────────────────────────────
+
+// "Commencer la lecture / Start reading" — pill button with gradient and animated arrow.
+// Bouton en forme de pilule avec dégradé et flèche animée.
+a.btn-start-reading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, $primary 0%, #a80020 100%);
+  color: #ffffff !important;
+  padding: 0.82rem 2.1rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  text-decoration: none !important;
+  box-shadow: 0 4px 18px rgba(210, 0, 37, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 1.75rem;
+
+  // Animated arrow / Flèche animée
+  &::after {
+    content: '→';
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 24px rgba(210, 0, 37, 0.45);
+    color: #ffffff !important;
+
+    &::after {
+      transform: translateX(5px);
+    }
+  }
+}
+
+// ── Book cover with physical spine effect ─────────────────────────────────────
+// Simulates the look of a physical book: progressive shadow + spine gradient.
+// Simule l'apparence d'un livre physique : ombre progressive + dégradé de tranche.
+
+// Two-column layout: metadata left, book cover right / Deux colonnes : méta + couverture
+.thesis-cover-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  margin: 2rem 0 1rem;
+
+  // Stack vertically on tablet and mobile / Empilé sur tablette et mobile
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.thesis-cover-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.thesis-cover-book {
+  flex-shrink: 0;
+  // Cover is now first in DOM — no order override needed on mobile.
+  // La couverture est en premier dans le DOM — pas besoin de order sur mobile.
+}
+
+// Clickable wrapper around the book cover — downloads the PDF.
+// Lien cliquable autour de la couverture — télécharge le PDF.
+a.thesis-book-link {
+  display: block;
+  position: relative;          // anchors the ::after badge
+  text-decoration: none !important;
+  border-radius: 3px;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    // Extra glow on hover to signal interactivity.
+    // Halo supplémentaire au survol pour signaler l'interactivité.
+    filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.22));
+  }
+
+  // Small tooltip-style badge on hover: "↓ PDF"
+  // Petit badge tooltip au survol.
+  &::after {
+    content: '↓ PDF';
+    position: absolute;
+    bottom: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(30, 30, 30, 0.82);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+    pointer-events: none;
+  }
+
+  &:hover::after { opacity: 1; }
+}
+
+
+// Container fixes the physical proportions of an A4 cover page.
+// Le conteneur fixe les proportions physiques d'une page de garde A4.
+.thesis-book-container {
+  width: 260px;
+  height: 370px;
+
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 283px;
+  }
+}
+
+.thesis-book-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  // Multi-layer shadow mimics the depth of a closed book.
+  // Ombre multi-couches imitant l'épaisseur d'un livre fermé.
+  box-shadow:
+    rgba(0, 0, 0, 0.15) 0px 1.1px 1.5px,
+    rgba(0, 0, 0, 0.10) 0px 2.8px 3.9px,
+    rgba(0, 0, 0, 0.08) 0px 5.8px 7.9px,
+    rgba(0, 0, 0, 0.06) 0px 12px 16.4px,
+    rgba(0, 0, 0, 0.04) 0px 33px 45px;
+
+  // Pandoc wraps inline images in a <p>; strip its box so height:100% works.
+  // Pandoc enveloppe les images dans un <p> ; supprimer sa boîte pour que height:100% fonctionne.
+  p {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    line-height: 0;
+  }
+
+  img {
+    border-radius: 3px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // Left-to-right gradient: dark spine edge → specular highlight → open page fade.
+  // Dégradé gauche-droite : bord de tranche sombre → reflet spéculaire → fondu.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: rgba(15, 15, 15, 0.10) 0px 0px 0px 1px inset;
+    background: linear-gradient(
+      90deg,
+      rgba(0,   0,   0,   0.118) 0.65%,
+      rgba(255, 255, 255, 0.20)  1.53%,
+      rgba(255, 255, 255, 0.10)  2.38%,
+      rgba(0,   0,   0,   0.05)  3.26%,
+      rgba(255, 255, 255, 0.14)  5.68%,
+      rgba(244, 244, 244, 0)     6.96%
+    );
+  }
+}
+
+// ── Jury table ────────────────────────────────────────────────────────────────
+
+table.jury-table {
+  font-size: 0.88rem;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+
+  td {
+    padding: 0.4rem 1rem 0.4rem 0;
+    border: none;
+    vertical-align: top;
+
+    &:first-child {
+      white-space: nowrap;
+      min-width: 13rem;
+      font-weight: 600;
+    }
+
+    &:last-child {
+      color: #666;
+      font-style: italic;
+      white-space: nowrap;
+    }
+  }
+
+  tr + tr td { border-top: 1px solid #f2f2f2; }
+}
+
+// ── Résumé / Abstract ─────────────────────────────────────────────────────────
+
+.resume-block, .abstract-block {
+  border-left: 4px solid $primary;
+  padding: 1.25rem 1.75rem;
+  margin: 2.5rem 0;
+  background: linear-gradient(to right, rgba(210, 0, 37, 0.04) 0%, transparent 80%);
+  border-radius: 0 6px 6px 0;
+
+  p:last-child { margin-bottom: 0; }
+}
+
+// ── Glossary and acronym tables ───────────────────────────────────────────────
+
+table.gloss-table {
+  font-size: 0.9rem;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+
+  td {
+    padding: 0.5rem 1.25rem 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: top;
+
+    &:first-child {
+      min-width: 7rem;
+      white-space: nowrap;
+      color: $primary;
+      font-weight: 700;
+    }
+  }
+
+  tr:last-child td { border-bottom: none; }
+  // Alternate row shading / Rayures alternées
+  tr:nth-child(even) { background: rgba(0, 0, 0, 0.02); }
+}
+
+// ── Bibliography (citeproc output) ────────────────────────────────────────────
+
+#refs {
+  border-top: 3px solid $primary;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  display:  block;
+
+  .csl-entry {
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    text-indent: -1.5rem;
+  }
+}
+
+// ── Chapter headings — numbers in Cnam red ───────────────────────────────────
+
+h2.anchored .header-section-number,
+h3.anchored .header-section-number {
+  color: $primary;
+}
+
+// Chapter title rule / Règle sous le titre de chapitre
+h1.title {
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(210, 0, 37, 0.15);
+  margin-bottom: 1.75rem;
+}
+
+// ── Inline code / Code en ligne ───────────────────────────────────────────────
+
+code:not(pre > code) {
+  background: rgba(210, 0, 37, 0.05);
+  border: 1px solid rgba(210, 0, 37, 0.1);
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+  font-size: 0.875em;
+  color: #c0001e;
+}
+
+// ── Previous / next chapter navigation ───────────────────────────────────────
+// Moved inside main.content by repositionPageNav() (header-setup.html) so it
+// inherits the content column width rather than spanning all three flex columns.
+// Déplacé dans main.content par repositionPageNav() pour hériter de la largeur
+// de la colonne de contenu plutôt que de couvrir les trois colonnes flex.
+
+nav.page-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;               // guaranteed minimum space between buttons
+  padding: 1.1rem 0 0;       // bottom space comes from main.content padding-bottom
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  margin-top: 0.5rem;
+
+  // Each button capped at just under half the nav width so they can never collide.
+  // min-width:0 is required for flex items to shrink below their content size.
+  // Chaque bouton limité à moins de la moitié de la largeur pour éviter la collision.
+  .nav-page-previous,
+  .nav-page-next {
+    flex: 0 1 auto;
+    max-width: calc(50% - 0.75rem);
+    min-width: 0;
+  }
+  .nav-page-previous { text-align: left; }
+  .nav-page-next     { text-align: right; margin-left: auto; }
+
+  // Style links as outlined red buttons — same visual vocabulary as .sidebar-pdf-btn.
+  // Styler les liens en boutons rouge contour — même vocabulaire que .sidebar-pdf-btn.
+  .pagination-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    max-width: 100%;           // respect the parent max-width cap
+    padding: 0.55rem 1.1rem;
+    border: 1.5px solid rgba(210, 0, 37, 0.55);
+    border-radius: 8px;
+    color: $primary !important;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none !important;
+    background: rgba(210, 0, 37, 0.04);
+    transition: background 0.18s ease, border-color 0.18s ease,
+                color 0.18s ease, box-shadow 0.18s ease;
+
+    .bi { font-size: 1rem; line-height: 1; flex-shrink: 0; }
+
+    // Truncate long chapter titles with an ellipsis — the arrow icon stays visible.
+    // Tronquer les titres longs avec une ellipse — l'icône de flèche reste visible.
+    .nav-page-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 0;
+    }
+
+    &:hover {
+      background: $primary;
+      border-color: $primary;
+      color: #ffffff !important;
+      box-shadow: 0 3px 10px rgba(210, 0, 37, 0.28);
+    }
+  }
+}
+
+// ── Navigation footer ─────────────────────────────────────────────────────────
+
+.nav-footer {
+  font-size: 0.8rem;
+  color: #aaa;
+  border-top: 1px solid #eee;
+}
+
+// ── Blockquotes (used for PDF-fallback notices) ───────────────────────────────
+
+blockquote {
+  border-left: 3px solid #ddd;
+  padding: 0.5rem 1rem;
+  color: #666;
+  font-size: 0.9rem;
+  background: #f9f9f9;
+  border-radius: 0 3px 3px 0;
+  margin: 1rem 0;
+}
+
+// ── PDF-only figure placeholder / Placeholder de figure PDF uniquement ───────
+
+// Shown in HTML when a figure contains only a {=latex} raw block.
+// Affiché en HTML quand une figure ne contient qu'un bloc {=latex} brut.
+.fig-pdf-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #ddd;
+  border-radius: 4px;
+  padding: 3rem 1rem;
+  color: #bbb;
+  font-size: 0.85rem;
+  font-style: italic;
+  background: #fafafa;
+  text-align: center;
+  margin: 0.25rem 0;
+}
+
+// ── Hide auxiliary PDF-only chapters from the HTML sidebar ────────────────────
+// tables.qmd and glossaire-entries.qmd exist for PDF (table of contents, shortcode
+// declarations) but produce no meaningful content in HTML. They are excluded via
+// CSS rather than removing them from the chapters list (which would break PDF).
+// Ces pages existent pour le PDF mais n'ont pas de contenu utile en HTML.
+// On les masque via CSS plutôt que de les retirer de la liste des chapitres
+// (ce qui casserait le rendu PDF).
+.sidebar-item:has(a[href*="tables.html"]),
+.sidebar-item:has(a[href*="glossaire-entries.html"]),
+.sidebar-item:has(a[href*="bibliographie.html"]),
+.sidebar-item:has(a[href*="bibliography.html"]) {
+  display: none !important;
+}

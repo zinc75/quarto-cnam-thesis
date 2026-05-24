@@ -1,0 +1,15 @@
+# Appendix A Title {.appendix}
+
+{{< lipsum 1 >}}
+
+## Proofs
+
+{{< lipsum 1 >}}
+
+$$
+\int_0^\infty e^{-x^2}\,\mathrm{d}x = \frac{\sqrt{\pi}}{2}
+$$
+
+## Additional Material
+
+{{< lipsum 1 >}}

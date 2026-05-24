@@ -1,0 +1,17 @@
+<!-- HTML-only heading: .unlisted hides this page from the book navigation sidebar.
+     .no-latex: the Lua filter returns {} for this heading in PDF mode (no ghost \chapter*).
+     Cap HTML uniquement : .unlisted masque la page de la barre latérale de navigation.
+     .no-latex : le filtre Lua retourne {} en mode PDF (pas de \chapter* fantôme). -->
+::: {.content-visible when-format="html"}
+# Bibliographie {.unnumbered .unlisted .no-latex}
+:::
+
+```{=latex}
+\chapter*{Bibliographie}
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliographie}
+\adjustmtc
+\markboth{\MakeUppercase{Bibliographie}}{}
+\bibliographystyle{IEEEtran-francais}
+\bibliography{references}
+```

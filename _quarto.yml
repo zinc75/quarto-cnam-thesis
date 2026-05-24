@@ -1,0 +1,155 @@
+# ==============================================================================
+# THESIS — MAIN CONFIGURATION FILE / THÈSE — FICHIER DE CONFIGURATION PRINCIPAL
+# Fill in the sections marked "TO FILL IN" / Remplir les sections "À REMPLIR".
+# Do not modify "Infrastructure" unless needed / Ne pas modifier "Infrastructure"
+# sauf besoin avancé.
+# ==============================================================================
+
+
+# ------------------------------------------------------------------------------
+# TO FILL IN — Book metadata / À REMPLIR — Métadonnées du livre
+# Chapter list is defined in the language profile / La liste des chapitres est
+# définie dans le profil de langue :
+#   quarto render --profile fr  →  content_fr/  →  _these_fr/these_fr_<author>.pdf
+#   quarto render --profile en  →  content_en/  →  _thesis-en/these_en_<author>.pdf
+# ------------------------------------------------------------------------------
+book:
+  title: "Thesis title / Titre de la thèse"
+  subtitle: "Optional subtitle / Sous-titre éventuel"  # remove line if none / supprimer si absent
+  author: "Firstname LASTNAME"
+  # output-file and chapters are defined in the language profile /
+  # output-file et chapters sont définis dans le profil de langue
+  downloads: [pdf]            # adds PDF download button to the HTML sidebar / ajoute un bouton PDF dans la barre HTML
+
+
+# ------------------------------------------------------------------------------
+# TO FILL IN — Cnam information (cover page)
+# À REMPLIR — Informations Cnam (page de garde)
+# ------------------------------------------------------------------------------
+
+# thesis-lang is set in the language profile (_quarto-fr.yml / _quarto-en.yml) /
+# thesis-lang est défini dans le profil de langue
+# "fr" → babel french, French section names / noms de sections en français
+# "en" → babel english, English section names / noms de sections en anglais
+# Note: lang: fr is always fixed (Cnam structure is always in French) /
+# Note : lang: fr reste fixe (structure Cnam toujours française)
+
+date-soutenance: "1er janvier 2025"    # do NOT use `date:` (encoding issue) / NE PAS utiliser `date:`
+discipline: "60e section CNU — Mécanique, génie mécanique, génie civil"
+specialite: "Acoustique"
+ecole-doctorale: "Abbé Grégoire"       # or "SMI", etc. / ou "SMI", etc.
+laboratoire: "Laboratoire de Mécanique des Structures et des Systèmes Couplés (LMSSC)"
+directeur: "Pr. Firstname LASTNAME, Professeur des Universités, Cnam Paris"
+codirecteur: "Pr. Firstname LASTNAME, Professeure des Universités, Cnam Paris"  # leave empty if none (HDR required) / laisser vide si absent (HDR requise)
+coencadrant: "M. Firstname LASTNAME, Maître de Conférences, Cnam Paris"         # leave empty if none / laisser vide si absent
+cotutelle: false                       # true → displays co-institution logo / affiche le logo co-tutelle
+
+dedicace: "Optional dedication… / Insérer éventuellement une dédicace…"  # remove line if none / supprimer si absent
+
+
+# ------------------------------------------------------------------------------
+# TO FILL IN — Jury composition / À REMPLIR — Composition du jury
+# ------------------------------------------------------------------------------
+jury:
+  - nom: "Mme Firstname LASTNAME"
+    titre: "Title, Research Unit, University / Titre, Unité de Recherche, Université"
+    role: "Présidente"
+  - nom: "M. Firstname LASTNAME"
+    titre: "Title, Research Unit, University / Titre, Unité de Recherche, Université"
+    role: "Rapporteur"
+  - nom: "Mme Firstname LASTNAME"
+    titre: "Title, Research Unit, University / Titre, Unité de Recherche, Université"
+    role: "Rapportrice"
+  - nom: "M. Firstname LASTNAME"
+    titre: "Maître de conférences, Research Unit, University / Unité de Recherche, Université"
+    role: "Évaluateur"
+  - nom: "M. Firstname LASTNAME"
+    titre: "Professeur des Universités, LMSSC, Cnam Paris"
+    role: "Directeur de thèse"
+  - nom: "M. Firstname LASTNAME"
+    titre: "Maître de Conférences HDR, LMSSC, Cnam Paris"
+    role: "Co-directeur de thèse"
+  - nom: "Mme Firstname LASTNAME"
+    titre: "Ingénieure de Recherches, Research Unit / Entité d'appartenance"
+    role: "Co-encadrante de thèse"
+
+
+# ==============================================================================
+# INFRASTRUCTURE — do not modify unless you know what you are doing /
+#                  ne pas modifier sauf besoin avancé
+# ==============================================================================
+
+validate-yaml: false   # Required: allows custom metadata keys (e.g. comments:) not in Quarto's schema / Autorise les clés de métadonnées personnalisées (ex. comments:) hors du schéma Quarto
+
+project:
+  type: book
+  # output-dir is defined in each language profile (_quarto-fr.yml / _quarto-en.yml).
+  # output-dir est défini dans chaque profil de langue.
+  resources:
+    - images/    # ensure logos are copied to the HTML output / copier les logos vers la sortie HTML
+
+bibliography: references.bib   # must be at project root — BibTeX (natbib) strips path / doit être à la racine — BibTeX (natbib) supprime le chemin
+lang: fr
+
+# French localisation fixes (Quarto fr defaults are incorrect) /
+# Corrections de la localisation française de Quarto (valeurs par défaut erronées)
+language:
+  crossref-lot-title: "Liste des tables"
+  crossref-lof-title: "Liste des figures"
+
+minitoc-newpage: false   # true → \newpage after each chapter minitoc / après chaque minitoc de chapitre
+chapter-openright: true  # false → chapters on any page, for digital version / pour version numérique
+index: false             # true → generates an index via \index{term} / génère un index via \index{terme}
+
+# Glossary and acronyms / Glossaire et acronymes.
+# true  : loads glossaries package; glossaire-entries.qmd must be listed in chapters: /
+#         charge le package glossaries ; glossaire-entries.qmd doit être dans chapters:
+# false : package not loaded; acronyms.qmd displays an info message instead /
+#         package non chargé ; acronyms.qmd affiche un message d'information
+glossaire: true
+
+# Differentiated page numbering by document section /
+# Numérotation différenciée par portion du document.
+# false (default) : continuous arabic numbering, "N/Total" footer /
+#                   numérotation arabe continue, footer "N/Total"
+# true  : front matter → roman (i/xii) ; body+biblio → arabic (1/89) ; appendices → Roman (I/VI) /
+#         liminaire → romain (i/xii) ; corps+biblio → arabe (1/89) ; annexes → romain maj. (I/VI)
+pagestyle-sections: true
+
+# Bibliography placement / Contrôle du placement de la bibliographie.
+# true (default) : managed in backmatter/bibliography.qmd, between conclusion and appendices /
+#                  gérée dans backmatter/bibliography.qmd, entre conclusion et annexes
+# false : placed automatically at end of document by template.tex /
+#         gérée automatiquement en fin de document par template.tex
+bibliography-manual: true
+
+# ------------------------------------------------------------------------------
+# TO FILL IN — Collaborative comments / À REMPLIR — Commentaires collaboratifs
+# Extension zinc75/quarto-comments: {{< comment >}}, {{< todo >}}, {{< note >}},
+# {{< question >}}.
+# Add as many authors as needed; each needs a unique key, a name, and colours.
+# Ajouter autant d'auteurs que nécessaire ; chaque auteur a une clé, un nom et des couleurs.
+# ------------------------------------------------------------------------------
+comments:
+  enabled: false         # false → hides all comments in the output / masque tous les commentaires
+  show_author: true     # false → hides author labels / masque les étiquettes auteur
+  authors:
+    sup:
+      name: "Supervisor"          # replace with actual name / remplacer par le vrai prénom
+      color_html: "#D55E00"       # hex colour for HTML / couleur HTML (orange)
+      color_latex: "orange!30"    # xcolor spec for LaTeX / spec xcolor pour LaTeX
+    # Add more authors below — duplicate the block above with a new key /
+    # Ajouter d'autres auteurs ci-dessous — dupliquer le bloc ci-dessus avec une nouvelle clé :
+    # co:
+    #   name: "Co-supervisor"
+    #   color_html: "#0072B2"
+    #   color_latex: "blue!20"
+
+
+filters:
+  - quartable    # enhanced tables (colspan, rowspan, partial lines) / tables enrichies
+
+format:
+  cnam-thesis-pdf:
+    keep-tex: true
+  cnam-thesis-html: default

@@ -1,0 +1,108 @@
+/* quartable.css — booktabs-like styling for tables that use quartable
+   features (colspan, rowspan, midrule, cline). The Lua filter automatically
+   adds a `quartable` class to any table that uses one of these features, so
+   the rules below only affect those tables — regular Quarto tables keep
+   their default styling. */
+
+/* ── Table-level: top/bottom rules drawn on the table element itself.
+      Border-collapse is forced to `collapse` so the table-level borders
+      merge correctly with the (reset) per-cell borders. The top/bottom
+      lines therefore appear under spanned cells too, and survive when the
+      <thead> is empty (it is when the filter moves header rows into the
+      body to make a head-rooted rowspan work).                         */
+table.quartable {
+  border-collapse: collapse !important;
+  border-top:    2px solid currentColor !important;
+  border-bottom: 2px solid currentColor !important;
+  /* Sit at content width, centered, like a typical booktabs table.     */
+  width: auto !important;
+  margin-left:  auto !important;
+  margin-right: auto !important;
+}
+
+/* ── Reset Bootstrap's per-row borders on quartable tables ─────────────── */
+table.quartable > thead > tr > th,
+table.quartable > thead > tr > td,
+table.quartable > tbody > tr > th,
+table.quartable > tbody > tr > td {
+  border-top:    0 !important;
+  border-bottom: 0 !important;
+}
+
+/* By design, quartable does NOT draw an automatic head/body separator.
+   Use `===` (or `===N-M`) explicitly when you want one. This matches
+   booktabs' philosophy of leaving the head/body delimiter to the author,
+   especially when the head contains spans. When the author writes a
+   leading `===` (first row of the first body), the Lua filter tags the
+   table with `quartable-head-sep` and the rule below draws the
+   separator on the last header row.                                     */
+table.quartable.quartable-head-sep > thead > tr:last-child > th,
+table.quartable.quartable-head-sep > thead > tr:last-child > td {
+  border-bottom: 1px solid currentColor !important;
+}
+
+/* ── Midrule between consecutive <tbody> (===) ─────────────────────────── */
+table.quartable tbody + tbody > tr:first-child > td,
+table.quartable tbody + tbody > tr:first-child > th {
+  border-top: 1px solid currentColor !important;
+}
+
+/* ── Cline: partial border-bottom on flagged cells ─────────────────────── */
+table.quartable td.quartable-cline-bottom,
+table.quartable th.quartable-cline-bottom {
+  border-bottom: 1px solid currentColor !important;
+}
+
+/* ── Colspan: horizontal centering ─────────────────────────────────────── */
+table.quartable th[colspan],
+table.quartable td[colspan] {
+  text-align: center;
+}
+
+/* ── Rowspan: vertical centering ───────────────────────────────────────── */
+table.quartable td[rowspan],
+table.quartable th[rowspan] {
+  vertical-align: middle !important;
+}
+
+/* ── Reveal.js overrides ───────────────────────────────────────────────── */
+.reveal table.quartable {
+  border-collapse: collapse !important;
+  border-top:    2px solid currentColor !important;
+  border-bottom: 2px solid currentColor !important;
+  /* Reveal slides have fixed dimensions: don't shrink-wrap the table
+     here, let it use its natural Reveal layout.                        */
+}
+
+.reveal table.quartable > thead > tr > th,
+.reveal table.quartable > thead > tr > td,
+.reveal table.quartable > tbody > tr > th,
+.reveal table.quartable > tbody > tr > td {
+  border-top:    0 !important;
+  border-bottom: 0 !important;
+}
+
+.reveal table.quartable.quartable-head-sep > thead > tr:last-child > th,
+.reveal table.quartable.quartable-head-sep > thead > tr:last-child > td {
+  border-bottom: 1px solid currentColor !important;
+}
+
+.reveal table.quartable tbody + tbody > tr:first-child > td,
+.reveal table.quartable tbody + tbody > tr:first-child > th {
+  border-top: 1px solid currentColor !important;
+}
+
+.reveal table.quartable td.quartable-cline-bottom,
+.reveal table.quartable th.quartable-cline-bottom {
+  border-bottom: 1px solid currentColor !important;
+}
+
+.reveal table.quartable th[colspan],
+.reveal table.quartable td[colspan] {
+  text-align: center;
+}
+
+.reveal table.quartable td[rowspan],
+.reveal table.quartable th[rowspan] {
+  vertical-align: middle !important;
+}

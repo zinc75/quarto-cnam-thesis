@@ -1,0 +1,29 @@
+<!-- HTML-only heading: hides this page from the sidebar (shortcode declarations
+     produce no visible output in HTML). In PDF no heading is needed. -->
+::: {.content-visible when-format="html"}
+# Glossary entries {.unnumbered .unlisted .no-latex}
+:::
+
+<!-- ============================================================
+     Glossary and acronym entries
+     ============================================================
+     Add your acronyms and technical terms here.
+
+     Syntax:
+       Acronym : {{</* acr label ABBREV "Full expansion" */>}}
+       Term    : {{</* terme label "word" "Term definition" */>}}
+
+     Label usage in text (PDF):
+       \acrshort{label}  →  ABBREV
+       \acrlong{label}   →  Full expansion
+       \acrfull{label)   →  Full expansion (ABBREV)
+       \gls{label}       →  ABBREV (expanded on first use)
+     ============================================================ -->
+
+{{< acr cnam Cnam "Conservatoire national des arts et métiers" >}}
+{{< acr ai AI "artificial intelligence" >}}
+{{< acr ml ML "machine learning" >}}
+{{< acr dof DOF "degree of freedom" >}}
+
+{{< terme ontology "Ontology" "Formal representation of a set of concepts and their relationships in a domain of knowledge" >}}
+{{< terme corpus "Corpus" "Structured set of documents forming the basis of an analysis or machine learning task" >}}

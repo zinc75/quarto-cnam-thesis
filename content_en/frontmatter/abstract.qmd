@@ -1,0 +1,9 @@
+# Abstract {.unnumbered .toc-black}
+
+<!-- .abstract-block: left-border styling in HTML (thesis.scss).
+     In PDF the div class is ignored; content renders normally. -->
+::: {.abstract-block}
+Insert here the abstract in English. {{< lipsum 1 >}}
+
+**Keywords:** acoustics, signal processing, machine learning
+:::

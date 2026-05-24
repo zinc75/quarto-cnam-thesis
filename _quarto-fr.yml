@@ -1,0 +1,31 @@
+# ==============================================================================
+# FRENCH PROFILE / PROFIL FRANÇAIS — quarto render --profile fr
+# Overrides _quarto.yml: language, chapter list, output directory /
+# Surcharge _quarto.yml : langue, liste des chapitres, répertoire de sortie.
+# ==============================================================================
+
+thesis-lang: fr
+
+project:
+  output-dir: _these_fr
+  post-render:
+    - ./_scripts/postrender.sh fr _these_fr    # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
+
+book:
+  output-file: these_fr
+  chapters:
+    - index.qmd                                         # entry point, do not remove / point d'entrée, ne pas supprimer
+    - content_fr/liminaire/remerciements.qmd
+    - content_fr/liminaire/resume.qmd
+    - content_fr/liminaire/abstract.qmd
+    - content_fr/liminaire/tables.qmd                   # TOC + lists, do not remove / table des matières + listes, ne pas supprimer
+    - content_fr/liminaire/glossaire-entries.qmd        # remove if glossaire: false / supprimer si glossaire: false
+    - content_fr/liminaire/acronymes.qmd                # remove if glossaire: false / supprimer si glossaire: false
+    - content_fr/liminaire/glossaire.qmd                # remove if no glossary terms / supprimer si pas de termes
+    - content_fr/chapitres/00-introduction.qmd
+    - content_fr/chapitres/01-chapitre1.qmd             # ← add your chapters here / ajouter vos chapitres ici
+    - content_fr/chapitres/02-chapitre2.qmd
+    - content_fr/postliminaire/conclusion.qmd
+    - content_fr/postliminaire/bibliographie.qmd        # between conclusion and appendices / entre conclusion et annexes
+  appendices:
+    - content_fr/postliminaire/annexes.qmd

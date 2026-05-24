@@ -1,0 +1,30 @@
+<!-- HTML-only heading: hides this page from the sidebar (shortcode declarations
+     produce no visible output in HTML). In PDF no heading is needed.
+     Cap HTML uniquement : masque la page (les shortcodes ne produisent rien en HTML). -->
+::: {.content-visible when-format="html"}
+# Entrées du glossaire {.unnumbered .unlisted .no-latex}
+:::
+
+<!-- ============================================================
+     Entrées du glossaire et des acronymes
+     ============================================================
+     Ajouter ici vos acronymes et termes techniques.
+
+     Syntaxe :
+       Acronyme : {{</* acr label SIGLE "Développé complet" */>}}
+       Terme    : {{</* terme label "mot" "Définition du terme" */>}}
+
+     Le label est utilisé pour les références dans le texte (PDF) :
+       \acrshort{label}  →  SIGLE
+       \acrlong{label}   →  Développé complet
+       \acrfull{label}   →  Développé complet (SIGLE)
+       \gls{label}       →  SIGLE (développé à la première occurrence)
+     ============================================================ -->
+
+{{< acr cnam Cnam "Conservatoire national des arts et métiers" >}}
+{{< acr ia IA "intelligence artificielle" >}}
+{{< acr ml ML "machine learning" >}}
+{{< acr ddl DDL "degré de liberté" >}}
+
+{{< terme ontologie "Ontologie" "Représentation formelle d'un ensemble de concepts et de leurs relations dans un domaine de connaissance" >}}
+{{< terme corpus "Corpus" "Ensemble structuré de documents constituant la base d'une analyse ou d'un apprentissage automatique" >}}

@@ -1,0 +1,324 @@
+% ============================================================
+% CORRECTIONS (mai 2025) -- compatibilite TeX Live 2026
+%   1. [francais]{babel} -> [french]{babel} (option deprecee, fatale avec LaTeX 2025-11+)
+%   2. usepackage{graphicx} en double commente (deja charge avec [pdftex])
+%   3. usepackage{float} commente (deja charge par le package algorithm)
+% ============================================================
+%---------Classe du document : book :-------------------%
+
+\documentclass[a4paper,11pt,twoside,openright,notitlepage]{book}
+\pdfobjcompresslevel 0
+\usepackage[a-1b]{pdfx}
+
+
+\makeatletter
+\def\bstctlcite{\@ifnextchar[{\@bstctlcite}{\@bstctlcite[@auxout]}}
+\def\@bstctlcite[#1]#2{\@bsphack
+ \@for\@citeb:=#2\do{%
+   \edef\@citeb{\expandafter\@firstofone\@citeb}%
+   \if@filesw\immediate\write\csname #1\endcsname{\string\citation{\@citeb}}\fi}%
+ \@esphack}
+\makeatother
+
+%-----------Package ------------------------------------%
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}			
+\usepackage{lmodern}
+\usepackage{amsmath}					
+\usepackage{amssymb}
+\usepackage{units}				
+\usepackage{amstext}        
+\usepackage{amsfonts}        
+\usepackage{theorem}          
+\usepackage{array}						 
+\usepackage{multicol}					
+\usepackage{multirow}
+\usepackage{lscape}
+\usepackage{xspace}						
+\usepackage[pdftex]{graphicx}	
+\usepackage{subcaption}
+\usepackage{indentfirst} 			
+\usepackage{latexsym}					
+\usepackage{setspace}					
+\usepackage{algorithm}				
+\usepackage{algorithmic}			
+\usepackage{makeidx}					
+\usepackage{vmargin}					
+% \usepackage{float}  % déjà chargé par algorithm
+\usepackage{enumerate}        
+\usepackage{verbatim}         
+\usepackage{floatflt}         
+\usepackage{rotating}					
+\usepackage{longtable}        
+\usepackage[french]{varioref} 
+%\usepackage{natbib}
+\usepackage{diagbox}        
+\usepackage{url}
+\usepackage{pdfpages}           
+\usepackage{titlesec} 
+% \usepackage{graphicx}
+\usepackage{minitoc}
+\usepackage{xcolor,lipsum}
+\usepackage[framemethod=tikz]{mdframed}
+%\usepackage[maxnames=6,style=authoryear, style=ieee,backend=bibtex]{biblatex}
+%\addbibresource{biblio.bib}
+%\bibpunct{[}{]}{;}{a}{ }{,}
+
+%------Page de garde package -----------%
+\usepackage[utf8]{inputenc}		% LaTeX, comprend les accents !
+\usepackage[T1]{fontenc}		
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{ae,aecompl}
+\usepackage[top=2.5cm, bottom=2cm, 
+			left=3cm, right=2.5cm,
+			headheight=15pt]{geometry}
+% \usepackage{graphicx}
+\usepackage{eso-pic}	% Nécessaire pour mettre des images en arrière plan
+\usepackage{array}	
+\usepackage{doi}
+
+
+\definecolor{redHESAM}{RGB}{210,0,37}
+
+%------Page de garde package -----------%
+%
+%\RequirePackage{ifpdf}
+%\ifpdf \PassOptionsToPackage{pdfa,a4paper=true,pagebackref=true}{hyperref} \fi
+%\RequirePackage{hyperref}
+\usepackage{hyperref}
+
+%\usepackage[acronym,xindy,toc,numberedsection,nonumberlist]{glossaries}
+%\newglossary[nlg]{notation}{not}{ntn}{Notation}
+%\makeglossaries
+%\loadglsentries{glossaire}
+
+\usepackage{fancyhdr}
+\fancyhead{}
+\fancyhead[L]{\rightmark}
+\fancyfoot[C]{\thepage}
+\setcounter{secnumdepth}{2}
+
+
+
+\makeindex
+
+% pdf/a stuff
+
+\begin{filecontents*}{./main.xmpdata}
+  \Title{}
+  \Author{}
+%  \Copyright{Work licensed under a Creative Commons
+%    Attribution-ShareAlike 4.0 International License}
+%  \CopyrightURL{https://creativecommons.org/licenses/by-sa/4.0/}
+\end{filecontents*}
+
+%-------profondeur de numerotation (1.2.1..) ------------%
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+%-----------Definition cmd ------------------------------%
+%center verticalement dans une page
+
+\newenvironment{vcenterpage}
+{\newpage\vspace*{\fill}}
+{\vspace*{\fill}\par\pagebreak}
+\makeindex
+
+\setcounter{minitocdepth}{2}
+\mtcsettitle{minitoc}{Contenu}
+
+%======== DEBUT DU DOCUMENT ===============%
+\begin{document}
+% Modif SD, 6mai2024
+% mis en commentaire %\bstctlcite{IEEEexample:BSTcontrol}
+% fin modif SD
+%======== DEBUT DU DOCUMENT ===============%
+
+%-----------Page de garde ------------------------------%
+
+\dominitoc
+\include{page_garde}
+
+%-----------Propriete du document ---------------------%
+
+\thispagestyle{empty}
+
+%-----------Definition des dimensions ------------------%
+
+\setlength{\baselineskip}{1.5\baselineskip} %interligne de 1.5
+\setlength{\voffset}{0pt} 				% offset vertical
+\setlength{\topmargin}{0pt}				% Pas de marge en haut
+\setlength{\headheight}{30pt}			% Haut de page
+\setlength{\headsep}{30pt}				% Entre le haut de page et le texte
+\setlength{\textheight}{620pt}		% Hauteur de la zone de texte
+\setlength{\footskip}{30pt}				% Bas de page + séparation
+\setlength{\hoffset}{-15pt} 				% offset horizontal
+\setlength{\oddsidemargin}{0pt}	% Marge gauche sur pages impaires
+\setlength{\evensidemargin}{0pt}	% Marge gauche sur pages paires
+\setlength{\textwidth}{420pt}			% Largeur de la zone de texte 
+\setlength{\marginparsep}{10pt}		% Séparation de la marge 10
+\setlength{\marginparwidth}{40pt}	% Largeur de note dans la marge
+\parskip=4pt									   % espace additionnel entre deux paragraphes
+
+%--------------Style de page ---------------------------%
+
+\pagestyle{fancy}
+
+
+%--------------Page de dedicace------------------%
+
+\newpage
+\null
+\newpage
+\input{dedicace}
+
+%--------------Page de remerciement------------------%
+
+\input{remerciements}
+
+%--------------Page resume en fr ----------------------%
+
+\input{resume}
+
+%--------------Page resume en en ----------------------%
+
+\input{abstract}
+
+%--------------Les sommaires  ------------------------%
+
+
+\tableofcontents
+\listoftables            % à supprimer si pas de tableau
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+\adjustmtc
+\listoffigures           % à supprimer si pas de figure
+\addcontentsline{toc}{chapter}{Liste des figures}
+\adjustmtc
+
+%--------------Introduction  ---------------------------%
+
+%-  -%
+
+%-  -%
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+\adjustmtc
+\markright{\MakeUppercase{Introduction}}
+
+\newpage
+
+Texte de l'introduction \\
+
+Exemple bibliographie citation style numérique :
+
+\begin{itemize}
+\item[•] articles :  \cite{Zhou2015} et \cite{Patil2015,Eriksson2016}
+\item[•] livre : \cite{Morand1995} 
+\end{itemize}
+
+
+%-------------- PARTIE 1 -------------------------------%
+
+%\part{Titre de la première partie}
+
+%-------------- CHAPITRE 1 ------------------------------%
+
+\chapter{Titre du chapitre 1}
+\minitoc   % mini sommaire facultatif
+
+\newpage
+\section{Titre de la section 1}
+\subsection{Titre de la sous-section 1}
+\subsubsection{Titre de la sous-sous-section 1}
+
+
+%-------------- CHAPITRE 2 ------------------------------%
+
+\chapter{Titre du chapitre 2}
+\minitoc   % mini sommaire facultatif
+
+\newpage
+\section{Titre de la section 2}
+\subsection{Titre de la sous-section 2}
+\subsubsection{Titre de la sous-sous-section 2}
+
+
+
+%-----------La  conclusion------------------------------%
+
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+\adjustmtc
+\markright{\MakeUppercase{Conclusion}}
+\newpage
+
+Texte de la conclusion. \\
+
+
+%-----------La  biblio -----------------------------------%
+\cleardoublepage\phantomsection
+\addcontentsline{toc}{chapter}{Bibliographie}
+
+\thispagestyle{empty}
+\chapter*{Consigne bibliographie (à supprimer)} %  à supprimer
+%\addcontentsline{toc}{chapter}{Consigne bibliographie}
+%\markright{\MakeUppercase{Consigne bibliographie}}
+%\adjustmtc
+
+Rappel : qu’est-ce qu’une bibliographie ?
+\begin{itemize}
+\item une liste ordonnée de références de documents concernant un auteur ou un sujet.
+\item permet l’identification claire des sources citées, présentées de manière ordonnée et conforme à des normes prescrites.
+\end{itemize}
+
+Le style de présentation de la bibliographie (ponctuation, majuscules,...) peut varier selon les disciplines et les documents. Il est à choisir avec la·le directeur·rice de thèse.
+ 
+En Sciences humaines et sociales, privilégier un style de type « AUTEUR (date). TITRE » : comme les normes APA, Chicago ou Vancouver.
+Dans le domaine de l’informatique et des sciences de l’ingénieur, privilégier le style IEEE : style numérique, par ordre d’apparition des références dans la thèse.
+ 
+Une fois le style choisi, il devra être appliqué rigoureusement dans le travail de thèse pour toutes les références.
+ 
+Recommandations : utiliser un logiciel de gestion de références bibliographiques tel que Zotero pour générer automatiquement la bibliographie et les citations tout au long de la thèse.
+ 
+Des formations à Zotero sont dispensées par les bibliothèques du Cnam tout au long de l’année. Plus d’informations sur le site : https://bibliotheques.cnam.fr/, rubrique « Formation »\\
+
+\newpage
+\thispagestyle{empty}
+\clearpage
+
+%\bibliographystyle{alpha}
+%\bibliographystyle{ieeetr}
+
+\bibliographystyle{IEEEtran-francais}
+
+%\bibliographystyle{plainnat}
+
+%\printbibliography
+
+\bibliography{biblio}
+\thispagestyle{empty}
+
+
+%-----------Les annexes -------------------------------%
+
+\newpage
+\appendix
+\addcontentsline{toc}{chapter}{Liste des annexes}
+\chapter{Titre de l'annexe A}
+\markright{\MakeUppercase{Annexe A}}
+\chapter{Titre de l'annexe B}
+\markright{\MakeUppercase{Annexe B}}
+\newpage
+
+%----------- Le glossaire ---------------------------------%
+%\input{glossaire}
+%\printglossary[type=\acronymtype, title={Liste des acronymes}, toctitle={Liste des acronymes}]
+%\printglossary[title=Glossaire, toctitle=Glossaire]
+%\printglossary[type=notation, title={Liste des symboles}, toctitle={Liste des symboles}]
+
+
+%======== FIN DU DOCUMENT ================%
+\end{document}

@@ -1,0 +1,45 @@
+title: Cnam Thesis
+author: Cnam LMSSC
+version: 0.1.0
+quarto-required: ">=1.4.0"
+contributes:
+  shortcodes:
+    - shortcodes.lua
+  formats:
+    pdf:
+      filters:
+        - cnam-thesis.lua
+      pdf-engine: pdflatex
+      documentclass: book
+      classoption: [a4paper, 11pt, twoside, openright, notitlepage]
+      template: template.tex
+      template-partials:
+        - partials/before-body.tex
+      cite-method: natbib
+      biblio-style: IEEEtran-francais
+      number-sections: true
+      toc: true
+      toc-depth: 4
+      lang: fr
+    html:
+      filters:
+        - cnam-thesis.lua     # injects <meta name="thesis-author"> on every page / injecte le meta auteur sur toutes les pages
+      include-in-header:
+        - header-setup.html   # custom topbar: logo | title | author / barre : logo | titre | auteur
+      lightbox: true          # click-to-zoom on figures / zoom au clic sur les figures
+      cite-method: citeproc
+      theme: [cosmo, thesis.scss]
+      toc: true
+      toc-depth: 3
+      # Default TOC title (French). Language profiles override this value:
+      # - _quarto-fr.yml: inherits this default ("Table des matières")
+      # - _quarto-en.yml: overrides with toc-title: "Table of Contents"
+      # Titre par défaut (français). Les profils de langue surchargent cette valeur :
+      # - _quarto-fr.yml : hérite de cette valeur par défaut
+      # - _quarto-en.yml : surcharge avec toc-title: "Table of Contents"
+      toc-title: "Table des matières"
+      number-sections: true
+      lang: fr
+      fig-width: 7
+      fig-height: 5
+      html-math-method: katex

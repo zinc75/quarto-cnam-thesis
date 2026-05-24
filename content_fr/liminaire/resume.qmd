@@ -1,0 +1,11 @@
+# Résumé {.unnumbered .toc-black}
+
+<!-- .resume-block: left-border styling in HTML (thesis.scss).
+     In PDF the div class is ignored; content renders normally.
+     .resume-block : bordure gauche en HTML (thesis.scss).
+     En PDF la classe div est ignorée ; le contenu s'affiche normalement. -->
+::: {.resume-block}
+Insérer ici le résumé en français suivi des mots-clés. {{< lipsum 1 >}}
+
+**Mots-clés :** acoustique, traitement du signal, apprentissage automatique
+:::

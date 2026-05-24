@@ -1,0 +1,382 @@
+\documentclass[a4paper,11pt,twoside,openright,notitlepage]{book}
+\pdfobjcompresslevel 0
+\usepackage[a-1b]{pdfx}
+% Remove red boxes around links (hyperref is loaded internally by pdfx)
+\hypersetup{hidelinks}
+
+% PDF/A metadata
+\begin{filecontents*}{./thesis.xmpdata}
+  \Title{$title$}
+  \Author{$for(author)$$author$$sep$, $endfor$}
+\end{filecontents*}
+
+% bstctlcite command for IEEEtran
+\makeatletter
+\def\bstctlcite{\@ifnextchar[{\@bstctlcite}{\@bstctlcite[@auxout]}}
+\def\@bstctlcite[#1]#2{\@bsphack
+ \@for\@citeb:=#2\do{%
+   \edef\@citeb{\expandafter\@firstofone\@citeb}%
+   \if@filesw\immediate\write\csname #1\endcsname{\string\citation{\@citeb}}\fi}%
+ \@esphack}
+\makeatother
+
+% Language — babel-lang is derived by cnam-thesis.lua from thesis-lang (default: french)
+\usepackage[$if(babel-lang)$$babel-lang$$else$french$endif$]{babel}
+$if(inputenc)$
+\usepackage[$inputenc$]{inputenc}
+$else$
+\usepackage[utf8]{inputenc}
+$endif$
+\usepackage[T1]{fontenc}
+\usepackage{newpxtext}   % text font: Palatino (newpx) — consistent with newpxmath
+
+% Mathematics
+\usepackage{amsmath}
+\usepackage{newpxmath}   % math font: Palatino math — loads amssymb internally
+% \usepackage{amssymb}   % provided by newpxmath, do not reload
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{theorem}
+\usepackage{units}
+
+% Page layout — geometry before any redefinition
+% When comments are enabled, the right margin is widened for todonotes. /
+% Quand les commentaires sont activés, la marge droite est élargie pour les todonotes.
+% asymmetric: disables twoside margin mirroring so the right margin stays wide on ALL
+% pages (odd and even). todonotes uses \marginnote which always places notes on the
+% right regardless of twoside — without asymmetric, even pages have right=2.5cm
+% (binding side) and notes overflow. Headers/footers are unaffected by asymmetric. /
+% asymmetric : désactive le miroir twoside pour les marges, la marge droite reste
+% large sur toutes les pages. \marginnote va toujours à droite ; sans asymmetric les
+% pages paires ont droite=2.5cm (reliure) et les notes débordent.
+$if(comments.enabled)$
+\usepackage[top=2cm, bottom=2cm, left=2.5cm, right=4.5cm, headheight=15pt]{geometry}
+$else$
+\usepackage[top=2cm, bottom=2cm, left=2.5cm, right=2cm, headheight=15pt]{geometry}
+$endif$
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+
+% Chapter title style:
+%   - very large number in red, right-aligned
+%   - bold title, right-aligned
+%   - light grey rule exactly as wide as the title
+% \chaptitlewithline receives the title as argument (titlesec passes it
+% directly after the before-code), measures its width and typesets title + rule
+% in a minipage of that width, itself right-aligned via \filleft.
+\newlength{\chaptitlewidth}
+\newcommand{\chaptitlewithline}[1]{%
+  \settowidth{\chaptitlewidth}{\Huge\bfseries#1}%
+  \ifdim\chaptitlewidth>\linewidth\setlength{\chaptitlewidth}{\linewidth}\fi%
+  \begin{minipage}{\chaptitlewidth}%
+    \raggedleft%
+    {\Huge\bfseries#1}\\[1.5pt]%
+    {\color{black!25}\rule{\chaptitlewidth}{0.4pt}}%
+  \end{minipage}%
+}
+\makeatletter
+\titleformat{\chapter}[display]
+  {\normalfont\filleft}
+  {{\LARGE\bfseries\color{redHESAM}\MakeUppercase{\@chapapp}}\\[3pt]%
+   {\fontsize{75}{75}\selectfont\color{redHESAM}\textbf{\thechapter}}}
+  {-8pt}
+  {\chaptitlewithline}
+  []
+\makeatother
+\titlespacing*{\chapter}{0pt}{30pt}{40pt}
+
+% Tables
+\usepackage{array}
+\usepackage{tabularx}    % X columns with automatic width
+\usepackage{booktabs}    % typographic rules (\toprule, \midrule, \bottomrule)
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{lscape}
+$if(tables)$
+\usepackage{longtable}   % multi-page tables (loaded when Quarto detects tables)
+$endif$
+\usepackage{diagbox}
+\usepackage{subcaption}
+
+% Graphics
+\usepackage[pdftex]{graphicx}
+\usepackage{rotating}
+\usepackage{pdfpages}
+\usepackage{eso-pic}
+
+% Colours and boxes
+\usepackage{xcolor}
+\definecolor{redHESAM}{RGB}{210,0,37}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}   % required for Quarto callouts (enhanced jigsaw skin)
+
+% Collaborative margin comments (zinc75/quarto-comments extension).
+% Loaded only when comments: enabled: true. /
+% Chargé uniquement si comments: enabled: true.
+% \marginparwidth must be set BEFORE loading todonotes. /
+% \marginparwidth doit être défini AVANT le chargement de todonotes.
+$if(comments.enabled)$
+\setlength{\marginparwidth}{3.5cm}
+\usepackage{todonotes}
+\setuptodonotes{fancyline, size=\footnotesize}
+$endif$
+
+% Miscellaneous
+\usepackage{latexsym}
+\usepackage{xspace}
+\usepackage{enumerate}
+\usepackage{verbatim}
+$if(index)$
+\usepackage{makeidx}
+$endif$
+\usepackage{url}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{lastpage}  % \pageref{LastPage} for the total page count
+
+% Table of contents
+% - "chapter" entries: real chapters + intro + conclusion → red with dots
+% - "frontchap" entries: acknowledgements, abstracts, lists → black with dots
+\usepackage{tocloft}
+\renewcommand{\cftchapdotsep}{\cftdotsep}
+\renewcommand{\cftchapfont}{\color{redHESAM}\bfseries}
+\renewcommand{\cftchapleader}{\color{redHESAM}\cftdotfill{\cftchapdotsep}}
+\renewcommand{\cftchappagefont}{\color{redHESAM}\bfseries}
+
+% "frontchap" type: same formatting as "chapter" but in black
+\makeatletter
+\newcommand{\l@frontchap}[2]{%
+  \ifnum \c@tocdepth >\m@ne
+    \addpenalty{-\@highpenalty}%
+    \vskip 1.0em \@plus\p@
+    \setlength\@tempdima{1.5em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode \bfseries
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      #1\nobreak\cftdotfill{\cftdotsep}\nobreak
+      \hb@xt@\@pnumwidth{\hss #2}\par
+      \penalty\@highpenalty
+    \endgroup
+  \fi}
+\makeatother
+
+% Minitoc (loaded after tocloft)
+\usepackage{minitoc}
+\setcounter{minitocdepth}{2}
+\mtcsettitle{minitoc}{Contenu}
+
+% Glossary and acronyms (enabled via glossaire: true in _quarto.yml)
+% \makenoidxglossaries: no external tool required; everything is resolved
+% internally during Quarto's pdflatex passes (unlike \makeglossaries which
+% requires a separate makeglossaries pass not handled by Quarto).
+%
+% Entries are declared via the {{< acr >}} and {{< terme >}} shortcodes
+% in the glossaire-entries.qmd file. shortcodes.lua writes the
+% \newacronym / \newglossaryentry commands to _glossaire-entries.tex
+% (project root); that file is read here via \IfFileExists.
+% glossaries v4+ constraint: entries MUST be declared in the preamble.
+$if(glossaire)$
+\usepackage[acronym,nonumberlist,nopostdot]{glossaries}
+\makenoidxglossaries
+\IfFileExists{_glossaire-entries.tex}{\input{_glossaire-entries}}{}
+$endif$
+
+% natbib bibliography (loaded when cite-method: natbib)
+$if(natbib)$
+\usepackage[numbers]{natbib}
+% natbib automatically calls \chapter*{\bibname} inside \bibliography{}.
+% When bibliography-manual: true, the title is created by bibliography.qmd
+% → suppress natbib's automatic title to avoid duplication.
+$if(bibliography-manual)$
+\renewcommand{\bibsection}{}
+$endif$
+$endif$
+
+% Quarto syntax highlighting
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+% User header-includes from YAML
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+% Section name overrides — must come after Pandoc/Quarto injections.
+% lang: fr is always fixed, so Pandoc always injects French names (sometimes malformed).
+% French: explicit overrides for correct casing and Cnam names.
+% English / other: call \captions<babel-lang> to restore the target language.
+\AtBeginDocument{%
+$if(babel-is-french)$
+  \renewcommand\listfigurename{Liste des figures}%
+  \renewcommand\listtablename{Liste des tableaux}%
+  \renewcommand\figurename{Figure}%
+  \renewcommand\tablename{Tableau}%
+$else$
+  \csname captions$if(babel-lang)$$babel-lang$$else$english$endif$\endcsname%
+$endif$
+}
+
+% Differentiated page numbering (enabled via pagestyle-sections: true in _quarto.yml).
+% Two TeX booleans set by the Lua filter at section transitions:
+%   \mainmattertrue     → before the first numbered chapter
+%   \appendixmattertrue → before the appendices section
+$if(pagestyle-sections)$
+\newif\ifmainmatter     \mainmatterfalse
+\newif\ifappendixmatter \appendixmatterfalse
+$endif$
+
+% Footer format (shared between "fancy" and "plain" page styles).
+% First pages of chapters call \thispagestyle{plain} via \chapter/*.
+% Without redefining "plain", those pages show just \thepage (fancyhdr default)
+% instead of the desired N/total format.
+$if(pagestyle-sections)$
+\newcommand{\cnamfooter}{%
+  \footnotesize
+  \ifappendixmatter
+    \thepage\,/\,\pageref{LastPage}%
+  \else\ifmainmatter
+    \thepage\,/\,\pageref{mainmatter:end}%
+  \else
+    \thepage\,/\,\pageref{frontmatter:end}%
+  \fi\fi
+}
+$else$
+\newcommand{\cnamfooter}{\footnotesize\thepage\,/\,\pageref{LastPage}}
+$endif$
+
+% "fancy" style: running pages (chapter body)
+% Recto (odd, binding on left):  chapter on left [LO], section on right [RO]
+% Verso (even, binding on right): section on left [LE], chapter on right [RE]
+\fancyhead{}
+\fancyhead[LO,RE]{\small\leftmark}   % binding side:  current chapter
+\fancyhead[RO,LE]{\small\rightmark}  % outer side:    current section
+\fancyfoot[C]{\cnamfooter}
+
+% "plain" style: first pages of chapters — same footer, no header
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\cnamfooter}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+% Blank interleaved pages (openright) with no header or footer
+\makeatletter
+\def\cleardoublepage{%
+  \clearpage
+  \if@twoside
+    \ifodd\c@page\else
+      \thispagestyle{empty}%
+      \hbox{}\newpage
+      \if@twocolumn\hbox{}\newpage\fi
+    \fi
+  \fi
+}
+\makeatother
+
+% Numbering and TOC depth
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+% Vertically centred page environment (abstract pages)
+\newenvironment{vcenterpage}
+  {\newpage\vspace*{\fill}}
+  {\vspace*{\fill}\par\pagebreak}
+
+$if(index)$
+\makeindex
+$endif$
+
+%============================================================
+\begin{document}
+
+$before-body.tex()$
+
+% Main layout dimensions — applied after the cover page.
+% Top/bottom margins balanced to ~2cm of white space on each side:
+%   top   : 1in + \voffset + \topmargin = 72pt - 15pt = 57pt ≈ 2.0cm
+%   bottom: A4(845pt) - 57pt - 30pt - 25pt - 650pt - 25pt = 58pt ≈ 2.0cm
+\setlength{\baselineskip}{1.5\baselineskip}
+\setlength{\voffset}{0pt}
+\setlength{\topmargin}{-38pt}
+\setlength{\headheight}{30pt}
+\setlength{\headsep}{25pt}
+\setlength{\textheight}{697pt}
+\setlength{\footskip}{25pt}
+\setlength{\hoffset}{-15pt}
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{420pt}
+\setlength{\marginparsep}{10pt}
+\setlength{\marginparwidth}{40pt}
+\parskip=4pt
+% \setlength{\textwidth}{420pt} above only changes the LaTeX register,
+% NOT \hsize (the actual TeX parameter controlling paragraph width, managed
+% by geometry). Resync \textwidth to \hsize so that fancyhdr sees
+% \headwidth = \textwidth and applies no lateral offset.
+% Without this line, fancyhdr computes offset = (\hsize - 420pt)/2 and
+% double-counts it on even twoside pages → header runs off the page.
+\setlength{\textwidth}{\hsize}
+
+% Resync lateral margins overridden by the hardcoded Cnam block above. /
+% Resynchronise les marges latérales écrasées par le bloc Cnam ci-dessus.
+% The block hardcodes \oddsidemargin=0pt and \evensidemargin=0pt, which works
+% accidentally for the default narrow-margin layout (both ≈ 2 cm) but breaks
+% twoside margin placement when comments widen the outer margin. /
+% Le bloc fixe oddsidemargin=0 et evensidemargin=0, ce qui fonctionne par
+% coïncidence pour les marges étroites mais casse le twoside avec marge élargie.
+% Formula: margin_register = desired_margin − 1in + |hoffset|
+%          (with \hoffset = −15pt hardcoded above, so +15pt here) /
+% Formule : registre = marge_souhaitée − 1in + |hoffset|
+$if(comments.enabled)$
+\setlength{\oddsidemargin}{\dimexpr 2.5cm - 1in + 15pt\relax}   % odd  left  = 2.5 cm (inner/binding)
+\setlength{\evensidemargin}{\dimexpr 4.5cm - 1in + 15pt\relax}  % even left  = 4.5 cm (outer, notes margin)
+% Also restore \marginparwidth overridden by the hardcoded \setlength{\marginparwidth}{40pt} above. /
+% Restaure aussi \marginparwidth écrasé par \setlength{\marginparwidth}{40pt} ci-dessus.
+\setlength{\marginparwidth}{3.5cm}
+$endif$
+
+\pagestyle{fancy}
+\setlength{\headwidth}{\textwidth}
+\makeatletter
+% Twoside headers: the outer side (rightmark) should show only sections,
+% NOT the chapter title.
+% Problem: \tableofcontents, \listoffigures, \listoftables call
+% \@mkboth{title}{title} internally → same text on both sides.
+% fancyhdr resets \@mkboth = \markboth when \pagestyle{fancy} is called.
+% Override HERE, just after \pagestyle{fancy}, to be the last definition.
+\renewcommand{\@mkboth}[2]{\markboth{#1}{}}
+\makeatother
+
+% Document body (Quarto chapters)
+% Order defined in _quarto.yml: front matter → tables.qmd → chapters
+$body$
+
+% Bibliography — placement controlled by bibliography-manual
+% bibliography-manual: true (default) → managed in backmatter/bibliography.qmd
+% bibliography-manual: false → placed here, at end of document (after appendices)
+$if(bibliography)$
+$if(bibliography-manual)$
+% Bibliography is in backmatter/bibliography.qmd (between conclusion and appendices)
+$else$
+\cleardoublepage\phantomsection
+\addcontentsline{toc}{chapter}{\bibname}
+\bibliographystyle{$if(biblio-style)$$biblio-style$$else$IEEEtran-francais$endif$}
+\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+$endif$
+$endif$
+
+% Index (enabled via `index: true` in _quarto.yml)
+$if(index)$
+\cleardoublepage\phantomsection
+\addcontentsline{toc}{chapter}{Index}
+\printindex
+$endif$
+
+\end{document}
