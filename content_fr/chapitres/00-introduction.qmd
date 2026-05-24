@@ -1,7 +1,64 @@
 # Introduction {.unnumbered}
 
-{{< lipsum 1 >}}
+## Contexte et objectifs {.unnumbered}
 
-Exemple de citation : la méthode décrite dans [@Zhou2015] a été étendue dans [@Patil2015]. Pour une introduction générale, voir [@Morand1995].
+Les doctorants du Conservatoire national des arts et métiers ({{< acrs cnam >}}) doivent
+déposer leur thèse sous forme d'un PDF conforme à la maquette institutionnelle tout en
+souhaitant disposer d'une version HTML navigable pour le partage et l'accessibilité. Ce
+double objectif — PDF/A archivable et HTML lisible — est exactement ce que propose le
+système de publication Quarto [@Allaire2022], à condition de disposer d'un template
+configuré pour les contraintes spécifiques du Cnam.
 
-{{< lipsum 1 >}}
+Le présent document est à la fois le *guide d'utilisation* du template `quarto-cnam-thesis`
+et sa *démonstration vivante* : chaque fonctionnalité décrite ici est simultanément
+expliquée, montrée en syntaxe brute, et rendue sous vos yeux dans ce même document.
+
+## Structure de ce guide {.unnumbered}
+
+Ce guide est organisé en cinq chapitres thématiques :
+
+1. **Structure et mise en forme** — hiérarchie des titres, numérotation, cross-références,
+   mise en forme inline, listes.
+2. **Figures et mise en page** — images statiques, figures générées par Python,
+   mise en page multi-colonnes, figures PDF-only.
+3. **Équations et tableaux** — syntaxe mathématique, tableaux Markdown simples,
+   tableaux avancés avec l'extension `quartable`.
+4. **Callouts et blocs de code** — les cinq types d'encadrés, code affiché sans
+   exécution, code exécuté avec Python.
+5. **Références, glossaire et annotations** — citations bibliographiques, système
+   d'acronymes et de termes, commentaires collaboratifs.
+
+Le principe directeur est constant : pour chaque fonctionnalité, un bloc de code
+affiche la syntaxe Markdown exacte (non exécutée), suivi immédiatement du rendu réel.
+
+## Prérequis {.unnumbered}
+
+Ce template requiert Quarto 1.4 ou supérieur. Le moteur de compilation est pdflatex
+— XeLaTeX et LuaLaTeX ne sont pas supportés en raison des contraintes du package
+`pdfx` utilisé pour la conformité PDF/A-1b [@Knuth1984; @Lamport1994]. Pour les figures
+générées par code Python (chapitre 2), il faut également disposer de Python avec
+`matplotlib` et `numpy`.
+
+::: {.callout-tip}
+## Installation du template
+
+```bash
+quarto use template zinc75/quarto-cnam-thesis
+```
+
+Cette commande copie tous les fichiers sources dans le répertoire courant. Les
+fichiers de contenu à modifier se trouvent dans `content_fr/` (profil français)
+et `content_en/` (profil anglais).
+:::
+
+::: {.callout-important}
+## Toujours utiliser un profil de langue
+
+```bash
+quarto render --profile fr   # → _these_fr/these_fr_<auteur>.pdf + HTML
+quarto render --profile en   # → _thesis-en/these_en_<auteur>.pdf + HTML
+```
+
+`quarto render` sans profil échoue : la liste des chapitres est définie dans les
+profils `_quarto-fr.yml` et `_quarto-en.yml`, pas dans `_quarto.yml`.
+:::
