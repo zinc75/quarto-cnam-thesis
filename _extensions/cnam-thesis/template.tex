@@ -112,6 +112,7 @@ $endif$
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{tcolorbox}
 \tcbuselibrary{skins,breakable}   % required for Quarto callouts (enhanced jigsaw skin)
+\usepackage{soul}                 % required for strikethrough (~~text~~ → \st{text})
 
 % Collaborative margin comments (zinc75/quarto-comments extension).
 % Loaded only when comments: enabled: true. /
@@ -292,6 +293,21 @@ $endif$
 $if(index)$
 \makeindex
 $endif$
+
+% Pandoc tight-list support (used by Quarto for compact bullet lists)
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Pandoc 3.2+ image bounding (scales oversized images to \linewidth)
+\newsavebox\pandocboundedbox
+\newcommand{\pandocbounded}[1]{%
+  \savebox\pandocboundedbox{#1}%
+  \ifdim\wd\pandocboundedbox>\linewidth
+    \resizebox{\linewidth}{!}{\usebox\pandocboundedbox}%
+  \else
+    #1%
+  \fi
+}
 
 %============================================================
 \begin{document}
