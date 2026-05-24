@@ -23,8 +23,11 @@ book:
     - content_fr/liminaire/acronymes.qmd                # remove if glossaire: false / supprimer si glossaire: false
     - content_fr/liminaire/glossaire.qmd                # remove if no glossary terms / supprimer si pas de termes
     - content_fr/chapitres/00-introduction.qmd
-    - content_fr/chapitres/01-chapitre1.qmd             # ← add your chapters here / ajouter vos chapitres ici
-    - content_fr/chapitres/02-chapitre2.qmd
+    - content_fr/chapitres/01-structure.qmd             # ← add your chapters here / ajouter vos chapitres ici
+    - content_fr/chapitres/02-figures.qmd
+    - content_fr/chapitres/03-equations-tableaux.qmd
+    - content_fr/chapitres/04-callouts-code.qmd
+    - content_fr/chapitres/05-references-annotations.qmd
     - content_fr/postliminaire/conclusion.qmd
     - content_fr/postliminaire/bibliographie.qmd        # between conclusion and appendices / entre conclusion et annexes
   appendices:
