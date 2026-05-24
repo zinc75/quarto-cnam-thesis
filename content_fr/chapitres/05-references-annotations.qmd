@@ -1,0 +1,190 @@
+# Références, glossaire et annotations {short-title="Références"}
+
+Ce chapitre présente le système de citations bibliographiques (style IEEE via
+`IEEEtran-francais.bst`), le système de glossaire et d'acronymes, les commentaires
+collaboratifs, et les pages liminaires spéciales.
+
+## Citations bibliographiques {#sec-citations}
+
+### Syntaxe de base
+
+Les citations s'insèrent avec `[@clé]`. La clé correspond à l'identifiant BibTeX
+défini dans `references.bib` :
+
+````markdown
+La composition typographique informatique a été révolutionnée par Knuth [@Knuth1984],
+dont le système \TeX{} a été rendu accessible par Lamport avec \LaTeX{} [@Lamport1994].
+Quarto [@Allaire2022] unifie ces outils dans un environnement de publication moderne.
+````
+
+Rendu : la composition typographique informatique a été révolutionnée par Knuth
+[@Knuth1984], dont le système \TeX{} a été rendu accessible par Lamport avec \LaTeX{}
+[@Lamport1994]. Quarto [@Allaire2022] unifie ces outils dans un environnement de
+publication moderne.
+
+### Références multiples
+
+````markdown
+Les outils de visualisation Python [@Hunter2007] et les ouvrages de référence
+typographiques [@Bringhurst2004; @Mittelbach2023] complètent la palette de l'auteur.
+````
+
+Rendu : les outils de visualisation Python [@Hunter2007] et les ouvrages de référence
+typographiques [@Bringhurst2004; @Mittelbach2023] complètent la palette de l'auteur.
+
+::: {.callout-warning}
+## Toujours utiliser `[@clé]` avec les crochets
+
+Le style `IEEEtran-francais.bst` utilise `natbib`. La syntaxe `@clé` sans crochets
+appelle `\citet{}` qui est cassé avec IEEEtran — elle produit le nom de l'auteur
+suivi de `[?]`. **Utilisez toujours `[@clé]`** pour obtenir `[N]` (numérotation IEEE).
+:::
+
+### Fichier `references.bib`
+
+Le fichier `references.bib` doit se trouver **à la racine du projet**. Pandoc en
+mode natbib génère `\bibliography{references}` (sans chemin), et BibTeX cherche le
+fichier dans le répertoire courant. Un fichier dans `content_fr/references.bib`
+ne sera pas trouvé.
+
+::: {.callout-tip}
+## Gestionnaires bibliographiques
+
+Zotero (avec le connecteur Better BibTeX), JabRef ou Mendeley exportent directement
+en format `.bib`. L'entrée `@IEEEtranBSTCTL` en tête de fichier configure le style
+IEEEtran (nombre d'auteurs avant « et al. », etc.) — ne la supprimez pas.
+:::
+
+## Glossaire et acronymes {#sec-glossaire}
+
+### Déclarer des entrées dans `glossaire-entries.qmd`
+
+Toutes les entrées sont déclarées dans
+`content_fr/liminaire/glossaire-entries.qmd` via deux shortcodes :
+
+````markdown
+{{</* acr label SIGLE "Développé complet" */>}}
+{{</* terme label "mot" "Définition complète du terme" */>}}
+````
+
+Les shortcodes écrivent automatiquement `_glossaire-entries.tex` (lu par LaTeX)
+et alimentent les tables HTML. Les labels doivent être uniques.
+
+### Utiliser les acronymes dans le texte
+
+Quatre shortcodes permettent de référencer un acronyme selon la forme souhaitée :
+
+| Shortcode | Sortie PDF | Sortie HTML |
+|:----------|:-----------|:------------|
+| `{{</* gls cnam */>}}` | forme courte (1re occur. : longue) | forme courte |
+| `{{</* acrs cnam */>}}` | toujours forme courte | toujours forme courte |
+| `{{</* acrl cnam */>}}` | toujours forme longue | toujours forme longue |
+| `{{</* acrf cnam */>}}` | long (court) | long (court) |
+
+: Shortcodes de référence du glossaire. {#tbl-gloss-shortcuts}
+
+Exemples en situation :
+
+````markdown
+Le {{</* acrs cnam */>}} ({{</* acrl cnam */>}}) a été fondé en 1794.
+Le format {{</* acrf qmd */>}} est le format natif de Quarto.
+La numérotation {{< acrf toc >}} est générée automatiquement par Quarto.
+````
+
+Rendu : le {{< acrs cnam >}} ({{< acrl cnam >}}) a été fondé en 1794. Le format
+{{< acrf qmd >}} est le format natif de Quarto.
+
+::: {.callout-note}
+## Comportement PDF vs HTML
+
+En PDF, `{{< gls label >}}` expanse à la première occurrence (forme longue + sigle
+entre parenthèses) puis utilise la forme courte. En HTML, cette logique de première
+occurrence n'est pas gérée par le shortcode — il produit toujours la forme courte.
+Pour la cohérence, préférez `{{< acrf label >}}` à la première occurrence dans le
+texte, et `{{< acrs label >}}` ensuite.
+:::
+
+## Commentaires collaboratifs (`quarto-comments`) {#sec-comments}
+
+### Configuration dans `_quarto.yml`
+
+L'extension `quarto-comments` (dossier `_extensions/comments/`) est configurée
+via la clé `comments:` dans `_quarto.yml` :
+
+````yaml
+comments:
+  enabled: true
+  show_author: true
+  authors:
+    auteur:
+      name: "Eric Bavu"
+      color_html: "#005EA5"
+      color_latex: "blue!20"
+    dir:
+      name: "Abbé Grégoire"
+      color_html: "#D55E00"
+      color_latex: "orange!30"
+````
+
+### Les quatre types de commentaires
+
+````markdown
+{{</* comment "Reformuler cette phrase, elle est trop longue." author="dir" */>}}
+{{</* todo "Ajouter une figure illustrant ce point." author="auteur" */>}}
+{{</* note "Voir aussi Bringhurst 2004, §2.4." author="dir" */>}}
+{{</* question "Ce résultat est-il reproductible sur un autre jeu de données ?" author="dir" inline=true */>}}
+````
+
+Rendu en situation — voici une phrase avec une annotation en marge
+{{< comment "Ceci est un commentaire de type 'comment' par le directeur." author="dir" >}}
+et une tâche à accomplir :
+
+{{< todo "Remplacer cet exemple par un vrai résultat expérimental avant la soutenance." author="auteur" >}}
+
+Une note bibliographique {{< note "Voir Knuth 1984, chapitre 12." author="dir" inline=true >}} en ligne.
+
+::: {.callout-important}
+## Désactiver les commentaires avant le dépôt final
+
+Avant de soumettre la thèse à l'école doctorale et de la déposer sur theses.fr,
+passez `comments: enabled: false` dans `_quarto.yml`. Les annotations ne doivent
+pas figurer dans la version officielle archivée.
+:::
+
+## Pages liminaires spéciales {#sec-liminaires}
+
+### Résumé et abstract
+
+Les pages `resume.qmd` et `abstract.qmd` utilisent des classes CSS qui ajoutent
+une bordure gauche en HTML :
+
+````markdown
+::: {.resume-block}
+Texte du résumé en français.
+
+**Mots-clés :** mot1, mot2, mot3
+:::
+````
+
+::: {.callout-important}
+## Résumé français obligatoire pour toute thèse Cnam
+
+Même pour une thèse rédigée en anglais, un résumé en français est **obligatoire**
+selon les règles de l'{{< acrs abes >}} pour le dépôt sur theses.fr. C'est le rôle
+du fichier `content_en/frontmatter/resume.qmd` dans le profil anglais.
+:::
+
+### Le Comité de Suivi Individuel ({{< acrs csi >}})
+
+::: {.callout-note}
+## Processus doctoral français — le {{< acrs csi >}}
+
+Le {{< acrf csi >}} est obligatoire depuis 2016 pour tous les doctorants en France.
+Il se réunit au moins une fois par an, indépendamment du directeur de thèse, pour
+vérifier l'avancement, les conditions de travail et le respect du calendrier. Le
+compte-rendu du {{< acrs csi >}} doit être joint au dossier de soutenance.
+
+Le template HTML de cette thèse est particulièrement adapté pour les réunions de
+{{< acrs csi >}} : il permet de partager un lien vers la version en ligne, plus
+facile à parcourir qu'un PDF de 200 pages.
+:::
