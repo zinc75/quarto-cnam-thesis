@@ -86,8 +86,6 @@ PhD Thesis — Conservatoire national des arts et métiers
 **Laboratoire :** {{< meta laboratoire >}}
 
 **Directeur·trice de thèse :** {{< meta directeur >}}
-
-**Co-directeur·trice de thèse :** {{< meta codirecteur >}}
 :::
 
 [Commencer la lecture](content_fr/liminaire/resume.html){.btn-start-reading}
@@ -106,8 +104,6 @@ PhD Thesis — Conservatoire national des arts et métiers
 **Laboratory:** {{< meta laboratoire >}}
 
 **Thesis supervisor:** {{< meta directeur >}}
-
-**Co-supervisor:** {{< meta codirecteur >}}
 :::
 
 [Start reading](content_en/frontmatter/resume.html){.btn-start-reading}
