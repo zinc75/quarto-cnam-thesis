@@ -14,9 +14,9 @@
 #   quarto render --profile en  →  content_en/  →  _thesis-en/these_en_<author>.pdf
 # ------------------------------------------------------------------------------
 book:
-  title: "Thesis title / Titre de la thèse"
-  subtitle: "Optional subtitle / Sous-titre éventuel"  # remove line if none / supprimer si absent
-  author: "Firstname LASTNAME"
+  title: "Guide d'utilisation du template Quarto Cnam pour les thèses"
+  subtitle: "Une thèse qui se documente elle-même"
+  author: "Eric Bavu"
   # output-file and chapters are defined in the language profile /
   # output-file et chapters sont définis dans le profil de langue
   downloads: [pdf]            # adds PDF download button to the HTML sidebar / ajoute un bouton PDF dans la barre HTML
@@ -34,44 +34,39 @@ book:
 # Note: lang: fr is always fixed (Cnam structure is always in French) /
 # Note : lang: fr reste fixe (structure Cnam toujours française)
 
-date-soutenance: "1er janvier 2025"    # do NOT use `date:` (encoding issue) / NE PAS utiliser `date:`
+date-soutenance: "12 juin 2026"        # do NOT use `date:` (encoding issue) / NE PAS utiliser `date:`
 discipline: "60e section CNU — Mécanique, génie mécanique, génie civil"
 specialite: "Acoustique"
-ecole-doctorale: "Abbé Grégoire"       # or "SMI", etc. / ou "SMI", etc.
-laboratoire: "Laboratoire de Mécanique des Structures et des Systèmes Couplés (LMSSC)"
-directeur: "Pr. Firstname LASTNAME, Professeur des Universités, Cnam Paris"
-codirecteur: "Pr. Firstname LASTNAME, Professeure des Universités, Cnam Paris"  # leave empty if none (HDR required) / laisser vide si absent (HDR requise)
-coencadrant: "M. Firstname LASTNAME, Maître de Conférences, Cnam Paris"         # leave empty if none / laisser vide si absent
+ecole-doctorale: "Sciences des Métiers de l'Ingénieur"
+laboratoire: "Laboratoire MACS, Cnam Paris"
+directeur: "M. Henri Grégoire, Abbé constitutionnel, fondateur du Cnam, Conventionnel national, Paris"
 cotutelle: false                       # true → displays co-institution logo / affiche le logo co-tutelle
 
-dedicace: "Optional dedication… / Insérer éventuellement une dédicace…"  # remove line if none / supprimer si absent
+dedicace: "À Donald Knuth, qui a transformé la typographie en art computationnel, et à tous les doctorants qui ont perdu une journée à cause d'une accolade \\LaTeX{} manquante."
 
 
 # ------------------------------------------------------------------------------
 # TO FILL IN — Jury composition / À REMPLIR — Composition du jury
 # ------------------------------------------------------------------------------
 jury:
-  - nom: "Mme Firstname LASTNAME"
-    titre: "Title, Research Unit, University / Titre, Unité de Recherche, Université"
-    role: "Présidente"
-  - nom: "M. Firstname LASTNAME"
-    titre: "Title, Research Unit, University / Titre, Unité de Recherche, Université"
+  - nom: "M. Jean-Antoine Chaptal"
+    titre: "Professeur des Universités, Chaire de Chimie Appliquée, Conservatoire national des arts et métiers, Paris"
+    role: "Président du jury"
+  - nom: "M. Donald Ervin Knuth"
+    titre: "Professeur émérite, Department of Computer Science, Stanford University, Palo Alto, États-Unis"
     role: "Rapporteur"
-  - nom: "Mme Firstname LASTNAME"
-    titre: "Title, Research Unit, University / Titre, Unité de Recherche, Université"
+  - nom: "Mme Ada Lovelace"
+    titre: "Maîtresse de Conférences HDR, Department of Mathematics, University of London, Royaume-Uni"
     role: "Rapportrice"
-  - nom: "M. Firstname LASTNAME"
-    titre: "Maître de conférences, Research Unit, University / Unité de Recherche, Université"
+  - nom: "M. Jacques de Vaucanson"
+    titre: "Inspecteur général des manufactures, Académie royale des sciences, Paris"
     role: "Évaluateur"
-  - nom: "M. Firstname LASTNAME"
-    titre: "Professeur des Universités, LMSSC, Cnam Paris"
+  - nom: "M. Leslie Lamport"
+    titre: "Senior Principal Researcher, Microsoft Research, Redmond, États-Unis"
+    role: "Évaluateur"
+  - nom: "M. Henri Grégoire"
+    titre: "Abbé constitutionnel, fondateur du Cnam, Conventionnel national, Paris"
     role: "Directeur de thèse"
-  - nom: "M. Firstname LASTNAME"
-    titre: "Maître de Conférences HDR, LMSSC, Cnam Paris"
-    role: "Co-directeur de thèse"
-  - nom: "Mme Firstname LASTNAME"
-    titre: "Ingénieure de Recherches, Research Unit / Entité d'appartenance"
-    role: "Co-encadrante de thèse"
 
 
 # ==============================================================================
@@ -131,11 +126,15 @@ bibliography-manual: true
 # Ajouter autant d'auteurs que nécessaire ; chaque auteur a une clé, un nom et des couleurs.
 # ------------------------------------------------------------------------------
 comments:
-  enabled: false         # false → hides all comments in the output / masque tous les commentaires
-  show_author: true     # false → hides author labels / masque les étiquettes auteur
+  enabled: true          # false → hides all comments in the output / masque tous les commentaires
+  show_author: true      # false → hides author labels / masque les étiquettes auteur
   authors:
-    sup:
-      name: "Supervisor"          # replace with actual name / remplacer par le vrai prénom
+    auteur:
+      name: "Eric Bavu"
+      color_html: "#005EA5"       # hex colour for HTML / couleur HTML (bleu)
+      color_latex: "blue!20"      # xcolor spec for LaTeX / spec xcolor pour LaTeX
+    dir:
+      name: "Abbé Grégoire"
       color_html: "#D55E00"       # hex colour for HTML / couleur HTML (orange)
       color_latex: "orange!30"    # xcolor spec for LaTeX / spec xcolor pour LaTeX
     # Add more authors below — duplicate the block above with a new key /
@@ -145,6 +144,10 @@ comments:
     #   color_html: "#0072B2"
     #   color_latex: "blue!20"
 
+
+execute:
+  freeze: auto   # re-execute only when source changes / ne réexécute que si le code change
+  echo: true     # show code by default (overridable per chunk) / affiche le code par défaut
 
 filters:
   - quartable    # enhanced tables (colspan, rowspan, partial lines) / tables enrichies
