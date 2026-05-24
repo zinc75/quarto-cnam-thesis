@@ -22,9 +22,19 @@
      ============================================================ -->
 
 {{< acr cnam Cnam "Conservatoire national des arts et métiers" >}}
-{{< acr ia IA "intelligence artificielle" >}}
-{{< acr ml ML "machine learning" >}}
-{{< acr ddl DDL "degré de liberté" >}}
+{{< acr qmd QMD "Quarto Markdown Document" >}}
+{{< acr yaml YAML "Yet Another Markup Language" >}}
+{{< acr toc TOC "Table of Contents" >}}
+{{< acr lof LOF "List of Figures" >}}
+{{< acr lot LOT "List of Tables" >}}
+{{< acr cnu CNU "Conseil National des Universités" >}}
+{{< acr hdr HDR "Habilitation à Diriger des Recherches" >}}
+{{< acr abes ABES "Agence Bibliographique de l'Enseignement Supérieur" >}}
+{{< acr csi CSI "Comité de Suivi Individuel" >}}
 
-{{< terme ontologie "Ontologie" "Représentation formelle d'un ensemble de concepts et de leurs relations dans un domaine de connaissance" >}}
-{{< terme corpus "Corpus" "Ensemble structuré de documents constituant la base d'une analyse ou d'un apprentissage automatique" >}}
+{{< terme quarto "Quarto" "Système de publication scientifique open-source basé sur Pandoc, développé par Posit PBC ; produit des documents PDF, HTML, EPUB, Word, diaporamas, sites web et livres à partir de fichiers QMD" >}}
+{{< terme pandoc "Pandoc" "Convertisseur universel de documents développé par John MacFarlane ; socle technique de Quarto" >}}
+{{< terme liminaire "liminaire" "Ensemble des pages placées avant le corps principal d'une thèse : remerciements, résumé, abstract, tables des matières, figures et tables, liste des acronymes, glossaire" >}}
+{{< terme postliminaire "postliminaire" "Ensemble des pages placées après le corps principal d'une thèse : conclusion générale, bibliographie, annexes" >}}
+{{< terme callout "encadré" "Bloc mis en évidence destiné à attirer l'attention du lecteur ; produit par la syntaxe ::: {.callout-*} avec cinq types : note, tip, warning, important, caution" >}}
+{{< terme pdfx "pdfx" "Package LaTeX permettant la conformité PDF/A et PDF/X ; utilisé dans ce template pour produire un PDF/A-1b via \\usepackage[a-1b]{pdfx}" >}}
