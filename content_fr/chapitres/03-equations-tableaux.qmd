@@ -1,4 +1,4 @@
-# Équations et tableaux {short-title="Équations & tableaux"}
+# Équations et tableaux {short-title="Équations et tableaux"}
 
 Ce chapitre couvre la syntaxe mathématique (équations inline, blocs numérotés,
 environnements avancés) et les deux niveaux de tableaux : les pipe tables Markdown

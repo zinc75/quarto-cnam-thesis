@@ -1,4 +1,4 @@
-# Callouts et blocs de code {short-title="Callouts & code"}
+# Callouts et blocs de code {short-title="Callouts et code"}
 
 Les callouts permettent de mettre en évidence des informations importantes. Les
 blocs de code permettent d'afficher ou d'exécuter du code. Ce chapitre les présente
