@@ -1,0 +1,221 @@
+# Figures et mise en page {short-title="Figures"}
+
+Ce chapitre documente l'insertion de figures statiques, la génération de figures
+par code Python, la mise en page multi-colonnes, et le cas particulier des figures
+PDF-only (TikZ, PGFplots).
+
+## Image statique avec caption et cross-référence {#sec-fig-statique}
+
+La syntaxe de base pour insérer une image est :
+
+````markdown
+![Légende de la figure.](chemin/vers/image.png){#fig-label width=80%}
+````
+
+L'identifiant `#fig-label` permet de faire une cross-référence avec `@fig-label`.
+L'attribut `width` accepte des pourcentages ou des valeurs absolues (`5cm`, `0.5\linewidth`).
+
+Voici un exemple avec le logo du {{< acrs cnam >}} :
+
+````markdown
+![Le logo officiel du Cnam.](images/Cnam.jpg){#fig-logo-cnam width=40%}
+````
+
+![Le logo officiel du {{< acrs cnam >}}.](images/Cnam.jpg){#fig-logo-cnam width=40%}
+
+La @fig-logo-cnam montre le logo officiel du {{< acrs cnam >}}, chargé depuis le
+dossier `images/` à la racine du projet.
+
+::: {.callout-tip}
+## Formats d'images recommandés
+
+- **PDF** : privilégier les formats vectoriels `.pdf` ou `.eps` pour les
+  schémas et graphiques (net à toutes résolutions). Pour les photos, `.png` ou
+  `.jpg` en 300 dpi minimum.
+- **HTML** : tous les formats web standards (`.png`, `.jpg`, `.svg`). Les `.svg`
+  sont particulièrement adaptés pour les schémas.
+- Quarto gère automatiquement la conversion des formats selon la cible de rendu.
+:::
+
+::: {.callout-warning}
+## Chemins relatifs depuis la racine du projet
+
+Dans ce template de livre (`type: book`), les chemins d'images sont toujours
+relatifs à la **racine du projet**, pas au fichier `.qmd`. Utiliser
+`images/monfichier.png` et non `../../images/monfichier.png`.
+:::
+
+## Figures générées par code Python {#sec-fig-python}
+
+Quarto peut exécuter des cellules Python (via Jupyter) et inclure leur sortie
+graphique comme figures numérotées. La syntaxe du chunk utilise des options
+préfixées par `#|` :
+
+````markdown
+```{{python}}
+#| label: fig-sincos
+#| fig-cap: "Courbes $\\sin(x)$ et $\\cos(x)$ sur $[0, 2\\pi]$."
+#| echo: true
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * np.pi, 300)
+fig, axes = plt.subplots(1, 2, figsize=(8, 3))
+axes[0].plot(x, np.sin(x), color='#d20025')
+axes[0].set_title(r'$\sin(x)$')
+axes[1].plot(x, np.cos(x), color='#005EA5')
+axes[1].set_title(r'$\cos(x)$')
+for ax in axes:
+    ax.set_xlabel('$x$')
+    ax.grid(True, alpha=0.3)
+plt.tight_layout()
+```
+````
+
+Rendu :
+
+```{python}
+#| label: fig-sincos
+#| fig-cap: "Courbes $\\sin(x)$ et $\\cos(x)$ sur $[0, 2\\pi]$."
+#| echo: true
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * np.pi, 300)
+fig, axes = plt.subplots(1, 2, figsize=(8, 3))
+axes[0].plot(x, np.sin(x), color='#d20025')
+axes[0].set_title(r'$\sin(x)$')
+axes[1].plot(x, np.cos(x), color='#005EA5')
+axes[1].set_title(r'$\cos(x)$')
+for ax in axes:
+    ax.set_xlabel('$x$')
+    ax.grid(True, alpha=0.3)
+plt.tight_layout()
+```
+
+La @fig-sincos est générée à chaque compilation. Avec `execute: freeze: auto` dans
+`_quarto.yml`, Quarto met en cache les résultats dans `_freeze/` et ne réexécute le
+code que si le chunk a changé — utile pour les figures longues à calculer.
+
+::: {.callout-warning}
+## `plt.tight_layout()` est essentiel
+
+Sans `plt.tight_layout()`, les étiquettes des axes se chevauchent fréquemment dans
+le PDF. Terminez toujours vos figures matplotlib par cette ligne.
+:::
+
+::: {.callout-tip}
+## `echo: false` pour le document final
+
+Pendant la rédaction, `echo: true` affiche le code — pratique pour la relecture.
+Pour la version soumise à l'école doctorale, passez les chunks de figures en
+`#| echo: false` pour n'afficher que le graphique.
+:::
+
+## Mise en page multi-colonnes {#sec-multicol}
+
+La directive `layout-ncol` place plusieurs figures côte à côte. On l'applique à
+un div contenant des sous-figures :
+
+````markdown
+::: {#fig-duo layout-ncol=2}
+
+```{{python}}
+#| label: fig-duo-a
+#| fig-cap: "Fonction $x^2$"
+import matplotlib.pyplot as plt, numpy as np
+x = np.linspace(-2, 2, 200)
+plt.plot(x, x**2, color='#d20025'); plt.grid(True, alpha=0.3); plt.tight_layout()
+```
+
+```{{python}}
+#| label: fig-duo-b
+#| fig-cap: "Fonction $\\sqrt{|x|}$"
+import matplotlib.pyplot as plt, numpy as np
+x = np.linspace(-2, 2, 200)
+plt.plot(x, np.sqrt(np.abs(x)), color='#005EA5'); plt.grid(True, alpha=0.3); plt.tight_layout()
+```
+
+Deux fonctions élémentaires.
+:::
+````
+
+Rendu :
+
+::: {#fig-duo layout-ncol=2}
+
+```{python}
+#| label: fig-duo-a
+#| fig-cap: "Fonction $x^2$"
+import matplotlib.pyplot as plt, numpy as np
+x = np.linspace(-2, 2, 200)
+plt.plot(x, x**2, color='#d20025'); plt.grid(True, alpha=0.3); plt.tight_layout()
+```
+
+```{python}
+#| label: fig-duo-b
+#| fig-cap: "Fonction $\\sqrt{|x|}$"
+import matplotlib.pyplot as plt, numpy as np
+x = np.linspace(-2, 2, 200)
+plt.plot(x, np.sqrt(np.abs(x)), color='#005EA5'); plt.grid(True, alpha=0.3); plt.tight_layout()
+```
+
+Deux fonctions élémentaires.
+:::
+
+La @fig-duo regroupe les deux sous-figures @fig-duo-a et @fig-duo-b. La dernière
+ligne de texte dans le div devient la légende globale.
+
+## Figures PDF-only (TikZ, PGFplots) {#sec-fig-latex}
+
+Certaines figures complexes ne peuvent être générées qu'en LaTeX (TikZ, PGFplots,
+`circuitikz`…). On les insère via un bloc `{=latex}` dans un div figure, accompagné
+d'un contenu de remplacement visible en HTML :
+
+````markdown
+:::{#fig-tikz}
+```{=latex}
+\centering
+\begin{tikzpicture}
+  \draw[thick, ->] (0,0) -- (3,0) node[right] {$x$};
+  \draw[thick, ->] (0,0) -- (0,2) node[above] {$y$};
+  \draw[blue, thick] plot[domain=0:2.8, samples=50] (\x, {sin(\x r)});
+\end{tikzpicture}
+```
+
+::: {.content-visible when-format="html"}
+*(Figure TikZ — disponible dans la version PDF uniquement)*
+:::
+
+Exemple de figure TikZ insérée en LaTeX brut.
+:::
+````
+
+Rendu :
+
+:::{#fig-tikz}
+```{=latex}
+\centering
+\fbox{\rule{0pt}{2.5cm}\rule{9cm}{0pt}}
+\par\smallskip\textit{Figure TikZ (placeholder — remplacer par le vrai code TikZ)}
+```
+
+::: {.content-visible when-format="html"}
+*(Figure TikZ/PGFplots — disponible dans la version PDF uniquement)*
+:::
+
+Exemple d'une figure LaTeX brut référençable.
+:::
+
+::: {.callout-tip}
+## Alternative : compiler la figure TikZ en PDF séparé
+
+Pour les figures TikZ complexes, une approche plus robuste consiste à les compiler
+en fichier `.pdf` standalone, puis à les inclure comme une image normale :
+
+```markdown
+![Légende.](figures/mon-schema-tikz.pdf){#fig-tikz width=80%}
+```
+
+Cela évite les problèmes de packages en conflit et accélère la compilation.
+:::
