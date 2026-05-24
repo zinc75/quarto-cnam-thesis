@@ -1,0 +1,205 @@
+# Équations et tableaux {short-title="Équations & tableaux"}
+
+Ce chapitre couvre la syntaxe mathématique (équations inline, blocs numérotés,
+environnements avancés) et les deux niveaux de tableaux : les pipe tables Markdown
+simples et les tableaux enrichis via l'extension `quartable`.
+
+## Équations inline {#sec-eq-inline}
+
+Les équations inline s'écrivent entre signes dollar : `$...$`. En PDF elles
+utilisent le mode mathématique LaTeX natif, en HTML elles sont rendues par KaTeX.
+
+````markdown
+La transformée de Fourier d'une fonction $f$ est définie par
+$\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x\xi}\,\mathrm{d}x$.
+````
+
+Rendu : la transformée de Fourier d'une fonction $f$ est définie par
+$\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x\xi}\,\mathrm{d}x$.
+
+::: {.callout-tip}
+## Espaces fins en mathématiques
+
+Utilisez `\,` pour les espaces fins : `f(x)\,\mathrm{d}x` donne $f(x)\,\mathrm{d}x$.
+Utilisez `\mathrm{d}` (romain) plutôt que `d` (italique) pour les différentielles
+— c'est la norme ISO 80000-2.
+:::
+
+## Équations en bloc numérotées {#sec-eq-bloc}
+
+Les équations en bloc s'encadrent par `$$...$$`. Pour les numéroter et créer une
+cross-référence, on ajoute `{#eq-label}` :
+
+````markdown
+$$
+i\hbar\frac{\partial \Psi}{\partial t} = \hat{H}\Psi
+$$ {#eq-schrodinger}
+
+L'équation de Schrödinger (@eq-schrodinger) décrit l'évolution temporelle…
+````
+
+Rendu :
+
+$$
+i\hbar\frac{\partial \Psi}{\partial t} = \hat{H}\Psi
+$$ {#eq-schrodinger}
+
+L'équation de Schrödinger (@eq-schrodinger) décrit l'évolution temporelle d'un
+système quantique.
+
+::: {.callout-warning}
+## `@eq-label` sans crochets
+
+La cross-référence d'une équation s'écrit `@eq-label`, **sans crochets**. Les
+crochets `[@eq-label]` sont réservés aux citations bibliographiques et ne
+fonctionneront pas pour les équations.
+:::
+
+## Environnements mathématiques avancés {#sec-eq-avances}
+
+Les environnements LaTeX comme `aligned`, `cases`, `bmatrix` fonctionnent nativement
+dans Quarto, en PDF (LaTeX pur) comme en HTML (KaTeX) :
+
+````markdown
+$$
+\begin{cases}
+  \dot{x}(t) = Ax(t) + Bu(t) \\
+  y(t) = Cx(t) + Du(t)
+\end{cases}
+$$ {#eq-statespace}
+````
+
+$$
+\begin{cases}
+  \dot{x}(t) = Ax(t) + Bu(t) \\
+  y(t) = Cx(t) + Du(t)
+\end{cases}
+$$ {#eq-statespace}
+
+La représentation d'état (@eq-statespace) est la forme standard en automatique.
+
+````markdown
+$$
+\begin{aligned}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J} + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{aligned}
+$$ {#eq-maxwell}
+````
+
+$$
+\begin{aligned}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J} + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{aligned}
+$$ {#eq-maxwell}
+
+Les équations de Maxwell (@eq-maxwell) en notation vectorielle.
+
+## Tableaux Markdown simples {#sec-tableaux-simples}
+
+La syntaxe *pipe table* de Pandoc/Quarto crée des tableaux avec alignement par colonne.
+La légende, précédée de `: `, doit être placée immédiatement après le tableau :
+
+````markdown
+| Commande          | Format PDF    | Format HTML   |
+|:------------------|:-------------:|:-------------:|
+| `@fig-label`      | numéro figure | lien hypert.  |
+| `@tbl-label`      | numéro table  | lien hypert.  |
+| `@eq-label`       | numéro éq.    | lien hypert.  |
+| `@sec-label`      | numéro section| lien hypert.  |
+
+: Préfixes de cross-références Quarto. {#tbl-crossref}
+````
+
+| Commande          | Format PDF    | Format HTML   |
+|:------------------|:-------------:|:-------------:|
+| `@fig-label`      | numéro figure | lien hypert.  |
+| `@tbl-label`      | numéro table  | lien hypert.  |
+| `@eq-label`       | numéro éq.    | lien hypert.  |
+| `@sec-label`      | numéro section| lien hypert.  |
+
+: Préfixes de cross-références Quarto. {#tbl-crossref}
+
+Le @tbl-crossref récapitule les quatre préfixes à connaître.
+
+::: {.callout-tip}
+## Alignement des colonnes
+
+- `:---` — aligné à gauche
+- `:---:` — centré
+- `---:` — aligné à droite
+
+La ligne `|:---|:---:|---:|` définit l'alignement de chaque colonne.
+:::
+
+::: {.callout-warning}
+## La légende doit être collée au tableau
+
+La ligne `: Légende. {#tbl-label}` doit être placée **immédiatement** après le
+tableau, sans ligne vide intermédiaire. Une ligne vide brise l'association
+tableau-légende et produit une légende orpheline sans numérotation.
+:::
+
+## Tableaux avancés avec `quartable` {#sec-quartable}
+
+L'extension `quartable` (listée dans `filters:` de `_quarto.yml`) ajoute trois
+capacités aux tableaux Markdown :
+
+- **Rowspan** : `[texte]{rs=N}` fusionne N lignes ; `^` continue la cellule fusionnée
+- **Colspan** : `[texte]{cs=N}` fusionne N colonnes
+- **Midrules** : `===` insère un séparateur horizontal ; `===2-4` une règle partielle
+  sur les colonnes 2 à 4
+
+````markdown
+| Famille             | Fonctionnalité       | Chapitre |
+|:--------------------|:---------------------|:--------:|
+| [Structure]{rs=3}   | Titres et niveaux    | 1        |
+| ^                   | Cross-références     | 1        |
+| ^                   | Mise en forme inline | 1        |
+| ===                 |                      |          |
+| [Visuels]{rs=3}     | Figures statiques    | 2        |
+| ^                   | Figures Python       | 2        |
+| ^                   | Multi-colonnes       | 2        |
+| ===                 |                      |          |
+| [Math & données]{rs=3} | Équations         | 3        |
+| ^                   | Tableaux simples     | 3        |
+| ^                   | `quartable`          | 3        |
+
+: Récapitulatif des fonctionnalités par famille. {#tbl-recap}
+````
+
+| Famille             | Fonctionnalité       | Chapitre |
+|:--------------------|:---------------------|:--------:|
+| [Structure]{rs=3}   | Titres et niveaux    | 1        |
+| ^                   | Cross-références     | 1        |
+| ^                   | Mise en forme inline | 1        |
+| ===                 |                      |          |
+| [Visuels]{rs=3}     | Figures statiques    | 2        |
+| ^                   | Figures Python       | 2        |
+| ^                   | Multi-colonnes       | 2        |
+| ===                 |                      |          |
+| [Math & données]{rs=3} | Équations         | 3        |
+| ^                   | Équations avancées   | 3        |
+| ^                   | Tableaux simples     | 3        |
+
+: Récapitulatif des fonctionnalités des chapitres 1 à 3. {#tbl-recap}
+
+::: {.callout-warning}
+## `quartable` doit être dans `filters:`
+
+La syntaxe `[texte]{rs=N}` n'est reconnue que si `quartable` est listée dans la
+clé `filters:` de `_quarto.yml`. Sans cela, les accolades restent affichées telles
+quelles dans le rendu.
+:::
+
+::: {.callout-note}
+## Règles partielles avec `===N-M`
+
+`===2-4` insère une règle qui ne s'étend que sous les colonnes 2 à 4 (incluses).
+Utile pour souligner un sous-groupe de colonnes sans séparer toute la ligne.
+:::
