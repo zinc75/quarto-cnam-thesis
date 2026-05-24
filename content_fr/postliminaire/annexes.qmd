@@ -1,15 +1,81 @@
-# Titre de l'annexe A {.appendix}
+# Configuration complète de `_quarto.yml` {.appendix}
 
-{{< lipsum 1 >}}
+Cette annexe reproduit et commente le fichier `_quarto.yml` dans son intégralité,
+pour référence rapide.
 
-## Démonstrations
+## Métadonnées du livre
 
-{{< lipsum 1 >}}
+```yaml
+book:
+  title: "Titre de la thèse"
+  subtitle: "Sous-titre éventuel"   # supprimer si absent
+  author: "Prénom NOM"
+  downloads: [pdf]                  # bouton PDF dans la barre HTML
 
-$$
-\int_0^\infty e^{-x^2}\,\mathrm{d}x = \frac{\sqrt{\pi}}{2}
-$$
+date-soutenance: "12 juin 2026"     # NE PAS utiliser date:
+discipline: "60e section CNU — Mécanique, génie mécanique, génie civil"
+specialite: "Acoustique"
+ecole-doctorale: "Sciences des Métiers de l'Ingénieur"
+laboratoire: "Laboratoire MACS, Cnam Paris"
+directeur: "Pr. Prénom NOM, Professeur des Universités, Cnam Paris"
+cotutelle: false
 
-## Compléments
+dedicace: "Dédicace optionnelle…"   # supprimer si absent
+```
 
-{{< lipsum 1 >}}
+## Composition du jury
+
+```yaml
+jury:
+  - nom: "Mme Prénom NOM"
+    titre: "Titre, Unité de recherche, Établissement"
+    role: "Présidente"
+  - nom: "M. Prénom NOM"
+    titre: "Titre, Unité de recherche, Établissement"
+    role: "Rapporteur"
+  - nom: "Mme Prénom NOM"
+    titre: "Titre, Unité de recherche, Établissement"
+    role: "Rapportrice"
+  - nom: "M. Prénom NOM"
+    titre: "Maître de conférences HDR, Unité, Établissement"
+    role: "Évaluateur"
+  - nom: "M. Prénom NOM"
+    titre: "Professeur des Universités, MACS, Cnam Paris"
+    role: "Directeur de thèse"
+```
+
+## Options de la section Infrastructure
+
+```yaml
+glossaire: true          # true = charge le package LaTeX glossaries
+pagestyle-sections: true # true = numérotation romaine/arabe/Romain par section
+bibliography-manual: true
+minitoc-newpage: false   # true = saut de page après chaque mini-TOC
+chapter-openright: true  # false = pour version numérique sans page de droite
+index: false             # true = génère un index via \index{terme}
+```
+
+## Commentaires collaboratifs
+
+```yaml
+comments:
+  enabled: true          # false avant le dépôt final sur theses.fr
+  show_author: true
+  authors:
+    auteur:
+      name: "Prénom NOM"
+      color_html: "#005EA5"
+      color_latex: "blue!20"
+    dir:
+      name: "Directeur"
+      color_html: "#D55E00"
+      color_latex: "orange!30"
+```
+
+## Exécution Python
+
+```yaml
+execute:
+  freeze: auto    # recalcule seulement si le code du chunk change
+  echo: true      # affiche le code par défaut (surchargeable par chunk)
+```

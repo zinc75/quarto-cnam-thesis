@@ -1,7 +1,56 @@
 # Conclusion {.unnumbered}
 
-{{< lipsum 1 >}}
+Ce guide a présenté les fonctionnalités du template `quarto-cnam-thesis` en suivant
+le principe *code + rendu* : chaque syntaxe est montrée telle qu'on la tape, puis
+immédiatement rendue dans le document. Cette approche auto-référentielle vise à
+rendre le template autonome comme documentation.
 
-{{< lipsum 1 >}}
+## Récapitulatif des fonctionnalités {.unnumbered}
 
-{{< lipsum 1 >}}
+| Fonctionnalité | Syntaxe clé | Chapitre |
+|:---|:---|:---:|
+| [Structure]{rs=4} | Hiérarchie `#` / `##` / `###` / `####` | 1 |
+| ^ | `{.unnumbered}`, `{.toc-black}` | 1 |
+| ^ | `{#sec-label}` + `@sec-label` | 1 |
+| ^ | `short-title="…"` | 1 |
+| ===  | | |
+| [Figures]{rs=4} | `![cap](img){#fig-label width=X%}` | 2 |
+| ^ | Chunk `{python}` avec `#\| label: fig-…` | 2 |
+| ^ | `layout-ncol=2` | 2 |
+| ^ | Bloc `{=latex}` dans div `:::{#fig-}` | 2 |
+| ===  | | |
+| [Math & tables]{rs=4} | `$…$` / `$$…$$ {#eq-label}` | 3 |
+| ^ | `\begin{aligned}`, `\begin{cases}` | 3 |
+| ^ | Pipe table + `: Légende. {#tbl-label}` | 3 |
+| ^ | `[texte]{rs=N}`, `^`, `===` (`quartable`) | 3 |
+| ===  | | |
+| [Callouts]{rs=5} | `{.callout-note}` | 4 |
+| ^ | `{.callout-tip}` | 4 |
+| ^ | `{.callout-warning}` | 4 |
+| ^ | `{.callout-important}` | 4 |
+| ^ | `{.callout-caution}` | 4 |
+| ===  | | |
+| [Références]{rs=4} | `[@clé]` / `[@clé1; @clé2]` | 5 |
+| ^ | `{{</* acr */>}}`, `{{</* terme */>}}`, `{{</* acrs */>}}` | 5 |
+| ^ | `{{</* comment */>}}`, `{{</* todo */>}}`, `{{</* note */>}}` | 5 |
+| ^ | `.resume-block`, `.abstract-block` | 5 |
+
+: Récapitulatif de toutes les fonctionnalités documentées. {#tbl-conclusion}
+
+## Workflow recommandé {.unnumbered}
+
+::: {.callout-tip}
+## Cycle de rédaction quotidien
+
+1. **Rédiger en HTML** : `quarto render --profile fr --to cnam-thesis-html --no-clean`
+   — rendu rapide, navigation aisée, idéal pour la relecture.
+2. **Vérifier le PDF** avant chaque réunion {{< acrs csi >}} :
+   `quarto render --profile fr` — compile tout et génère le PDF/A-1b.
+3. **Versionner régulièrement** : committez au moins après chaque session de
+   rédaction, idéalement avant et après chaque réunion de direction.
+4. **Désactiver les commentaires** avant le dépôt final :
+   `comments: enabled: false` dans `_quarto.yml`.
+:::
+
+Le template est maintenu sur GitHub. Pour signaler un problème ou proposer une
+amélioration : [zinc75/quarto-cnam-thesis](https://github.com/zinc75/quarto-cnam-thesis).
