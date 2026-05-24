@@ -5,7 +5,18 @@
      .resume-block : bordure gauche en HTML (thesis.scss).
      En PDF la classe div est ignorée ; le contenu s'affiche normalement. -->
 ::: {.resume-block}
-Insérer ici le résumé en français suivi des mots-clés. {{< lipsum 1 >}}
+Ce travail présente et documente le template Quarto `quarto-cnam-thesis`, une extension
+permettant aux doctorants du Conservatoire national des arts et métiers ({{< acrs cnam >}})
+de rédiger leur thèse en Quarto Markdown et de produire simultanément un PDF conforme à
+la maquette institutionnelle 2024-2025 (classe `book`, moteur pdflatex, conformité
+PDF/A-1b) et une version HTML navigable. La thèse est organisée en cinq chapitres
+documentant chacun une famille de fonctionnalités : structure et mise en forme, figures
+et mise en page, équations et tableaux, callouts et blocs de code, références et
+annotations collaboratives. Chaque fonctionnalité est présentée selon le principe
+*code + rendu* : un bloc de code Markdown affiche la syntaxe exacte, immédiatement suivi
+du rendu réel dans le document. Cette approche auto-référentielle permet au document de
+servir à la fois de guide d'utilisation et de démonstration vivante du template.
 
-**Mots-clés :** acoustique, traitement du signal, apprentissage automatique
+**Mots-clés :** Quarto, LaTeX, pdflatex, PDF/A, thèse de doctorat, publication
+scientifique reproductible, {{< acrs cnam >}}
 :::

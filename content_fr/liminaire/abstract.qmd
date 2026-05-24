@@ -5,7 +5,18 @@
      .abstract-block : bordure gauche en HTML (thesis.scss).
      En PDF la classe div est ignorée ; le contenu s'affiche normalement. -->
 ::: {.abstract-block}
-Insert here the abstract in English. {{< lipsum 1 >}}
+This work presents and documents the `quarto-cnam-thesis` Quarto extension, which enables
+doctoral students at the Conservatoire national des arts et métiers ({{< acrs cnam >}}) to
+write their thesis in Quarto Markdown and simultaneously produce a PDF compliant with the
+2024-2025 institutional template (book class, pdflatex engine, PDF/A-1b compliance) and a
+navigable HTML version. The thesis is organised in five chapters, each documenting a family
+of features: document structure and formatting, figures and layout, equations and tables,
+callouts and code blocks, and finally references, glossary, and collaborative annotations.
+Every feature is presented following a *code + output* principle: a Markdown code block
+displays the exact syntax to use, immediately followed by the live rendering in the
+document. This self-referential approach allows the document to serve both as a user guide
+and a live demonstration of the template.
 
-**Keywords:** acoustics, signal processing, machine learning
+**Keywords:** Quarto, LaTeX, pdflatex, PDF/A, doctoral thesis, reproducible scientific
+publishing, {{< acrs cnam >}}
 :::
