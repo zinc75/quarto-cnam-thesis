@@ -1,0 +1,179 @@
+# Structure et mise en forme du document {short-title="Structure"}
+
+Ce chapitre présente les blocs de base de tout document Quarto : la hiérarchie des
+titres, la numérotation, les cross-références de sections, et la mise en forme inline.
+
+## Hiérarchie des titres {#sec-titres}
+
+Quarto supporte quatre niveaux de titres numérotés dans ce template (paramètre
+`number-depth: 4` dans `_extension.yml`). La syntaxe utilise les dièses Markdown :
+
+````markdown
+# Titre de chapitre (niveau 1)
+
+## Titre de section (niveau 2)
+
+### Titre de sous-section (niveau 3)
+
+#### Titre de sous-sous-section (niveau 4)
+````
+
+En PDF, ces niveaux correspondent respectivement aux commandes LaTeX `\chapter`,
+`\section`, `\subsection` et `\subsubsection`. En HTML, ils génèrent les balises
+`<h2>` à `<h5>` (le `<h1>` étant réservé au titre du livre).
+
+### Sous-section de démonstration {#sec-demo-sous-section}
+
+Ceci est une `###` en situation. La numérotation automatique produit ici « 1.1.1 ».
+
+#### Sous-sous-section de démonstration
+
+Et ceci est une `####`, numérotée « 1.1.1.1 ». Au-delà de ce niveau, Quarto ne
+numérote plus — utilisez des listes ou des paragraphes en gras si vous avez besoin
+d'un cinquième niveau.
+
+::: {.callout-warning}
+## Profondeur maximale recommandée
+
+Un plan à quatre niveaux numérotés est généralement le maximum acceptable dans une
+thèse. Un plan plus profond est souvent le signe que la structure doit être repensée.
+:::
+
+## Sections numérotées et non numérotées {#sec-numerotation}
+
+Par défaut, tous les titres de niveau 1 à 4 sont numérotés. Pour retirer la
+numérotation, on ajoute la classe `{.unnumbered}` :
+
+````markdown
+## Section sans numéro {.unnumbered}
+````
+
+Pour les pages de la partie liminaire et postliminaire (remerciements, résumé,
+conclusion…), on combine `{.unnumbered}` avec `{.toc-black}` — cette dernière classe
+demande au filtre Lua d'afficher le titre en noir dans la table des matières, et
+déclenche la numérotation romaine en front matter quand `pagestyle-sections: true` :
+
+````markdown
+# Conclusion {.unnumbered}
+
+# Remerciements {.unnumbered .toc-black}
+````
+
+::: {.callout-important}
+## `.unnumbered` vs `.unnumbered .toc-black`
+
+- `{.unnumbered}` seul : titre non numéroté, affiché en couleur dans la {{< acrs toc >}}
+  (chapitres du corps de thèse : introduction, conclusion).
+- `{.unnumbered .toc-black}` : titre non numéroté, affiché en **noir** dans la
+  {{< acrs toc >}} (parties liminaires et postliminaires).
+
+Ne mettez jamais `{.unnumbered}` sur un chapitre du corps de thèse numéroté
+(chapitres 1, 2, 3…) — ce serait incohérent avec le plan général.
+:::
+
+## Cross-références de sections (`@sec-`) {#sec-crossref}
+
+Pour créer un renvoi vers une section, il faut : (1) donner un identifiant au titre
+cible avec `{#sec-label}`, puis (2) y faire référence avec `@sec-label` :
+
+````markdown
+## Hiérarchie des titres {#sec-titres}
+
+Comme expliqué en @sec-titres, les niveaux vont de `#` à `####`.
+````
+
+Rendu : comme expliqué en @sec-titres, les niveaux vont de `#` à `####`. Quarto
+résout automatiquement le numéro et le lien hypertexte dans les deux formats.
+
+::: {.callout-tip}
+## Convention de nommage des labels
+
+Utilisez le préfixe `sec-` pour les sections, `fig-` pour les figures, `tbl-` pour
+les tableaux, `eq-` pour les équations. Ces préfixes sont imposés par Quarto pour
+que les cross-références fonctionnent correctement dans les deux formats.
+:::
+
+## Titre court (`short-title`) {#sec-short-title}
+
+Quand un titre de chapitre ou de section est trop long pour tenir dans le *running
+header* du PDF ou dans la table des matières, on utilise l'attribut `short-title` :
+
+````markdown
+# Un titre vraiment très long qui déborde dans le header {short-title="Titre court"}
+
+## Une sous-section au titre interminable {short-title="Titre court"}
+````
+
+Le titre court est utilisé dans le running header (en-tête de page recto/verso) et
+dans la table des matières. Le titre long reste tel quel dans le corps du texte.
+
+::: {.callout-tip}
+Visez 40 à 50 caractères maximum pour un `short-title`. Au-delà, il risque de
+déborder lui aussi selon la mise en page.
+:::
+
+## Mise en forme inline {#sec-inline}
+
+### Emphase et code
+
+````markdown
+**gras**, *italique*, ***gras italique***, `code inline`
+~~barré~~, ^exposant^, ~indice~
+:::
+````
+
+Rendu : **gras**, *italique*, ***gras italique***, `code inline`,
+~~barré~~, ^exposant^, ~indice~.
+
+::: {.callout-important}
+## Usage académique du gras et de l'italique
+
+Dans une thèse, le gras et l'italique servent à marquer la **terminologie** lors de
+sa première introduction, ou à citer un *titre d'ouvrage*. Les utiliser pour
+décorer le texte ou insister sur des phrases entières est une pratique à éviter.
+:::
+
+### Listes {#sec-listes}
+
+````markdown
+- Premier élément non ordonné
+- Deuxième élément
+  - Sous-élément (indentation 2 espaces)
+
+1. Premier élément ordonné
+2. Deuxième élément
+   1. Sous-élément (indentation 3 espaces)
+````
+
+Rendu :
+
+- Premier élément non ordonné
+- Deuxième élément
+  - Sous-élément (indentation 2 espaces)
+
+1. Premier élément ordonné
+2. Deuxième élément
+   1. Sous-élément (indentation 3 espaces)
+
+### Blockquotes
+
+````markdown
+> « La typographie est le métier de donner une forme visuelle au langage. »
+>
+> — Robert Bringhurst [@Bringhurst2004]
+````
+
+Rendu :
+
+> « La typographie est le métier de donner une forme visuelle au langage. »
+>
+> — Robert Bringhurst [@Bringhurst2004]
+
+::: {.callout-caution}
+## Listes de définitions en pdflatex
+
+La syntaxe Pandoc de liste de définitions (`terme\n:  définition`) est supportée
+par Quarto mais produit un rendu sans style visuel particulier en pdflatex. Si vous
+avez besoin de listes de définitions mises en forme, utilisez un tableau Markdown
+(voir @sec-tableaux-simples) ou un environnement LaTeX brut.
+:::
