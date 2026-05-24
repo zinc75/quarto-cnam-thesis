@@ -145,6 +145,8 @@ comments:
     #   color_latex: "blue!20"
 
 
+jupyter: python3   # standard kernel — follows the user's active python3
+
 execute:
   freeze: auto   # re-execute only when source changes / ne réexécute que si le code change
   echo: true     # show code by default (overridable per chunk) / affiche le code par défaut
