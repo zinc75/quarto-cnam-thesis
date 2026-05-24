@@ -9,7 +9,7 @@ PDF-only (TikZ, PGFplots).
 La syntaxe de base pour insérer une image est :
 
 ````markdown
-![Légende de la figure.](chemin/vers/image.png){#fig-label width=80%}
+![Légende de la figure.](../../images/mon-image.png){#fig-label width=80%}
 ````
 
 L'identifiant `#fig-label` permet de faire une cross-référence avec `@fig-label`.
@@ -18,10 +18,10 @@ L'attribut `width` accepte des pourcentages ou des valeurs absolues (`5cm`, `0.5
 Voici un exemple avec le logo du {{< acrs cnam >}} :
 
 ````markdown
-![Le logo officiel du Cnam.](images/Cnam.jpg){#fig-logo-cnam width=40%}
+![Le logo officiel du Cnam.](../../images/Cnam.jpg){#fig-logo-cnam width=40%}
 ````
 
-![Le logo officiel du {{< acrs cnam >}}.](images/Cnam.jpg){#fig-logo-cnam width=40%}
+![Le logo officiel du {{< acrs cnam >}}.](../../images/Cnam.jpg){#fig-logo-cnam width=40%}
 
 La @fig-logo-cnam montre le logo officiel du {{< acrs cnam >}}, chargé depuis le
 dossier `images/` à la racine du projet.
@@ -38,11 +38,11 @@ dossier `images/` à la racine du projet.
 :::
 
 ::: {.callout-warning}
-## Chemins relatifs depuis la racine du projet
+## Chemins relatifs au fichier `.qmd`, pas à la racine
 
-Dans ce template de livre (`type: book`), les chemins d'images sont toujours
-relatifs à la **racine du projet**, pas au fichier `.qmd`. Utiliser
-`images/monfichier.png` et non `../../images/monfichier.png`.
+Les chemins d'images sont relatifs à l'emplacement du fichier `.qmd`. Depuis
+`content_fr/chapitres/`, le dossier `images/` à la racine est à
+`../../images/monfichier.png`. Ce comportement est identique en PDF et en HTML.
 :::
 
 ## Figures générées par code Python {#sec-fig-python}
