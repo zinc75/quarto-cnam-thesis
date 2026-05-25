@@ -214,47 +214,59 @@ $highlighting-macros$
 }
 
 % Redefine the Shaded environment as a tcolorbox styled like Quarto callouts.
-% The language label is set by the Lua filter (cnam-thesis.lua) via
-%   \def\CodeBlockLangLabel{python}
-% immediately before each code block; it is reset to \@empty at the end of Shaded.
-% When empty → plain box with a thin left rule, matching the callout frame style.
-% When set  → same box with a dark-gray title bar showing the language name. /
-% Redéfinit Shaded en tcolorbox dans le style des callouts Quarto.
-% L'étiquette de langage est définie par le filtre Lua via \def\CodeBlockLangLabel{…}.
-% Vide → boîte simple avec règle gauche ; Défini → bandeau gris foncé avec le nom.
+% Visual language: identical geometry to callouts (enhanced jigsaw, thin rules, small arc)
+% with redHESAM as the accent colour and a \faCode icon (fontawesome5, already loaded by
+% Quarto's callout system via $highlighting-macros$).
+%
+% Title format (French): ❯ faCode icon  Code (python)
+%   – always shown, even when no language is declared (just "Code")
+%   – language name in \texttt, appended in parentheses when non-empty
+%
+% The language label is set by the Lua filter (cnam-thesis.lua pass3) via
+%   \def\CodeBlockLangLabel{python}   before each code block.
+% It is reset to \@empty at the end of Shaded. /
+%
+% Redéfinit Shaded en tcolorbox aligné sur la géométrie des callouts Quarto.
+% Couleur d'accent : redHESAM. Icône : \faCode (fontawesome5).
+% Titre toujours affiché : « [icône]  Code » ou « [icône]  Code (python) ».
 \makeatletter
 \newcommand{\CodeBlockLangLabel}{}   % placeholder — set by Lua filter before each block
+
+% Title command: \faCode icon + "Code" + optional "(lang)" in teletype. /
+% Commande de titre : icône + « Code » + « (langage) » en chasse fixe si défini.
+\newcommand{\cnam@code@title}{%
+  \textcolor{redHESAM}{\faCode}\hspace{0.5em}%
+  Code%
+  \ifx\CodeBlockLangLabel\@empty\else
+    ~(\texttt{\CodeBlockLangLabel})%
+  \fi
+}
+
 \tcbset{
-  % Base style matching Quarto callout geometry (enhanced jigsaw, thin rules, small arc)
-  cnam@code@base/.style={
+  % Single style matching Quarto callout geometry with redHESAM accent. /
+  % Style unique aligné sur les callouts Quarto, couleur redHESAM.
+  cnam@code/.style={
     enhanced jigsaw,
     breakable,
-    colback=shadecolor,
-    colframe=black!35,
+    colback=shadecolor,          % gray tint keeps code readable / teinte grise pour la lisibilité
+    colbacktitle=redHESAM!10!white,
+    opacitybacktitle=0.6,
+    colframe=redHESAM,
+    coltitle=black,
+    fonttitle=\small,
+    titlerule=0mm,
+    toptitle=1mm, bottomtitle=1mm,
     arc=.35mm,
     toprule=.15mm, bottomrule=.15mm, rightrule=.15mm, leftrule=.75mm,
-    left=4pt, right=4pt, top=4pt, bottom=4pt,
+    left=2mm, right=4pt, top=4pt, bottom=4pt,
     % Reset the 1.5× body line spacing so code lines are not too far apart. /
     % Réinitialise l'interligne 1.5× du corps pour que les lignes de code ne soient pas trop espacées.
     before upper={\linespread{1.0}\selectfont},
   },
-  % Titled variant: adds a solid dark-gray header bar with the language name. /
-  % Variante avec titre : ajoute un bandeau gris foncé avec le nom du langage.
-  cnam@code@titled/.style={
-    cnam@code@base,
-    colbacktitle=black!60,
-    coltitle=white,
-    fonttitle=\small\ttfamily,
-    titlerule=0mm,
-    toptitle=1.5mm, bottomtitle=1.5mm,
-  },
 }
+
 \renewenvironment{Shaded}{%
-  \ifx\CodeBlockLangLabel\@empty
-    \begin{tcolorbox}[cnam@code@base]%
-  \else
-    \begin{tcolorbox}[cnam@code@titled, title=\CodeBlockLangLabel]%
-  \fi
+  \begin{tcolorbox}[cnam@code, title=\cnam@code@title]%
 }{%
   \end{tcolorbox}%
   \global\let\CodeBlockLangLabel\@empty%   % reset for next block
