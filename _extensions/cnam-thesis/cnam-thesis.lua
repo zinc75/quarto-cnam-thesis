@@ -336,4 +336,27 @@ local pass2 = {
   end
 }
 
-return { pass1, pass2 }
+-- Pass 3: inject language label for styled code blocks in PDF.
+-- Emits \def\CodeBlockLangLabel{lang} as a RawBlock immediately before each
+-- CodeBlock so that the Shaded tcolorbox in template.tex can display the
+-- language name in its title bar. Empty string when no language is declared. /
+-- Injecte \def\CodeBlockLangLabel{lang} avant chaque CodeBlock en LaTeX.
+-- Vide si aucun langage n'est déclaré → Shaded sans bandeau titre.
+local pass3 = {
+  CodeBlock = function(el)
+    if FORMAT ~= "latex" then return el end
+    -- Skip internal Quarto classes (quarto-*); they produce no Shaded block. /
+    -- Ignore les classes internes Quarto (quarto-*) ; elles ne produisent pas de Shaded.
+    local raw = el.classes[1] or ""
+    if raw:match("^quarto%-") then raw = "" end
+    -- Keep only safe characters for a \def argument (letters, digits, hyphen, plus). /
+    -- Conserve uniquement les caractères sûrs pour un argument \def.
+    local lang = raw:gsub("[^%a%d%-%+]", "")
+    return {
+      pandoc.RawBlock("latex", "\\def\\CodeBlockLangLabel{" .. lang .. "}"),
+      el
+    }
+  end
+}
+
+return { pass1, pass2, pass3 }
