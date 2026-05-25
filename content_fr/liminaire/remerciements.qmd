@@ -1,7 +1,8 @@
 # Remerciements {.unnumbered .toc-black}
 
 Ce travail n'aurait pas été possible sans le soutien indéfectible de Donald Knuth, dont
-le *\TeX{}book* [@Knuth1984] m'a accompagné pendant toutes les nuits de débogage LaTeX.
+le *\TeX{}book* [@Knuth1984] a accompagné des générations de doctorants pendant des nuits
+de débogage de leur code LaTeX.
 Je remercie également Leslie Lamport pour avoir rendu TeX accessible au commun des mortels
 avec LaTeX [@Lamport1994], ainsi que l'équipe Quarto — J.J. Allaire, Charles Teague,
 Carlos Scheidegger et Yihui Xie — pour avoir fait de la publication scientifique
@@ -13,8 +14,11 @@ logiciel libre. Je doute qu'il ait anticipé les PDF/A-1b, mais l'esprit est là
 
 Je remercie les membres du jury pour leur disponibilité, en particulier M. Vaucanson dont
 l'expertise en automates mécaniques s'est avérée plus pertinente qu'il n'y paraît pour
-comprendre le pipeline de compilation pdflatex.
+comprendre le pipeline de compilation pdflatex et la magie derrière Pandoc et les filtres
+Lua.
 
 Enfin, une pensée émue pour tous les doctorants du Cnam et d'ailleurs qui ont ouvert un
-fichier `.tex` pour la première fois et se sont demandé pourquoi leur accolade gauche
-était en trop. Ce guide est pour vous.
+fichier de template `.tex` mal fichu pour la première fois et se sont demandé pourquoi 
+leur accolade gauche était en trop. Ce guide est pour vous : grâce à Quarto, écrire devient
+aussi simple que du Markdown, mais avec des possibilités quasi infinies, et la beauté de la
+génération d'un même document sous différentes formes, avec une approche moderne.
