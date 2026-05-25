@@ -47,7 +47,10 @@ générées par code Python (chapitre 2), il faut également disposer de Python 
 ## Installer Quarto
 
 Télécharger l'installeur correspondant au système d'exploitation sur
-<https://quarto.org/docs/get-started/> :
+<https://quarto.org/docs/get-started/>
+:::
+
+Plusieurs installeurs sont proposés sur le site (c'est très simple) :
 
 | Système | Méthode recommandée |
 |:--------|:--------------------|
@@ -56,14 +59,16 @@ Télécharger l'installeur correspondant au système d'exploitation sur
 | **Linux (Debian/Ubuntu)** | Paquet `.deb` : `sudo dpkg -i quarto-*.deb` |
 | **Linux (Red Hat/Fedora)** | Paquet `.rpm` : `sudo rpm -U quarto-*.rpm` |
 
-Une TeX Live ou MikTeX à jour est nécessaire pour la sortie PDF. La page d'accueil
+Puisque l'objectif de ce template est de produire un document Pdf via LaTeX sans toucher à du code TeX
+lui même, Une distribution TeX Live ou MikTeX à jour est nécessaire pour la sortie PDF.
+
+La page d'accueil
 <https://quarto.org/docs/get-started/> inclut un guide pas à pas par éditeur (VS Code,
 RStudio, terminal).
 
 Pour explorer plus loin toutes les fonctionnalités de Quarto (livres, sites,
 présentations, widgets interactifs…), le guide complet est disponible sur
 <https://quarto.org/docs/guide/>.
-:::
 
 ::: {.callout-tip}
 ## Installer le template
@@ -71,11 +76,19 @@ présentations, widgets interactifs…), le guide complet est disponible sur
 ```bash
 quarto use template zinc75/quarto-cnam-thesis
 ```
+::: 
 
-Cette commande copie tous les fichiers sources dans le répertoire courant. Les
-fichiers de contenu à modifier se trouvent dans `content_fr/` (profil français)
-et `content_en/` (profil anglais).
-:::
+Cette commande copie tous les fichiers sources dans le répertoire courant, y compris
+les fichiers .qmd qui ont permis de créer cette documentation, qui pourront vous servir
+de point de départ. Les fichiers de contenu à modifier se trouvent dans `content_fr/` (profil français)
+et `content_en/` (profil anglais), ainsi que les fichiers de configurations `yaml` (voir @sec-yaml-config-file).
+
+## Générer le document
+
+En Quarto, on appelle ça le **rendu** : cela lance la génération du fichier `.tex`, la compilation, et la création des
+fichiers `html`, puisque ce template fournit une double sortie `PDF` et `HTML`. Pour cela, lancer l'une des commandes
+qui suivent, en fonction de votre langue de rédaction de la thèse (Français ou Anglais suivant les règles des écoles 
+doctorales et la composition de votre jury) : 
 
 ::: {.callout-important}
 ## Toujours utiliser un profil de langue
@@ -87,4 +100,42 @@ quarto render --profile en   # → _thesis-en/these_en_<auteur>.pdf + HTML
 
 `quarto render` sans profil échoue : la liste des chapitres est définie dans les
 profils `_quarto-fr.yml` et `_quarto-en.yml`, pas dans `_quarto.yml`.
+:::
+
+## Prévisualisation en temps réel {.unnumbered}
+
+Pendant la rédaction, il n'est pas nécessaire de relancer `quarto render` à chaque
+modification. La commande `quarto preview` surveille les fichiers sources et reconstruit
+automatiquement le document dès qu'un fichier `.qmd` est sauvegardé :
+
+```bash
+quarto preview --profile fr
+```
+
+Quarto ouvre alors la version HTML dans le navigateur et la rafraîchit en quelques
+secondes à chaque sauvegarde. Seul le chapitre modifié est recompilé (reconstruction
+incrémentale), ce qui rend le cycle édition–aperçu très rapide — même avec des blocs de
+code Python, grâce au cache `freeze: auto`.
+
+::: {.callout-tip}
+## Workflow recommandé pendant la rédaction
+
+Utiliser `quarto preview` au quotidien pour vérifier la mise en forme, les
+cross-références et les figures. Relancer `quarto render` ponctuellement (avant une
+réunion de suivi, avant un dépôt) pour obtenir le PDF final. Les deux sorties — HTML
+et PDF — sont cohérentes : ce qui s'affiche correctement en HTML se compile
+correctement en PDF.
+
+Pour les utilisateurs de **VS Code** ou **RStudio**, l'extension Quarto intègre un
+bouton *Render* et un panneau de prévisualisation directement dans l'éditeur — sans
+passer par le terminal.
+:::
+
+::: {.callout-warning}
+## `quarto preview` ne génère pas le PDF
+
+La prévisualisation temps réel s'appuie sur la sortie HTML (compilation rapide).
+Le PDF, qui nécessite plusieurs passes pdflatex, n'est pas régénéré automatiquement.
+Utiliser `quarto render --profile fr --to cnam-thesis-pdf` pour un rendu PDF seul,
+ou `quarto render --profile fr` pour les deux formats d'un coup.
 :::
