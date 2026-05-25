@@ -183,9 +183,9 @@ La solution est systématiquement le pattern `{.content-visible}` dual : bloc
 
 | Environnement | Syntaxe Quarto | Numérotation | `@eq-` |
 |:---|:---|:---|:---:|
-| `aligned` | `$$\begin{aligned}…\end{aligned}$$` | un numéro pour le **bloc** | ✓ |
-| `align`   | `{=latex}` + `$$…$$` (dual)         | un numéro **par ligne**    | ✗ |
-| `align*`  | `{=latex}` + `$$…$$` (dual)         | aucune                     | – |
+| `aligned` | `$$\begin{aligned}…\end{aligned}$$` | un numéro pour le **bloc** | $\checkmark$ |
+| `align`   | `{=latex}` + `$$…$$` (dual)         | un numéro **par ligne**    | $\times$     |
+| `align*`  | `{=latex}` + `$$…$$` (dual)         | aucune                     | —            |
 
 Règle pratique : développement de calcul → `aligned` (un numéro, `@eq-` possible).
 Équations indépendantes → `align` avec le pattern dual.
