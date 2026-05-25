@@ -204,16 +204,62 @@ $endif$
 % Quarto syntax highlighting
 $if(highlighting-macros)$
 $highlighting-macros$
-% Override Pandoc's Highlighting definition to enable automatic line wrapping.
-% Without this, long code lines overflow the Shaded block in the PDF.
-% breakanywhere=true allows breaks in long tokens with no whitespace (e.g. long strings). /
-% Sans cela, les longues lignes de code débordent du bloc grisé dans le PDF.
-% breakanywhere=true permet les coupures dans les tokens sans espace (ex. longues chaînes).
+% Enable automatic line wrapping and slightly smaller font in code blocks. /
+% Active le renvoi automatique à la ligne et une police légèrement plus petite.
 \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{%
   commandchars=\\\{\},%
   breaklines=true,%
-  breakanywhere=true%
+  breakanywhere=true,%
+  fontsize=\small%
 }
+
+% Redefine the Shaded environment as a tcolorbox styled like Quarto callouts.
+% The language label is set by the Lua filter (cnam-thesis.lua) via
+%   \def\CodeBlockLangLabel{python}
+% immediately before each code block; it is reset to \@empty at the end of Shaded.
+% When empty → plain box with a thin left rule, matching the callout frame style.
+% When set  → same box with a dark-gray title bar showing the language name. /
+% Redéfinit Shaded en tcolorbox dans le style des callouts Quarto.
+% L'étiquette de langage est définie par le filtre Lua via \def\CodeBlockLangLabel{…}.
+% Vide → boîte simple avec règle gauche ; Défini → bandeau gris foncé avec le nom.
+\makeatletter
+\newcommand{\CodeBlockLangLabel}{}   % placeholder — set by Lua filter before each block
+\tcbset{
+  % Base style matching Quarto callout geometry (enhanced jigsaw, thin rules, small arc)
+  cnam@code@base/.style={
+    enhanced jigsaw,
+    breakable,
+    colback=shadecolor,
+    colframe=black!35,
+    arc=.35mm,
+    toprule=.15mm, bottomrule=.15mm, rightrule=.15mm, leftrule=.75mm,
+    left=4pt, right=4pt, top=4pt, bottom=4pt,
+    % Reset the 1.5× body line spacing so code lines are not too far apart. /
+    % Réinitialise l'interligne 1.5× du corps pour que les lignes de code ne soient pas trop espacées.
+    before upper={\linespread{1.0}\selectfont},
+  },
+  % Titled variant: adds a solid dark-gray header bar with the language name. /
+  % Variante avec titre : ajoute un bandeau gris foncé avec le nom du langage.
+  cnam@code@titled/.style={
+    cnam@code@base,
+    colbacktitle=black!60,
+    coltitle=white,
+    fonttitle=\small\ttfamily,
+    titlerule=0mm,
+    toptitle=1.5mm, bottomtitle=1.5mm,
+  },
+}
+\renewenvironment{Shaded}{%
+  \ifx\CodeBlockLangLabel\@empty
+    \begin{tcolorbox}[cnam@code@base]%
+  \else
+    \begin{tcolorbox}[cnam@code@titled, title=\CodeBlockLangLabel]%
+  \fi
+}{%
+  \end{tcolorbox}%
+  \global\let\CodeBlockLangLabel\@empty%   % reset for next block
+}
+\makeatother
 $endif$
 
 % User header-includes from YAML
