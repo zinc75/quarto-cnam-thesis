@@ -89,6 +89,7 @@ lang: fr
 # French localisation fixes (Quarto fr defaults are incorrect) /
 # Corrections de la localisation française de Quarto (valeurs par défaut erronées)
 language:
+  crossref-tbl-title: "Table"
   crossref-lot-title: "Liste des tables"
   crossref-lof-title: "Liste des figures"
 
