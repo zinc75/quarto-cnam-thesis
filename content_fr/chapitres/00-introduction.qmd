@@ -33,14 +33,40 @@ affiche la syntaxe Markdown exacte (non exécutée), suivi immédiatement du ren
 
 ## Prérequis {.unnumbered}
 
+Les fichiers sources de la thèse sont des fichiers texte ordinaires avec l'extension
+`.qmd` (Quarto Markdown). Ils s'ouvrent et s'éditent avec n'importe quel éditeur de
+texte — VS Code, RStudio, Neovim, Notepad++ ou même le bloc-notes du système.
+
 Ce template requiert Quarto 1.4 ou supérieur. Le moteur de compilation est pdflatex
 — XeLaTeX et LuaLaTeX ne sont pas supportés en raison des contraintes du package
-`pdfx` utilisé pour la conformité PDF/A-1b [@Knuth1984; @Lamport1994]. Pour les figures
+`pdfx` utilisé pour la conformité PDF/A-1b. Pour les figures
 générées par code Python (chapitre 2), il faut également disposer de Python avec
 `matplotlib` et `numpy`.
 
 ::: {.callout-tip}
-## Installation du template
+## Installer Quarto
+
+Télécharger l'installeur correspondant au système d'exploitation sur
+<https://quarto.org/docs/get-started/> :
+
+| Système | Méthode recommandée |
+|:--------|:--------------------|
+| **macOS** | Installeur `.pkg` ou `brew install quarto` |
+| **Windows** | Installeur `.msi` (64 bits) |
+| **Linux (Debian/Ubuntu)** | Paquet `.deb` : `sudo dpkg -i quarto-*.deb` |
+| **Linux (Red Hat/Fedora)** | Paquet `.rpm` : `sudo rpm -U quarto-*.rpm` |
+
+Une TeX Live ou MikTeX à jour est nécessaire pour la sortie PDF. La page d'accueil
+<https://quarto.org/docs/get-started/> inclut un guide pas à pas par éditeur (VS Code,
+RStudio, terminal).
+
+Pour explorer plus loin toutes les fonctionnalités de Quarto (livres, sites,
+présentations, widgets interactifs…), le guide complet est disponible sur
+<https://quarto.org/docs/guide/>.
+:::
+
+::: {.callout-tip}
+## Installer le template
 
 ```bash
 quarto use template zinc75/quarto-cnam-thesis
