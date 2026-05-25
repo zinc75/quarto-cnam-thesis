@@ -294,9 +294,20 @@ local pass2 = {
       -- \markboth{title}{}: binding side = chapter title, outer side = empty.
       -- An unnumbered chapter has no sections in the header → empty rightmark
       -- avoids displaying the same title on both sides of recto/verso pages.
+      --
+      -- \adjustmtc only for "chapter"-type entries: \dominitoc builds one minitoc
+      -- slot per \contentsline{chapter}{…} in the .toc file — it ignores
+      -- "frontchap" entries entirely. Emitting \adjustmtc for frontchap chapters
+      -- advances the mtc counter past non-existent slots and causes \minitoc to
+      -- read the wrong .mtcN file in the numbered chapters that follow.
+      -- \adjustmtc uniquement pour les entrées "chapter" : \dominitoc crée un slot
+      -- par \contentsline{chapter}{…} dans le .toc — les entrées "frontchap" sont
+      -- ignorées. Appeler \adjustmtc pour un frontchap avance le compteur mtc sur
+      -- des slots inexistants et fait lire la mauvaise .mtcN aux chapitres suivants.
+      local adjust = (toc_type == "chapter") and "\n\\adjustmtc" or ""
       local latex = string.format(
-        "\\phantomsection\n\\addcontentsline{toc}{%s}{%s}\n\\adjustmtc\n\\markboth{\\MakeUppercase{%s}}{}",
-        toc_type, short_title, short_title
+        "\\phantomsection\n\\addcontentsline{toc}{%s}{%s}%s\n\\markboth{\\MakeUppercase{%s}}{}",
+        toc_type, short_title, adjust, short_title
       )
       blocks:insert(el)
       blocks:insert(pandoc.RawBlock("latex", latex))

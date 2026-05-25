@@ -14,11 +14,9 @@
 \clearpage
 \listoftables
 \addcontentsline{toc}{frontchap}{\listtablename}
-\adjustmtc
 \clearpage
 \listoffigures
 \addcontentsline{toc}{frontchap}{\listfigurename}
-\adjustmtc
 ```
 :::
 
