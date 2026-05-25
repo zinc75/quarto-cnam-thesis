@@ -15,7 +15,7 @@
 # ------------------------------------------------------------------------------
 book:
   title: "Guide d'utilisation du template Quarto Cnam pour les thèses"
-  subtitle: "Une thèse qui se documente elle-même"
+  subtitle: "Un document de thèse auto-documenté"
   author: "Eric Bavu"
   # output-file and chapters are defined in the language profile /
   # output-file et chapters sont définis dans le profil de langue
@@ -39,7 +39,7 @@ discipline: "60e section CNU — Mécanique, génie mécanique, génie civil"
 specialite: "Acoustique"
 ecole-doctorale: "Sciences des Métiers de l'Ingénieur"
 laboratoire: "Laboratoire MACS, Cnam Paris"
-directeur: "M. Henri Grégoire, Abbé constitutionnel, fondateur du Cnam, Conventionnel national, Paris"
+directeur: "M. Henri Grégoire, Abbé constitutionnel, fondateur du Cnam, Paris"
 cotutelle: false                       # true → displays co-institution logo / affiche le logo co-tutelle
 
 dedicace: "À Donald Knuth, qui a transformé la typographie en art computationnel, et à tous les doctorants qui ont perdu une journée à cause d'une accolade \\LaTeX{} manquante."
@@ -126,7 +126,7 @@ bibliography-manual: true
 # Ajouter autant d'auteurs que nécessaire ; chaque auteur a une clé, un nom et des couleurs.
 # ------------------------------------------------------------------------------
 comments:
-  enabled: true          # false → hides all comments in the output / masque tous les commentaires
+  enabled: false          # false → hides all comments in the output / masque tous les commentaires
   show_author: true      # false → hides author labels / masque les étiquettes auteur
   authors:
     auteur:

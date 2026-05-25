@@ -12,6 +12,8 @@ project:
     - ./_scripts/postrender.sh fr _these_fr    # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
 
 book:
+  title: "Guide d'utilisation du template Quarto Cnam pour les thèses"
+  subtitle: "Un document de thèse auto-documenté"
   output-file: these_fr
   chapters:
     - index.qmd                                         # entry point, do not remove / point d'entrée, ne pas supprimer
