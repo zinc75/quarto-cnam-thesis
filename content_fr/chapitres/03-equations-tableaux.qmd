@@ -98,7 +98,82 @@ $$
 \end{aligned}
 $$ {#eq-maxwell}
 
-Les équations de Maxwell (@eq-maxwell) en notation vectorielle.
+Les équations de Maxwell (@eq-maxwell) en notation vectorielle — un seul numéro
+pour l'ensemble du bloc.
+
+Pour attribuer **un numéro à chaque ligne**, on remplace `aligned` (environnement
+imbriqué, numéro unique) par `align` (environnement autonome, numéro par `\\`) :
+
+````markdown
+$$
+\begin{align}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J}
+    + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{align}
+$$ {#eq-maxwell-ind}
+````
+
+$$
+\begin{align}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J}
+    + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{align}
+$$ {#eq-maxwell-ind}
+
+Le `{#eq-maxwell-ind}` attache le label au bloc entier
+(`@eq-maxwell-ind` → @eq-maxwell-ind). Pour supprimer le numéro d'une ligne
+en particulier, ajouter `\notag` juste avant le `\\` de cette ligne.
+
+::: {.callout-tip}
+## `aligned` vs `align` — quelle différence ?
+
+| Environnement | Imbricaison | Numérotation |
+|:---|:---|:---|
+| `aligned` | à l'intérieur de `$$…$$` | un numéro pour le **bloc entier** |
+| `align`   | autonome (avec `$$…$$`)  | un numéro **par ligne** |
+| `align*`  | autonome (avec `$$…$$`)  | aucune numérotation |
+
+Règle pratique : si l'ensemble forme une seule équation avec plusieurs lignes
+d'alignement (développement d'un calcul), utiliser `aligned`. Si chaque ligne
+est une équation indépendante qu'on voudra éventuellement citer séparément,
+utiliser `align`.
+:::
+
+::: {.callout-note}
+## Numérotation hiérarchique (3.1a), (3.1b) avec `subequations`
+
+Pour la numérotation hiérarchique de style **(3.1a)**, **(3.1b)**…, LaTeX
+fournit l'environnement `subequations` à combiner avec `align`. La syntaxe
+est du LaTeX brut et ne fonctionne **qu'en PDF** (KaTeX ne supporte pas
+`subequations`) :
+
+```markdown
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{subequations}\label{eq-navier}
+\begin{align}
+  \rho\,\frac{D\mathbf{u}}{Dt}
+    &= -\nabla p + \mu\,\nabla^2\mathbf{u} + \mathbf{f}
+    \label{eq-navier-momentum} \\
+  \nabla \cdot \mathbf{u} &= 0
+    \label{eq-navier-incomp}
+\end{align}
+\end{subequations}
+` ``
+:::
+```
+
+Le `\label{eq-navier}` référence le groupe ; `\label{eq-navier-momentum}` et
+`\label{eq-navier-incomp}` référencent les lignes individuelles — accessibles
+avec `\eqref{}` en LaTeX natif. Les lignes HTML de remplacement s'ajoutent dans
+un bloc `{.content-visible when-format="html"}` frère.
+:::
 
 ## Tableaux Markdown simples {#sec-tableaux-simples}
 
