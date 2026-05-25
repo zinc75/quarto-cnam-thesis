@@ -321,8 +321,12 @@ $endif$
 % \mbox empêche les coupures — les URL très longues peuvent dépasser la marge.
 % \href is only redefined for external links; internal cross-refs use \hyperref, not \href. /
 % \href n'est redéfini que pour les liens externes ; les renvois internes utilisent \hyperref.
+% \makeatletter wraps BOTH the \newcommand definitions AND the \AtBeginDocument block:
+% with @ as catcode-12, \cnam@orighref would tokenise as \cnam + text "@orighref". /
+% \makeatletter englobe les \newcommand ET le bloc \AtBeginDocument :
+% avec @ en catcode 12, \cnam@orighref serait tokenisé \cnam + texte "@orighref".
 \makeatletter
-% \cnam@orighref: no-op placeholder until \AtBeginDocument binds it to the real \href.
+% Placeholder: no-op until \AtBeginDocument binds it to the real \href.
 \newcommand{\cnam@orighref}[2]{#2}
 \newcommand{\cnam@styledurl}[1]{%
   \cnam@orighref{#1}{\textcolor{redHESAM}{\dashuline{\mbox{\nolinkurl{#1}}}}}%
@@ -330,12 +334,12 @@ $endif$
 \newcommand{\cnam@styledhref}[2]{%
   \cnam@orighref{#1}{\textcolor{redHESAM}{\dashuline{#2}}}%
 }
-\makeatother
 \AtBeginDocument{%
-  \let\cnam@orighref\href%   % bind placeholder to real \href (no # in this block)
+  \let\cnam@orighref\href%   % bind placeholder to the real \href
   \let\url\cnam@styledurl%
   \let\href\cnam@styledhref%
 }
+\makeatother
 
 %============================================================
 \begin{document}
