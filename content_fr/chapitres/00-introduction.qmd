@@ -67,7 +67,7 @@ La page d'accueil
 RStudio, terminal).
 
 Pour explorer plus loin toutes les fonctionnalités de Quarto (livres, sites,
-présentations, widgets interactifs…), le guide complet est disponible sur
+présentations, widgets interactifs…), le guide complet est disponible su
 <https://quarto.org/docs/guide/>.
 
 ::: {.callout-tip}
@@ -129,18 +129,4 @@ correctement en PDF.
 Pour les utilisateurs de **VS Code** ou **RStudio**, l'extension Quarto intègre un
 bouton *Render* et un panneau de prévisualisation directement dans l'éditeur — sans
 passer par le terminal.
-:::
-
-::: {.callout-warning}
-## Modifications incrémentales et PDF
-
-Le premier lancement de `quarto preview` effectue un rendu complet (PDF + HTML, avec les
-trois passes pdflatex habituelles). Ensuite, lorsqu'un fichier `.qmd` est sauvegardé,
-Quarto ne re-génère que la page HTML correspondante — le PDF n'est **pas** automatiquement
-recompilé à chaque sauvegarde. Pour obtenir un PDF à jour en cours de session de
-prévisualisation, lancer manuellement :
-
-```bash
-quarto render --profile fr --to cnam-thesis-pdf
-```
 :::
