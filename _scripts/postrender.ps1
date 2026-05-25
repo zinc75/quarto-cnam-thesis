@@ -54,6 +54,12 @@ if (Test-Path $srcPdf) {
     Move-Item $srcPdf $dstPdf
     $pdfGenerated = $true
     Write-Host "PDF renamed: $dstPdf"
+    # Keep a copy under the canonical output-file name so Quarto's preview server can
+    # stat it after the rename. Without this, `quarto preview` crashes with:
+    #   NotFound: No such file or directory: stat '_these_<lang>/these_<lang>.pdf'
+    # The copy is overwritten by pdflatex on every subsequent render and is gitignored. /
+    # Copie au nom canonique pour le serveur de preview. Écrasée à chaque re-rendu.
+    Copy-Item $dstPdf $srcPdf
 }
 
 # ── Fix HTML navigation links and update the PDF download link ────────────────

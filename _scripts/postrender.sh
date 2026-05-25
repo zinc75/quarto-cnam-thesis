@@ -69,6 +69,14 @@ if [ -f "$SRC_PDF" ]; then
   mv "$SRC_PDF" "$DST_PDF"
   PDF_GENERATED=true
   echo "PDF renamed: $DST_PDF"
+  # Keep a copy under the canonical output-file name so Quarto's preview server can
+  # stat it after the rename. Without this, `quarto preview` crashes with:
+  #   NotFound: No such file or directory: stat '_these_<lang>/these_<lang>.pdf'
+  # The copy is overwritten by pdflatex on every subsequent render and is gitignored
+  # (the whole output directory is in .gitignore). /
+  # Conserver une copie au nom canonique pour que le serveur de preview puisse la
+  # retrouver après le renommage. Écrasée à chaque re-rendu. Gitignorée.
+  cp -p "$DST_PDF" "$SRC_PDF"
 fi
 
 # Fix HTML navigation links and update the PDF download link.

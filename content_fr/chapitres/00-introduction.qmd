@@ -132,10 +132,15 @@ passer par le terminal.
 :::
 
 ::: {.callout-warning}
-## `quarto preview` ne génère pas le PDF
+## Modifications incrémentales et PDF
 
-La prévisualisation temps réel s'appuie sur la sortie HTML (compilation rapide).
-Le PDF, qui nécessite plusieurs passes pdflatex, n'est pas régénéré automatiquement.
-Utiliser `quarto render --profile fr --to cnam-thesis-pdf` pour un rendu PDF seul,
-ou `quarto render --profile fr` pour les deux formats d'un coup.
+Le premier lancement de `quarto preview` effectue un rendu complet (PDF + HTML, avec les
+trois passes pdflatex habituelles). Ensuite, lorsqu'un fichier `.qmd` est sauvegardé,
+Quarto ne re-génère que la page HTML correspondante — le PDF n'est **pas** automatiquement
+recompilé à chaque sauvegarde. Pour obtenir un PDF à jour en cours de session de
+prévisualisation, lancer manuellement :
+
+```bash
+quarto render --profile fr --to cnam-thesis-pdf
+```
 :::
