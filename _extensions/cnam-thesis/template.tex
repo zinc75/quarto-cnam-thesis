@@ -135,6 +135,7 @@ $if(index)$
 \usepackage{makeidx}
 $endif$
 \usepackage{url}
+\usepackage{fvextra}   % extends fancyvrb with breaklines support for code blocks
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{lastpage}  % \pageref{LastPage} for the total page count
@@ -203,6 +204,16 @@ $endif$
 % Quarto syntax highlighting
 $if(highlighting-macros)$
 $highlighting-macros$
+% Override Pandoc's Highlighting definition to enable automatic line wrapping.
+% Without this, long code lines overflow the Shaded block in the PDF.
+% breakanywhere=true allows breaks in long tokens with no whitespace (e.g. long strings). /
+% Sans cela, les longues lignes de code débordent du bloc grisé dans le PDF.
+% breakanywhere=true permet les coupures dans les tokens sans espace (ex. longues chaînes).
+\RecustomVerbatimEnvironment{Highlighting}{Verbatim}{%
+  commandchars=\\\{\},%
+  breaklines=true,%
+  breakanywhere=true%
+}
 $endif$
 
 % User header-includes from YAML
