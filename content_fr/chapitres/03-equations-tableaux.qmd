@@ -113,7 +113,7 @@ $$
   \nabla \times \mathbf{B} &= \mu_0\mathbf{J}
     + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
 \end{align}
-$$ {#eq-maxwell-ind}
+$$
 ````
 
 $$
@@ -124,25 +124,35 @@ $$
   \nabla \times \mathbf{B} &= \mu_0\mathbf{J}
     + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
 \end{align}
-$$ {#eq-maxwell-ind}
+$$
 
-Le `{#eq-maxwell-ind}` attache le label au bloc entier
-(`@eq-maxwell-ind` → @eq-maxwell-ind). Pour supprimer le numéro d'une ligne
-en particulier, ajouter `\notag` juste avant le `\\` de cette ligne.
+Chaque `\\` reçoit son propre numéro séquentiel. Pour supprimer le numéro d'une
+ligne en particulier, ajouter `\notag` juste avant le `\\` de cette ligne.
+
+::: {.callout-warning}
+## `{#eq-label}` est incompatible avec `align`
+
+Pandoc traduit `$$...$$  {#eq-label}` en `\begin{equation}...\end{equation}`.
+Imbriquer `\begin{align}` à l'intérieur de `\begin{equation}` est invalide
+(amsmath refuse deux environnements d'affichage imbriqués).
+
+Pour cross-référencer un bloc `align` en LaTeX natif, utiliser `\label{}` sur
+la ligne cible et `\eqref{}` dans le texte — ces commandes ne passent pas par
+le système `@eq-` de Quarto et fonctionnent uniquement en PDF.
+:::
 
 ::: {.callout-tip}
 ## `aligned` vs `align` — quelle différence ?
 
-| Environnement | Imbricaison | Numérotation |
-|:---|:---|:---|
-| `aligned` | à l'intérieur de `$$…$$` | un numéro pour le **bloc entier** |
-| `align`   | autonome (avec `$$…$$`)  | un numéro **par ligne** |
-| `align*`  | autonome (avec `$$…$$`)  | aucune numérotation |
+| Environnement | Imbricaison | Numérotation | `@eq-` Quarto |
+|:---|:---|:---|:---:|
+| `aligned` | dans `$$…$$` | un numéro pour le **bloc entier** | ✓ |
+| `align`   | autonome     | un numéro **par ligne**           | ✗ |
+| `align*`  | autonome     | aucune                            | – |
 
 Règle pratique : si l'ensemble forme une seule équation avec plusieurs lignes
 d'alignement (développement d'un calcul), utiliser `aligned`. Si chaque ligne
-est une équation indépendante qu'on voudra éventuellement citer séparément,
-utiliser `align`.
+est une équation indépendante, utiliser `align` — sans `{#eq-}`.
 :::
 
 ::: {.callout-note}
