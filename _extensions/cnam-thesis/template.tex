@@ -113,6 +113,7 @@ $endif$
 \usepackage{tcolorbox}
 \tcbuselibrary{skins,breakable}   % required for Quarto callouts (enhanced jigsaw skin)
 \usepackage{soul}                 % required for strikethrough (~~text~~ → \st{text})
+\usepackage[normalem]{ulem}       % \dashuline for dashed URL underline; normalem preserves \emph
 
 % Collaborative margin comments (zinc75/quarto-comments extension).
 % Loaded only when comments: enabled: true. /
@@ -307,6 +308,33 @@ $endif$
   \else
     #1%
   \fi
+}
+
+% URLs: Cnam red, dashed underline, unbreakable.
+% Commands are defined in the PREAMBLE (normal # syntax) to avoid the expl3 hook
+% system's # doubling issue in TL 2026. \AtBeginDocument only does \let swaps. /
+% Les commandes sont définies dans le PRÉAMBULE (syntaxe # normale) pour éviter le
+% doublement de # du système de hooks expl3 dans TL 2026. \AtBeginDocument ne fait
+% que des \let.
+%
+% \mbox prevents line breaks — very long URLs may cause an overfull \hbox. /
+% \mbox empêche les coupures — les URL très longues peuvent dépasser la marge.
+% \href is only redefined for external links; internal cross-refs use \hyperref, not \href. /
+% \href n'est redéfini que pour les liens externes ; les renvois internes utilisent \hyperref.
+\makeatletter
+% \cnam@orighref: no-op placeholder until \AtBeginDocument binds it to the real \href.
+\newcommand{\cnam@orighref}[2]{#2}
+\newcommand{\cnam@styledurl}[1]{%
+  \cnam@orighref{#1}{\textcolor{redHESAM}{\dashuline{\mbox{\nolinkurl{#1}}}}}%
+}
+\newcommand{\cnam@styledhref}[2]{%
+  \cnam@orighref{#1}{\textcolor{redHESAM}{\dashuline{#2}}}%
+}
+\makeatother
+\AtBeginDocument{%
+  \let\cnam@orighref\href%   % bind placeholder to real \href (no # in this block)
+  \let\url\cnam@styledurl%
+  \let\href\cnam@styledhref%
 }
 
 %============================================================
