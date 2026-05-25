@@ -12,7 +12,7 @@ write their thesis in Quarto Markdown and simultaneously produce a PDF compliant
 navigable HTML version. The thesis is organised in five chapters, each documenting a family
 of features: document structure and formatting, figures and layout, equations and tables,
 callouts and code blocks, and finally references, glossary, and collaborative annotations.
-Every feature is presented following a *code + output* principle: a Markdown code block
+Most features are presented following a *code + output* principle: a Markdown code block
 displays the exact syntax to use, immediately followed by the live rendering in the
 document. This self-referential approach allows the document to serve both as a user guide
 and a live demonstration of the template.

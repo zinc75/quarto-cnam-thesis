@@ -12,7 +12,7 @@ la maquette institutionnelle 2024-2025 (classe `book`, moteur pdflatex, conformi
 PDF/A-1b) et une version HTML navigable. La thèse est organisée en cinq chapitres
 documentant chacun une famille de fonctionnalités : structure et mise en forme, figures
 et mise en page, équations et tableaux, callouts et blocs de code, références et
-annotations collaboratives. Chaque fonctionnalité est présentée selon le principe
+annotations collaboratives. La plupart des fonctionnalités est présentée selon le principe
 *code + rendu* : un bloc de code Markdown affiche la syntaxe exacte, immédiatement suivi
 du rendu réel dans le document. Cette approche auto-référentielle permet au document de
 servir à la fois de guide d'utilisation et de démonstration vivante du template.
