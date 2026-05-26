@@ -24,14 +24,107 @@ Produces a **PDF** that conforms to the official Cnam 2024–2025 template and a
 
 ## Prerequisites
 
-| Tool | Minimum version |
-|------|----------------|
-| [Quarto](https://quarto.org/docs/get-started/) | 1.4 |
-| A LaTeX distribution with **pdflatex** | TeX Live 2023+ or MiKTeX |
-| Python 3 _(post-render slug generation)_ | 3.8 |
+| Tool | Minimum version | Notes |
+|------|----------------|-------|
+| [Quarto](https://quarto.org/docs/get-started/) | 1.4 | |
+| LaTeX distribution with **pdflatex** | TeX Live 2023+ or MiKTeX | |
+| Python 3 | 3.10 | required by post-render scripts and by Quarto to execute code cells |
 
 > **Windows users without WSL:** replace `.sh` with `.bat` in the `post-render`
 > entries of `_quarto-fr.yml` / `_quarto-en.yml`.
+
+## Python setup
+
+### Do you need Python at all?
+
+Python serves two purposes in this template:
+
+1. **Post-render scripts** — always needed (slug generation, file renaming,
+   cover image). Python 3.8+ is sufficient; no extra packages required.
+2. **Executable code chunks** — only needed if your thesis contains computed
+   figures (matplotlib…) or tables (pandas…). A text-only thesis with static
+   images requires nothing beyond point 1.
+
+If your thesis has no Python code cells, a bare Python 3 installation is enough
+and you can skip the rest of this section.
+
+### Packages for executable code
+
+The packages required for the template's own example chapters are listed in
+`requirements.txt`:
+
+```
+numpy>=1.24      # numerical arrays
+matplotlib>=3.7  # figures
+pandas>=2.0      # data tables
+tabulate>=0.9    # Markdown table output (used by pandas .to_markdown())
+```
+
+Quarto also requires **Jupyter** to execute Python code cells. It is installed
+automatically by the methods below.
+
+### Recommended: `uv`
+
+[`uv`](https://docs.astral.sh/uv/) is a modern package manager (written in Rust)
+that installs Python, creates virtual environments, and manages packages — all
+with one tool. No prior Python installation is needed.
+
+**Why `uv` for a thesis?** You only need a handful of packages for one project.
+Installing them globally pollutes your system and risks version conflicts. `uv`
+creates a self-contained `.venv/` folder in the project directory; Quarto finds
+it automatically — no manual activation needed before `quarto render`.
+
+**Step 1 — Install `uv`** (once, system-wide):
+
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell — run once as a regular user)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**Step 2 — Set up the project** (inside the thesis directory):
+
+```bash
+uv python install 3.12          # download and install Python 3.12
+uv venv                         # create .venv/ in the current directory
+uv pip install -r requirements.txt   # install all packages + Jupyter
+```
+
+That's it. Quarto detects `.venv/` and uses it automatically.
+
+> Add your own packages with `uv pip install <package>` (not `pip install` —
+> this ensures they go into `.venv/`, not system Python).
+
+### Alternative: standard `venv` + `pip`
+
+If Python 3.10+ is already installed:
+
+```bash
+python -m venv .venv
+
+# Activate (once per terminal session):
+source .venv/bin/activate          # macOS / Linux
+.venv\Scripts\activate             # Windows (cmd)
+.venv\Scripts\Activate.ps1         # Windows (PowerShell)
+
+pip install jupyter -r requirements.txt
+```
+
+Unlike `uv`, the virtual environment must be activated before every `quarto render`
+session, or Quarto must be told which Python to use:
+
+```bash
+quarto render --profile fr --execute-env QUARTO_PYTHON=.venv/bin/python
+```
+
+> **conda users:** `conda create -n mythesis python=3.12 && conda activate mythesis
+> && pip install jupyter -r requirements.txt` works too. Note that Quarto looks for
+> `jupyter` on `PATH` — make sure to activate the conda environment before rendering.
+
+> **pyenv users:** install the target Python version with pyenv, then use the
+> standard `venv` workflow above.
 
 ## Installation
 

@@ -24,14 +24,109 @@ Produit un **PDF** conforme à la maquette officielle Cnam 2024–2025 et une
 
 ## Prérequis
 
-| Outil | Version minimale |
-|-------|-----------------|
-| [Quarto](https://quarto.org/docs/get-started/) | 1.4 |
-| Distribution LaTeX avec **pdflatex** | TeX Live 2023+ ou MiKTeX |
-| Python 3 _(génération du slug auteur en post-render)_ | 3.8 |
+| Outil | Version minimale | Notes |
+|-------|-----------------|-------|
+| [Quarto](https://quarto.org/docs/get-started/) | 1.4 | |
+| Distribution LaTeX avec **pdflatex** | TeX Live 2023+ ou MiKTeX | |
+| Python 3 | 3.10 | requis par les scripts post-render et par Quarto pour l'exécution des cellules de code |
 
 > **Utilisateurs Windows sans WSL :** remplacer `.sh` par `.bat` dans les entrées
 > `post-render` de `_quarto-fr.yml` / `_quarto-en.yml`.
+
+## Configuration de Python
+
+### Python est-il indispensable ?
+
+Python intervient à deux niveaux dans ce template :
+
+1. **Scripts post-render** — toujours nécessaires (génération du slug auteur, renommage
+   des fichiers, image de couverture). Python 3.8+ suffit ; aucun package supplémentaire
+   n'est requis.
+2. **Cellules de code exécutables** — uniquement si la thèse contient des figures
+   calculées (matplotlib…) ou des tableaux (pandas…). Une thèse rédigée en texte pur
+   avec des images statiques n'a besoin que du point 1.
+
+Si la thèse ne contient pas de code Python exécutable, une installation Python de base
+est suffisante et la suite de cette section ne vous concerne pas.
+
+### Packages pour le code exécutable
+
+Les packages requis par les chapitres d'exemple du template sont listés dans
+`requirements.txt` :
+
+```
+numpy>=1.24      # tableaux numériques
+matplotlib>=3.7  # figures
+pandas>=2.0      # tableaux de données
+tabulate>=0.9    # sortie Markdown (utilisé par pandas .to_markdown())
+```
+
+Quarto a également besoin de **Jupyter** pour exécuter les cellules Python. Il est
+installé automatiquement par les méthodes ci-dessous.
+
+### Recommandation : `uv`
+
+[`uv`](https://docs.astral.sh/uv/) est un gestionnaire de packages moderne (écrit en
+Rust) qui installe Python, crée des environnements virtuels et gère les packages — le
+tout avec un seul outil. Aucune installation Python préalable n'est nécessaire.
+
+**Pourquoi `uv` pour une thèse ?** Une thèse n'a besoin que d'une poignée de packages
+pour un seul projet. Les installer globalement pollue le système et risque de créer des
+conflits de versions. `uv` crée un dossier `.venv/` isolé dans le répertoire du projet ;
+Quarto le détecte automatiquement — pas d'activation manuelle avant `quarto render`.
+
+**Étape 1 — Installer `uv`** (une seule fois, sur le système) :
+
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell — à exécuter une seule fois, sans droits admin)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**Étape 2 — Configurer le projet** (dans le répertoire de la thèse) :
+
+```bash
+uv python install 3.12          # télécharge et installe Python 3.12
+uv venv                         # crée .venv/ dans le répertoire courant
+uv pip install -r requirements.txt   # installe tous les packages + Jupyter
+```
+
+C'est tout. Quarto détecte `.venv/` et l'utilise automatiquement.
+
+> Ajouter vos propres packages avec `uv pip install <package>` (et non `pip install`
+> — cela garantit l'installation dans `.venv/`, pas dans Python système).
+
+### Alternative : `venv` + `pip` classique
+
+Si Python 3.10+ est déjà installé :
+
+```bash
+python -m venv .venv
+
+# Activer l'environnement (une fois par session de terminal) :
+source .venv/bin/activate          # macOS / Linux
+.venv\Scripts\activate             # Windows (cmd)
+.venv\Scripts\Activate.ps1         # Windows (PowerShell)
+
+pip install jupyter -r requirements.txt
+```
+
+Contrairement à `uv`, l'environnement doit être activé avant chaque session de
+`quarto render`, ou indiquer explicitement le Python à utiliser :
+
+```bash
+quarto render --profile fr --execute-env QUARTO_PYTHON=.venv/bin/python
+```
+
+> **Utilisateurs conda :** `conda create -n mathese python=3.12 && conda activate
+> mathese && pip install jupyter -r requirements.txt` fonctionne aussi. Veillez à
+> activer l'environnement conda avant de lancer Quarto, afin que `jupyter` soit
+> disponible sur le `PATH`.
+
+> **Utilisateurs pyenv :** installer la version Python cible avec pyenv, puis
+> utiliser le workflow `venv` standard ci-dessus.
 
 ## Installation
 
