@@ -37,6 +37,85 @@ Produces a **PDF** that conforms to the official Cnam 2024–2025 template and a
 > **Windows users without WSL:** replace `.sh` with `.bat` in the `post-render`
 > entries of `_quarto-fr.yml` / `_quarto-en.yml`.
 
+## Installation
+
+```bash
+quarto use template zinc75/quarto-cnam-thesis
+```
+
+Quarto copies the template into the current directory (excluding development
+files listed in `.quartoignore`). You can then edit `_quarto.yml` and start
+writing.
+
+## Rendering
+
+```bash
+# French thesis — PDF + HTML → _these_fr/
+quarto render --profile fr
+
+# English thesis — PDF + HTML → _thesis-en/
+quarto render --profile en
+
+# PDF only (French)
+quarto render --profile fr --to cnam-thesis-pdf
+
+# HTML only — requires a prior full render and --no-clean
+quarto render --profile fr --to cnam-thesis-html --no-clean
+```
+
+The post-render script renames the output to `these_<lang>_<author>.pdf` and
+`these_<lang>_<author>.tex`, and generates `images/cover.png` from PDF page 1
+(requires `poppler` or `ImageMagick`).
+
+> **Always use `--profile fr` or `--profile en`.** Running `quarto render`
+> without a profile fails because the chapter list is defined in the profiles,
+> not in `_quarto.yml`.
+
+## Configuration
+
+Fill in the thesis metadata in `_quarto.yml`:
+
+```yaml
+book:
+  title: "Thesis title"
+  author: "Firstname LASTNAME"
+
+date-soutenance: "1 January 2025"   # use date-soutenance, not date
+discipline: "60th CNU section — Mechanics, Mechanical Engineering, Civil Engineering"
+specialite: "Acoustics"
+ecole-doctorale: "Abbé Grégoire"    # or "SMI"
+laboratoire: "LMSSC"
+directeur: "Prof. Firstname LASTNAME, Université …"
+# codirecteur: "…"    # optional, HDR required
+# coencadrant: "…"    # optional, without HDR
+
+jury:
+  - nom: "Ms Firstname LASTNAME"
+    titre: "Title, Unit, University"
+    role: "Présidente"
+  - nom: "Mr Firstname LASTNAME"
+    titre: "Title, Unit, University"
+    role: "Rapporteur"
+  # …
+```
+
+Then add your chapters to `_quarto-fr.yml` (or `_quarto-en.yml`):
+
+```yaml
+book:
+  chapters:
+    - index.qmd
+    - content_fr/liminaire/remerciements.qmd
+    - content_fr/chapitres/01-introduction.qmd
+    - content_fr/chapitres/02-chapitre.qmd
+    # …
+    - content_fr/postliminaire/conclusion.qmd
+    - content_fr/postliminaire/bibliographie.qmd
+  appendices:
+    - content_fr/postliminaire/annexes.qmd
+```
+
+
 ## Python setup
 
 ### Do you need Python at all?
@@ -129,84 +208,6 @@ quarto render --profile fr --execute-env QUARTO_PYTHON=.venv/bin/python
 
 > **pyenv users:** install the target Python version with pyenv, then use the
 > standard `venv` workflow above.
-
-## Installation
-
-```bash
-quarto use template <org>/quarto-cnam-thesis
-```
-
-Quarto copies the template into the current directory (excluding development
-files listed in `.quartoignore`). You can then edit `_quarto.yml` and start
-writing.
-
-## Rendering
-
-```bash
-# French thesis — PDF + HTML → _these_fr/
-quarto render --profile fr
-
-# English thesis — PDF + HTML → _thesis-en/
-quarto render --profile en
-
-# PDF only (French)
-quarto render --profile fr --to cnam-thesis-pdf
-
-# HTML only — requires a prior full render and --no-clean
-quarto render --profile fr --to cnam-thesis-html --no-clean
-```
-
-The post-render script renames the output to `these_<lang>_<author>.pdf` and
-`these_<lang>_<author>.tex`, and generates `images/cover.png` from PDF page 1
-(requires `poppler` or `ImageMagick`).
-
-> **Always use `--profile fr` or `--profile en`.** Running `quarto render`
-> without a profile fails because the chapter list is defined in the profiles,
-> not in `_quarto.yml`.
-
-## Configuration
-
-Fill in the thesis metadata in `_quarto.yml`:
-
-```yaml
-book:
-  title: "Thesis title"
-  author: "Firstname LASTNAME"
-
-date-soutenance: "1 January 2025"   # use date-soutenance, not date
-discipline: "60th CNU section — Mechanics, Mechanical Engineering, Civil Engineering"
-specialite: "Acoustics"
-ecole-doctorale: "Abbé Grégoire"    # or "SMI"
-laboratoire: "LMSSC"
-directeur: "Prof. Firstname LASTNAME, Université …"
-# codirecteur: "…"    # optional, HDR required
-# coencadrant: "…"    # optional, without HDR
-
-jury:
-  - nom: "Ms Firstname LASTNAME"
-    titre: "Title, Unit, University"
-    role: "Présidente"
-  - nom: "Mr Firstname LASTNAME"
-    titre: "Title, Unit, University"
-    role: "Rapporteur"
-  # …
-```
-
-Then add your chapters to `_quarto-fr.yml` (or `_quarto-en.yml`):
-
-```yaml
-book:
-  chapters:
-    - index.qmd
-    - content_fr/liminaire/remerciements.qmd
-    - content_fr/chapitres/01-introduction.qmd
-    - content_fr/chapitres/02-chapitre.qmd
-    # …
-    - content_fr/postliminaire/conclusion.qmd
-    - content_fr/postliminaire/bibliographie.qmd
-  appendices:
-    - content_fr/postliminaire/annexes.qmd
-```
 
 ## Repository structure
 

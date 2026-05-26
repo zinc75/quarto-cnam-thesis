@@ -36,6 +36,86 @@ Produit un **PDF** conforme à la maquette officielle Cnam 2024–2025 et une
 > **Utilisateurs Windows sans WSL :** remplacer `.sh` par `.bat` dans les entrées
 > `post-render` de `_quarto-fr.yml` / `_quarto-en.yml`.
 
+
+## Installation
+
+```bash
+quarto use template zinc75/quarto-cnam-thesis
+```
+
+Quarto copie le template dans le répertoire courant (sans les fichiers de développement
+listés dans `.quartoignore`). Il suffit ensuite de renseigner `_quarto.yml` et de
+commencer à rédiger.
+
+## Rendu
+
+```bash
+# Thèse en français — PDF + HTML → _these_fr/
+quarto render --profile fr
+
+# Thèse en anglais — PDF + HTML → _thesis-en/
+quarto render --profile en
+
+# PDF uniquement (français)
+quarto render --profile fr --to cnam-thesis-pdf
+
+# HTML uniquement — nécessite un rendu complet préalable et --no-clean
+quarto render --profile fr --to cnam-thesis-html --no-clean
+```
+
+Le script post-render renomme la sortie en `these_<lang>_<auteur>.pdf` et
+`these_<lang>_<auteur>.tex`, et génère `images/cover.png` à partir de la page 1 du PDF
+(nécessite `poppler` ou `ImageMagick`).
+
+> **Toujours utiliser `--profile fr` ou `--profile en`.** Lancer `quarto render`
+> sans profil échoue car la liste des chapitres est définie dans les profils,
+> et non dans `_quarto.yml`.
+
+## Configuration
+
+Renseigner les métadonnées de la thèse dans `_quarto.yml` :
+
+```yaml
+book:
+  title: "Titre de la thèse"
+  author: "Prénom NOM"
+
+date-soutenance: "1er janvier 2025"   # utiliser date-soutenance, pas date
+discipline: "60e section CNU — Mécanique, génie mécanique, génie civil"
+specialite: "Acoustique"
+ecole-doctorale: "Abbé Grégoire"      # ou "SMI"
+laboratoire: "LMSSC"
+directeur: "Pr. Prénom NOM, Université …"
+# codirecteur: "…"    # optionnel, HDR requise
+# coencadrant: "…"    # optionnel, sans HDR
+
+jury:
+  - nom: "Mme Prénom NOM"
+    titre: "Titre, Unité, Université"
+    role: "Présidente"
+  - nom: "M. Prénom NOM"
+    titre: "Titre, Unité, Université"
+    role: "Rapporteur"
+  # …
+```
+
+Puis ajouter les chapitres dans `_quarto-fr.yml` (ou `_quarto-en.yml`) :
+
+```yaml
+book:
+  chapters:
+    - index.qmd
+    - content_fr/liminaire/remerciements.qmd
+    - content_fr/chapitres/01-introduction.qmd
+    - content_fr/chapitres/02-chapitre.qmd
+    # …
+    - content_fr/postliminaire/conclusion.qmd
+    - content_fr/postliminaire/bibliographie.qmd
+  appendices:
+    - content_fr/postliminaire/annexes.qmd
+```
+
+
 ## Configuration de Python
 
 ### Python est-il indispensable ?
@@ -131,83 +211,6 @@ quarto render --profile fr --execute-env QUARTO_PYTHON=.venv/bin/python
 > **Utilisateurs pyenv :** installer la version Python cible avec pyenv, puis
 > utiliser le workflow `venv` standard ci-dessus.
 
-## Installation
-
-```bash
-quarto use template <org>/quarto-cnam-thesis
-```
-
-Quarto copie le template dans le répertoire courant (sans les fichiers de développement
-listés dans `.quartoignore`). Il suffit ensuite de renseigner `_quarto.yml` et de
-commencer à rédiger.
-
-## Rendu
-
-```bash
-# Thèse en français — PDF + HTML → _these_fr/
-quarto render --profile fr
-
-# Thèse en anglais — PDF + HTML → _thesis-en/
-quarto render --profile en
-
-# PDF uniquement (français)
-quarto render --profile fr --to cnam-thesis-pdf
-
-# HTML uniquement — nécessite un rendu complet préalable et --no-clean
-quarto render --profile fr --to cnam-thesis-html --no-clean
-```
-
-Le script post-render renomme la sortie en `these_<lang>_<auteur>.pdf` et
-`these_<lang>_<auteur>.tex`, et génère `images/cover.png` à partir de la page 1 du PDF
-(nécessite `poppler` ou `ImageMagick`).
-
-> **Toujours utiliser `--profile fr` ou `--profile en`.** Lancer `quarto render`
-> sans profil échoue car la liste des chapitres est définie dans les profils,
-> et non dans `_quarto.yml`.
-
-## Configuration
-
-Renseigner les métadonnées de la thèse dans `_quarto.yml` :
-
-```yaml
-book:
-  title: "Titre de la thèse"
-  author: "Prénom NOM"
-
-date-soutenance: "1er janvier 2025"   # utiliser date-soutenance, pas date
-discipline: "60e section CNU — Mécanique, génie mécanique, génie civil"
-specialite: "Acoustique"
-ecole-doctorale: "Abbé Grégoire"      # ou "SMI"
-laboratoire: "LMSSC"
-directeur: "Pr. Prénom NOM, Université …"
-# codirecteur: "…"    # optionnel, HDR requise
-# coencadrant: "…"    # optionnel, sans HDR
-
-jury:
-  - nom: "Mme Prénom NOM"
-    titre: "Titre, Unité, Université"
-    role: "Présidente"
-  - nom: "M. Prénom NOM"
-    titre: "Titre, Unité, Université"
-    role: "Rapporteur"
-  # …
-```
-
-Puis ajouter les chapitres dans `_quarto-fr.yml` (ou `_quarto-en.yml`) :
-
-```yaml
-book:
-  chapters:
-    - index.qmd
-    - content_fr/liminaire/remerciements.qmd
-    - content_fr/chapitres/01-introduction.qmd
-    - content_fr/chapitres/02-chapitre.qmd
-    # …
-    - content_fr/postliminaire/conclusion.qmd
-    - content_fr/postliminaire/bibliographie.qmd
-  appendices:
-    - content_fr/postliminaire/annexes.qmd
-```
 
 ## Structure du dépôt
 
