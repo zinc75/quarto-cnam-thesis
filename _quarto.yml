@@ -21,6 +21,13 @@ book:
   # output-file et chapters sont définis dans le profil de langue
   downloads: [pdf]            # adds PDF download button to the HTML sidebar / ajoute un bouton PDF dans la barre HTML
 
+# Optional: override the HTML topbar label prefix (default: "Thèse de doctorat" / "PhD Thesis").
+# Only affects the topbar — no impact on the PDF cover page or any other field.
+# Useful for a documentation or GitHub Pages branch where "Thèse de doctorat" is misleading.
+# Optionnel : remplace le préfixe de la barre HTML (n'affecte que la barre, pas la page de garde PDF).
+# Utile pour une branche documentation ou GitHub Pages.
+# header-prefix: "Documentation du template quarto-cnam-thesis"
+
 
 # ------------------------------------------------------------------------------
 # TO FILL IN — Cnam information (cover page)

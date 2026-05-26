@@ -157,6 +157,14 @@ local pass1 = {
       local tag_lang = pandoc.RawBlock("html",
         '<meta name="thesis-lang" content="' .. thesis_lang_val .. '">')
       hi:insert(pandoc.MetaBlocks({ tag_lang }))
+      -- Optional: inject header-prefix to override the default topbar prefix entirely.
+      -- Set via `header-prefix: "..."` in _quarto.yml (e.g. for a GitHub Pages doc branch).
+      if meta["header-prefix"] then
+        local prefix_str = pandoc.utils.stringify(meta["header-prefix"])
+        local tag_prefix = pandoc.RawBlock("html",
+          '<meta name="header-prefix" content="' .. prefix_str .. '">')
+        hi:insert(pandoc.MetaBlocks({ tag_prefix }))
+      end
       meta["header-includes"] = hi
     end
 

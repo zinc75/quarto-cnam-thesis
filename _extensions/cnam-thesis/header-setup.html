@@ -19,13 +19,22 @@
                       or "PhD Thesis – Firstname LASTNAME" (en).
      Libellé fixe : identique sur toutes les pages, indépendant du chapitre courant.
      Author from <meta name="thesis-author">, lang from <meta name="thesis-lang">,
-     both injected on every page by cnam-thesis.lua. */
+     both injected on every page by cnam-thesis.lua.
+     Optional override: <meta name="header-prefix"> replaces the language-based prefix
+     entirely (set via `header-prefix:` in _quarto.yml — e.g. for a doc branch).
+     Remplacement optionnel : header-prefix remplace le préfixe par défaut. */
   function headerLabel() {
-    var langEl   = document.querySelector('meta[name="thesis-lang"]');
+    var prefixEl = document.querySelector('meta[name="header-prefix"]');
     var authorEl = document.querySelector('meta[name="thesis-author"]');
-    var lang     = langEl   ? langEl.getAttribute('content')   : 'fr';
     var author   = authorEl ? authorEl.getAttribute('content') : '';
-    var prefix   = lang === 'en' ? 'PhD Thesis' : 'Thèse de doctorat';
+    var prefix;
+    if (prefixEl) {
+      prefix = prefixEl.getAttribute('content');
+    } else {
+      var langEl = document.querySelector('meta[name="thesis-lang"]');
+      var lang   = langEl ? langEl.getAttribute('content') : 'fr';
+      prefix = lang === 'en' ? 'PhD Thesis' : 'Thèse de doctorat';
+    }
     return prefix + (author ? ' – ' + author : '');
   }
 

@@ -40,3 +40,11 @@ dedicace: "To Donald Knuth, who transformed typography into a computational art 
 format:
   cnam-thesis-html:
     toc-title: "Table of Contents"
+
+
+# Optional: override the HTML topbar label prefix (default: "Thèse de doctorat" / "PhD Thesis").
+# Only affects the topbar — no impact on the PDF cover page or any other field.
+# Useful for a documentation or GitHub Pages branch where "Thèse de doctorat" is misleading.
+# Optionnel : remplace le préfixe de la barre HTML (n'affecte que la barre, pas la page de garde PDF).
+# Utile pour une branche documentation ou GitHub Pages.
+header-prefix: "Quarto cnam-thesis template documentation"
