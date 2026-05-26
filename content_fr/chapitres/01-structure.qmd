@@ -251,7 +251,7 @@ compatible avec les deux formats de sortie :
 ````markdown
 Fin du contenu de cette section.
 
-{{< pagebreak >}}
+{{</* pagebreak */>}}
 
 Début de la section suivante.
 ````
