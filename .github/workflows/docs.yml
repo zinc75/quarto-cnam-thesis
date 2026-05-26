@@ -12,8 +12,9 @@ name: Build and deploy documentation
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    tags:
+      - 'v*'        # triggers on v1.0, v1.1.2, etc.
+  workflow_dispatch:  # manual trigger for testing
 
 # Required for the native GitHub Pages deployment API.
 permissions:
