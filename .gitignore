@@ -62,3 +62,5 @@ site_libs/
 # .gitignore swallows .github (some setups blanket-ignore it).
 !.github/
 !.github/**
+# Re-ignore macOS artifacts under .github/ (un-ignored by the rule above).
+.github/.DS_Store
