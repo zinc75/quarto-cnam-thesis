@@ -35,6 +35,8 @@ book:
   appendices:
     - content_en/backmatter/appendices.qmd
 
+dedicace: "To Donald Knuth, who transformed typography into a computational art form, and to all the graduate students who have wasted a day because of a missing \\LaTeX{} brace."
+
 format:
   cnam-thesis-html:
     toc-title: "Table of Contents"
