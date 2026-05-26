@@ -1,5 +1,8 @@
 [🇬🇧 Read in English](README.md)
 
+<img width="426" height="213" alt="Quarto-cnam-thesis-template_social_preview 001" src="https://github.com/user-attachments/assets/ecf08076-8343-4fc9-b5bb-c41d2542f36f" />
+
+
 # quarto-cnam-thesis
 
 Extension [Quarto](https://quarto.org) pour la rédaction d'une thèse de doctorat au
