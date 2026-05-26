@@ -242,3 +242,49 @@ contenu reste visible au fil de la rédaction. Utilisez la **syntaxe par référ
 `[^label]` pour les notes longues ou multi-paragraphes, et pour éviter de surcharger
 visuellement la source Markdown quand la note dépasse deux lignes.
 :::
+
+### Sauts de page {#sec-pagebreak}
+
+Quarto fournit le shortcode `{{< pagebreak >}}` pour insérer un saut de page
+compatible avec les deux formats de sortie :
+
+````markdown
+Fin du contenu de cette section.
+
+{{< pagebreak >}}
+
+Début de la section suivante.
+````
+
+En PDF, `{{< pagebreak >}}` génère `\newpage`. En HTML, il insère une règle de
+style `page-break-after: always` — sans effet à l'écran, mais utile si la page
+HTML est imprimée depuis le navigateur.
+
+::: {.callout-tip}
+## `\newpage` vs `\clearpage`
+
+Si vous avez besoin de `\clearpage` (vide les figures et tableaux flottants en
+attente avant de sauter) plutôt que `\newpage`, utilisez un bloc LaTeX brut dans
+un `{.content-visible when-format="pdf"}` :
+
+````markdown
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\clearpage
+```
+:::
+````
+
+Dans une thèse avec de nombreuses figures, `\clearpage` est souvent préférable
+pour éviter que les flottants s'accumulent et apparaissent bien après leur point
+d'insertion dans le texte.
+:::
+
+::: {.callout-caution}
+## Les sauts de page manuels sont à utiliser avec parcimonie
+
+En règle générale, laissez LaTeX gérer la mise en page. Les sauts manuels
+résolvent un problème local mais peuvent en créer d'autres plus loin dans le
+document (pages blanches, flottants déplacés). Préférez les ajuster en toute
+fin de rédaction, une fois le contenu figé.
+:::
