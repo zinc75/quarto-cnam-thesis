@@ -37,38 +37,85 @@ Les fichiers sources de la thèse sont des fichiers texte ordinaires avec l'exte
 `.qmd` (Quarto Markdown). Ils s'ouvrent et s'éditent avec n'importe quel éditeur de
 texte — VS Code, RStudio, Neovim, Notepad++ ou même le bloc-notes du système.
 
-Ce template requiert Quarto 1.4 ou supérieur. Le moteur de compilation est pdflatex
-— XeLaTeX et LuaLaTeX ne sont pas supportés en raison des contraintes du package
-`pdfx` utilisé pour la conformité PDF/A-1b. Pour les figures
-générées par code Python (chapitre 2), il faut également disposer de Python avec
-`matplotlib` et `numpy`.
+### Quarto et LaTeX {.unnumbered}
+
+Ce template requiert **Quarto 1.4** ou supérieur. Le moteur de compilation est
+pdflatex — XeLaTeX et LuaLaTeX ne sont pas supportés en raison des contraintes du
+package `pdfx` utilisé pour la conformité PDF/A-1b. Une distribution **TeX Live
+2023+** ou **MiKTeX** à jour est nécessaire pour la sortie PDF.
 
 ::: {.callout-tip}
-## Installer Quarto
+## Installer Quarto et LaTeX
 
-Télécharger l'installeur correspondant au système d'exploitation sur
-<https://quarto.org/docs/get-started/>
+Quarto : <https://quarto.org/docs/get-started/> (installeur `.pkg`, `.msi` ou `.deb`
+selon la plateforme ; guide pas à pas par éditeur inclus).
+
+TeX Live : <https://tug.org/texlive/> — MiKTeX : <https://miktex.org/> (Windows).
 :::
 
-Plusieurs installeurs sont proposés sur le site (c'est très simple) :
+| Système | Quarto | LaTeX |
+|:--------|:-------|:------|
+| **macOS** | `.pkg` ou `brew install quarto` | MacTeX (`brew install --cask mactex`) |
+| **Windows** | `.msi` (64 bits) | MiKTeX ou TeX Live |
+| **Linux (Debian/Ubuntu)** | `sudo dpkg -i quarto-*.deb` | `sudo apt install texlive-full` |
 
-| Système | Méthode recommandée |
-|:--------|:--------------------|
-| **macOS** | Installeur `.pkg` ou `brew install quarto` |
-| **Windows** | Installeur `.msi` (64 bits) |
-| **Linux (Debian/Ubuntu)** | Paquet `.deb` : `sudo dpkg -i quarto-*.deb` |
-| **Linux (Red Hat/Fedora)** | Paquet `.rpm` : `sudo rpm -U quarto-*.rpm` |
+### Python {.unnumbered}
 
-Puisque l'objectif de ce template est de produire un document Pdf via LaTeX sans toucher à du code TeX
-lui même, Une distribution TeX Live ou MikTeX à jour est nécessaire pour la sortie PDF.
+Python est **optionnel** : il n'est nécessaire que si la thèse contient des cellules
+de code exécutable — figures calculées (matplotlib…) ou tableaux (pandas…). Une thèse
+rédigée en texte pur avec des images statiques n'a besoin que d'un Python de base pour
+les scripts post-render (génération du slug auteur, image de couverture).
 
-La page d'accueil
-<https://quarto.org/docs/get-started/> inclut un guide pas à pas par éditeur (VS Code,
-RStudio, terminal).
+Si la thèse contient du code exécutable, Quarto utilise **Jupyter** pour l'exécuter.
+Les packages requis par les exemples de ce document sont listés dans `requirements.txt`
+à la racine du projet : `numpy`, `matplotlib`, `pandas`, `tabulate`.
 
-Pour explorer plus loin toutes les fonctionnalités de Quarto (livres, sites,
-présentations, widgets interactifs…), le guide complet est disponible sur
-<https://quarto.org/docs/guide/>.
+**Environnement virtuel — pourquoi c'est important.** Un environnement virtuel isole
+les packages de ce projet du reste de l'installation Python du système, évite les
+conflits de versions et facilite la reproductibilité. Il est fortement déconseillé
+d'installer les packages directement dans Python système.
+
+#### `uv` — recommandé {.unnumbered}
+
+[`uv`](https://docs.astral.sh/uv/) installe Python, crée l'environnement virtuel et
+gère les packages en une seule commande, sans Python préalable sur le système. Quarto
+détecte automatiquement le dossier `.venv/` créé — aucune activation manuelle n'est
+nécessaire avant `quarto render`.
+
+```bash
+# Étape 1 — installer uv (une seule fois, sur le système)
+# macOS / Linux :
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# Windows (PowerShell) :
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Étape 2 — dans le répertoire de la thèse :
+uv python install 3.12          # télécharge et installe Python 3.12
+uv venv                         # crée .venv/ dans le répertoire courant
+uv pip install -r requirements.txt  # installe tous les packages + Jupyter
+```
+
+#### `venv` + `pip` — alternative {.unnumbered}
+
+Si Python 3.10+ est déjà installé sur le système :
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # macOS / Linux
+# .venv\Scripts\activate         # Windows (cmd)
+# .venv\Scripts\Activate.ps1     # Windows (PowerShell)
+pip install jupyter -r requirements.txt
+```
+
+::: {.callout-note}
+## Conda, pyenv…
+
+Les utilisateurs conda peuvent créer un environnement dédié :
+`conda create -n mathese python=3.12 && conda activate mathese && pip install jupyter -r requirements.txt`.
+Les utilisateurs pyenv installent la version cible avec pyenv, puis utilisent `venv` comme ci-dessus.
+:::
+
+### Installer le template {.unnumbered}
 
 ::: {.callout-tip}
 ## Installer le template
@@ -76,12 +123,13 @@ présentations, widgets interactifs…), le guide complet est disponible sur
 ```bash
 quarto use template zinc75/quarto-cnam-thesis
 ```
-::: 
+:::
 
 Cette commande copie tous les fichiers sources dans le répertoire courant, y compris
-les fichiers .qmd qui ont permis de créer cette documentation, qui pourront vous servir
-de point de départ. Les fichiers de contenu à modifier se trouvent dans `content_fr/` (profil français)
-et `content_en/` (profil anglais), ainsi que les fichiers de configurations `yaml` (voir @sec-yaml-config-file).
+les fichiers `.qmd` de cette documentation, qui servent de point de départ. Les
+fichiers de contenu à modifier se trouvent dans `content_fr/` (profil français) et
+`content_en/` (profil anglais), ainsi que les fichiers de configuration `yaml`
+(voir @sec-yaml-config-file).
 
 ## Générer le document
 
