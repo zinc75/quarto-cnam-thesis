@@ -57,15 +57,13 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       # ── TeX Live (full) ───────────────────────────────────────────────────────
-      # scheme-full eliminates all missing-package issues; cache: true makes
-      # subsequent runs fast (~1–2 min after the first ~20 min install).
-      # scheme-full élimine les problèmes de paquets manquants ; le cache rend
-      # les runs suivants rapides (~1–2 min après la première installation ~20 min).
-      - name: Set up TeX Live
-        uses: teatimeguest/setup-texlive-action@v3
-        with:
-          packages: scheme-full
-          cache: true
+      # texlive-full from apt: no missing-package issues, no third-party action.
+      # Install takes ~5 min; acceptable given infrequent pushes to main.
+      # texlive-full via apt : pas de paquets manquants, pas d'action tierce.
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends texlive-full
 
       # ── System dependencies ──────────────────────────────────────────────────
       # pdftoppm (poppler-utils): used by postrender.sh to generate images/cover.png
