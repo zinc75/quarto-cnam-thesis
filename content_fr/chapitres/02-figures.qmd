@@ -72,12 +72,14 @@ plt.tight_layout()
 ```
 ````
 
-Rendu :
+::: {.render-demo}
+**Rendu :**
 
 ```{python}
 #| label: fig-sincos
 #| fig-cap: "Courbes $\\sin(x)$ et $\\cos(x)$ sur $[0, 2\\pi]$."
 #| echo: true
+#| fig-pos: 'H'
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -92,6 +94,8 @@ for ax in axes:
     ax.grid(True, alpha=0.3)
 plt.tight_layout()
 ```
+
+:::
 
 La @fig-sincos est générée à chaque compilation. Avec `execute: freeze: auto` dans
 `_quarto.yml`, Quarto met en cache les résultats dans `_freeze/` et ne réexécute le
@@ -140,9 +144,10 @@ Deux fonctions élémentaires.
 :::
 ````
 
-Rendu :
+::: {.render-demo}
+**Rendu :**
 
-::: {#fig-duo layout-ncol=2}
+::: {#fig-duo layout-ncol=2 fig-pos='H'}
 
 ```{python}
 #| label: fig-duo-a
@@ -161,6 +166,8 @@ plt.plot(x, np.sqrt(np.abs(x)), color='#005EA5'); plt.grid(True, alpha=0.3); plt
 ```
 
 Deux fonctions élémentaires.
+:::
+
 :::
 
 La @fig-duo regroupe les deux sous-figures @fig-duo-a et @fig-duo-b. La dernière
@@ -191,9 +198,10 @@ Exemple de figure TikZ insérée en LaTeX brut.
 :::
 ````
 
-Rendu :
+::: {.render-demo}
+**Rendu :**
 
-:::{#fig-tikz fig-pos='h'}
+:::{#fig-tikz fig-pos='H'}
 ```{=latex}
 \centering
 \begin{tikzpicture}
@@ -208,6 +216,8 @@ Rendu :
 :::
 
 Exemple de figure TikZ insérée en LaTeX brut.
+:::
+
 :::
 
 ::: {.callout-tip}

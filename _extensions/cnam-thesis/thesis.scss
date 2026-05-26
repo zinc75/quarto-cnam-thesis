@@ -823,6 +823,30 @@ div.sourceCode pre {
   }
 }
 
+// ── Render-demo blocks — visual frame around "Rendu :" + rendered example ────
+// A light top rule and bottom rule bracket the rendered output.
+// In PDF the rules are injected by the cnam-thesis.lua Div handler (no CSS needed).
+// Un filet léger haut et bas encadre le rendu. En PDF, les filets sont injectés
+// par le filtre Lua ; en HTML, les bordures CSS suffisent.
+
+.render-demo {
+  border-top: 1px solid rgba(0, 0, 0, 0.10);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+  padding: 0.6rem 0 0.7rem;
+  margin: 0.2rem 0 1.1rem;
+
+  // "Rendu :" label — always the first paragraph inside the div.
+  // Label « Rendu : » — toujours le premier paragraphe dans le div.
+  > p:first-child {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: darken($code-accent, 8%);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.55rem;
+  }
+}
+
 // ── Previous / next chapter navigation ───────────────────────────────────────
 // Moved inside main.content by repositionPageNav() (header-setup.html) so it
 // inherits the content column width rather than spanning all three flex columns.

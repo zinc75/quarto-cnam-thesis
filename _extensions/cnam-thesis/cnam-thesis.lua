@@ -347,13 +347,39 @@ local pass2 = {
   end
 }
 
--- Pass 3: inject language label for styled code blocks in PDF.
+-- Pass 3: handle .render-demo divs + inject language label for styled code blocks.
+--
+-- .render-demo: a fenced div wrapping a "Rendu :" label + rendered example.
+--   HTML → kept as-is (CSS adds border-top/border-bottom).
+--   LaTeX → unwrapped; thin \rule injected before and after the content so
+--           floats inside are free to move normally (no boxing). /
+-- .render-demo : un div encadrant le label « Rendu : » et son contenu rendu.
+--   HTML → conservé tel quel (CSS ajoute les bordures haut/bas).
+--   LaTeX → dé-wrappé ; \rule fin injecté avant et après — les flottants
+--           à l'intérieur restent libres de se déplacer (pas de boîte).
 -- Emits \def\CodeBlockLangLabel{lang} as a RawBlock immediately before each
 -- CodeBlock so that the Shaded tcolorbox in template.tex can display the
 -- language name in its title bar. Empty string when no language is declared. /
 -- Injecte \def\CodeBlockLangLabel{lang} avant chaque CodeBlock en LaTeX.
 -- Vide si aucun langage n'est déclaré → Shaded sans bandeau titre.
 local pass3 = {
+  Div = function(el)
+    if not el.classes:includes("render-demo") then return el end
+    if FORMAT ~= "latex" then return el end
+    -- Thin light-gray rule (xcolor black!15) — not a box, just a paragraph-level
+    -- rule so LaTeX floats inside the content can move freely. /
+    -- Règle fine gris clair — pas une boîte, les flottants dans le contenu restent libres.
+    local rule_tex = "\\vspace{4pt}\\noindent{\\color{black!15}\\rule{\\linewidth}{0.3pt}}\\vspace{4pt}"
+    local top_rule = pandoc.RawBlock("latex", rule_tex)
+    local bot_rule = pandoc.RawBlock("latex", rule_tex)
+    local blocks = pandoc.List({ top_rule })
+    for _, b in ipairs(el.content) do
+      blocks:insert(b)
+    end
+    blocks:insert(bot_rule)
+    return blocks   -- list of blocks, not a Div — floats work normally
+  end,
+
   CodeBlock = function(el)
     if FORMAT ~= "latex" then return el end
     -- Skip internal Quarto classes (quarto-*); they produce no Shaded block. /

@@ -82,8 +82,10 @@ cible avec `{#sec-label}`, puis (2) y faire référence avec `@sec-label` :
 Comme expliqué en @sec-titres, les niveaux vont de `#` à `####`.
 ````
 
-Rendu : comme expliqué en @sec-titres, les niveaux vont de `#` à `####`. Quarto
+::: {.render-demo}
+**Rendu :** comme expliqué en @sec-titres, les niveaux vont de `#` à `####`. Quarto
 résout automatiquement le numéro et le lien hypertexte dans les deux formats.
+:::
 
 ::: {.callout-tip}
 ## Convention de nommage des labels
@@ -122,8 +124,10 @@ déborder lui aussi selon la mise en page.
 :::
 ````
 
-Rendu : **gras**, *italique*, ***gras italique***, `code inline`,
+::: {.render-demo}
+**Rendu :** **gras**, *italique*, ***gras italique***, `code inline`,
 ~~barré~~, ^exposant^, ~indice~.
+:::
 
 ::: {.callout-important}
 ## Usage académique du gras et de l'italique
@@ -142,7 +146,9 @@ notation span avec la classe `.underline` :
 [texte souligné]{.underline}
 ````
 
-Rendu : [texte souligné]{.underline}.
+::: {.render-demo}
+**Rendu :** [texte souligné]{.underline}.
+:::
 
 En PDF, Pandoc génère `\underline{…}` ; en HTML, un `<span>` avec
 `text-decoration: underline`. La syntaxe `<u>texte</u>` fonctionne en HTML
@@ -168,7 +174,8 @@ hypertexte. Pour mettre en valeur un terme, utilisez `*italique*` ou `**gras**`.
    1. Sous-élément (indentation 3 espaces)
 ````
 
-Rendu :
+::: {.render-demo}
+**Rendu :**
 
 - Premier élément non ordonné
 - Deuxième élément
@@ -176,7 +183,7 @@ Rendu :
 
 1. Premier élément ordonné
 1. Deuxième élément
-  a. Sous-élément (indentation 3 espaces)
+   a. Sous-élément (indentation 3 espaces)
 
 ::: {.callout-note}
 ## Le numéro écrit n'a pas d'importance
@@ -214,7 +221,8 @@ pas d'importance (`X` fonctionne aussi) :
 - [ ] Soumettre au directeur de thèse
 ````
 
-Rendu :
+::: {.render-demo}
+**Rendu :**
 
 - [ ] Rédiger l'introduction
 - [x] Choisir le template Quarto
@@ -249,7 +257,8 @@ au registre académique.
 > — Robert Bringhurst [@Bringhurst2004]
 ````
 
-Rendu :
+::: {.render-demo}
+**Rendu :**
 
 > « La typographie est le métier de donner une forme visuelle au langage. »
 >
@@ -275,8 +284,10 @@ Le Cnam a été fondé en 1794^[Décret de la Convention nationale du 19 vendém
 an III (10 octobre 1794).] à l'initiative de l'abbé Grégoire.
 ````
 
-Rendu : Le Cnam a été fondé en 1794^[Décret de la Convention nationale du 19 vendémiaire
+::: {.render-demo}
+**Rendu :** Le Cnam a été fondé en 1794^[Décret de la Convention nationale du 19 vendémiaire
 an III (10 octobre 1794).] à l'initiative de l'abbé Grégoire.
+:::
 
 **Syntaxe par référence** — l'appel de note et son contenu sont séparés. Utile
 pour les notes longues ou pour garder le texte principal lisible :
@@ -288,10 +299,12 @@ La thèse doit être déposée sur theses.fr[^depot] avant la soutenance.
     accessible sur <https://theses.fr>.
 ````
 
-Rendu : La thèse doit être déposée sur theses.fr[^depot] avant la soutenance.
+::: {.render-demo}
+**Rendu :** La thèse doit être déposée sur theses.fr[^depot] avant la soutenance.
 
 [^depot]: Portail national des thèses géré par l'{{< acrs abes >}},
     accessible sur <https://theses.fr>.
+:::
 
 En PDF, les deux syntaxes produisent une note numérotée en bas de page. En HTML,
 elles produisent une note de bas de page interactive (numéro cliquable avec

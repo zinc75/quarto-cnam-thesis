@@ -17,10 +17,12 @@ dont le système \TeX{} a été rendu accessible par Lamport avec \LaTeX{} [@Lam
 Quarto [@Allaire2022] unifie ces outils dans un environnement de publication moderne.
 ````
 
-Rendu : la composition typographique informatique a été révolutionnée par Knuth
+::: {.render-demo}
+**Rendu :** la composition typographique informatique a été révolutionnée par Knuth
 [@Knuth1984], dont le système \TeX{} a été rendu accessible par Lamport avec \LaTeX{}
 [@Lamport1994]. Quarto [@Allaire2022] unifie ces outils dans un environnement de
 publication moderne.
+:::
 
 ### Références multiples
 
@@ -29,8 +31,10 @@ Les outils de visualisation Python [@Hunter2007] et les ouvrages de référence
 typographiques [@Bringhurst2004; @Mittelbach2023] complètent la palette de l'auteur.
 ````
 
-Rendu : les outils de visualisation Python [@Hunter2007] et les ouvrages de référence
+::: {.render-demo}
+**Rendu :** les outils de visualisation Python [@Hunter2007] et les ouvrages de référence
 typographiques [@Bringhurst2004; @Mittelbach2023] complètent la palette de l'auteur.
+:::
 
 ::: {.callout-warning}
 ## Toujours utiliser `[@clé]` avec les crochets
@@ -91,8 +95,10 @@ Le format {{</* acrf qmd */>}} est le format natif de Quarto.
 La numérotation {{< acrf toc >}} est générée automatiquement par Quarto.
 ````
 
-Rendu : le {{< acrs cnam >}} ({{< acrl cnam >}}) a été fondé en 1794. Le format
+::: {.render-demo}
+**Rendu :** le {{< acrs cnam >}} ({{< acrl cnam >}}) a été fondé en 1794. Le format
 {{< acrf qmd >}} est le format natif de Quarto.
+:::
 
 ::: {.callout-note}
 ## Comportement PDF vs HTML

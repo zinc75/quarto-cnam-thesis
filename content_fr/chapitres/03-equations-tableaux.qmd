@@ -14,8 +14,10 @@ La transformée de Fourier d'une fonction $f$ est définie par
 $\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x\xi}\,\mathrm{d}x$.
 ````
 
-Rendu : la transformée de Fourier d'une fonction $f$ est définie par
+::: {.render-demo}
+**Rendu :** la transformée de Fourier d'une fonction $f$ est définie par
 $\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x\xi}\,\mathrm{d}x$.
+:::
 
 ::: {.callout-tip}
 ## Espaces fins en mathématiques
@@ -38,11 +40,14 @@ $$ {#eq-schrodinger}
 L'équation de Schrödinger (@eq-schrodinger) décrit l'évolution temporelle…
 ````
 
-Rendu :
+::: {.render-demo}
+**Rendu :**
 
 $$
 i\hbar\frac{\partial \Psi}{\partial t} = \hat{H}\Psi
 $$ {#eq-schrodinger}
+
+:::
 
 L'équation de Schrödinger (@eq-schrodinger) décrit l'évolution temporelle d'un
 système quantique.
