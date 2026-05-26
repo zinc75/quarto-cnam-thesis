@@ -173,7 +173,7 @@ Certaines figures complexes ne peuvent être générées qu'en LaTeX (TikZ, PGFp
 d'un contenu de remplacement visible en HTML :
 
 ````markdown
-:::{#fig-tikz}
+:::{#fig-tikz fig-pos='h'}
 ```{=latex}
 \centering
 \begin{tikzpicture}
@@ -193,18 +193,21 @@ Exemple de figure TikZ insérée en LaTeX brut.
 
 Rendu :
 
-:::{#fig-tikz}
+:::{#fig-tikz fig-pos='h'}
 ```{=latex}
 \centering
-\fbox{\rule{0pt}{2.5cm}\rule{9cm}{0pt}}
-\par\smallskip\textit{Figure TikZ (placeholder — remplacer par le vrai code TikZ)}
+\begin{tikzpicture}
+  \draw[thick, ->] (0,0) -- (3,0) node[right] {$x$};
+  \draw[thick, ->] (0,0) -- (0,2) node[above] {$y$};
+  \draw[blue, thick] plot[domain=0:2.8, samples=50] (\x, {sin(\x r)});
+\end{tikzpicture}
 ```
 
 ::: {.content-visible when-format="html"}
-*(Figure TikZ/PGFplots — disponible dans la version PDF uniquement)*
+*(Figure TikZ — disponible dans la version PDF uniquement)*
 :::
 
-Exemple d'une figure LaTeX brut référençable.
+Exemple de figure TikZ insérée en LaTeX brut.
 :::
 
 ::: {.callout-tip}
@@ -218,4 +221,61 @@ en fichier `.pdf` standalone, puis à les inclure comme une image normale :
 ```
 
 Cela évite les problèmes de packages en conflit et accélère la compilation.
+:::
+
+## Positionnement des flottants (PDF) {#sec-float-pos}
+
+En LaTeX, les figures et les tables sont des *flottants* : LaTeX décide de leur
+position pour obtenir la meilleure mise en page possible. L'attribut `fig-pos`
+(figures) ou `tbl-pos` (tables) permet de lui donner des instructions.
+
+````markdown
+![Légende.](../../images/Cnam.jpg){#fig-ex fig-pos='tb'}
+````
+
+Les spécificateurs se combinent librement dans une chaîne :
+
+| Spécificateur | Signification |
+|:---:|:---|
+| `h` | *here* — à l'endroit exact dans le texte (si la place le permet) |
+| `t` | *top* — en haut de la page courante ou suivante |
+| `b` | *bottom* — en bas de la page courante ou suivante |
+| `p` | *page* — sur une page dédiée aux flottants |
+| `!` | Ignore les contraintes internes de LaTeX (densité, nombre de flottants) |
+| `H` | Force le placement *ici*, sans aucun flottement (nécessite `\usepackage{float}`) |
+
+La valeur par défaut de Quarto est `tbp`. Pour un chunk Python, le spécificateur
+se passe en option de cellule :
+
+````markdown
+```{{python}}
+#| label: fig-python
+#| fig-cap: "Ma figure."
+#| fig-pos: 'h'
+```
+````
+
+Pour définir un spécificateur par défaut sur tout le document, ajouter dans
+`_quarto.yml` :
+
+````yaml
+fig-pos: 'H'
+````
+
+::: {.callout-warning}
+## `h` n'est pas une garantie
+
+Le spécificateur `h` demande à LaTeX de placer le flottant *ici si possible*, mais
+LaTeX peut l'ignorer si la place est insuffisante. La combinaison `ht` (ici, puis
+haut de page) est généralement plus robuste. `H` force le placement sans condition,
+mais peut créer des pages presque vides si la figure est grande — à réserver aux
+cas où la position est vraiment critique.
+:::
+
+::: {.callout-note}
+## Les flottants ne s'appliquent qu'au PDF
+
+En HTML, `fig-pos` et `tbl-pos` sont ignorés : les figures et tableaux sont
+insérés dans le flux du document à leur point d'insertion, comme tout autre
+élément.
 :::
