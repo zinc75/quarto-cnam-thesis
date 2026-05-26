@@ -1,0 +1,62 @@
+{
+  "Declare acronym": {
+    "prefix": "cnam-acr",
+    "body": "{{< acr ${1:label} ${2:ABBR} \"${3:Full form}\" >}}",
+    "description": "Declare a new acronym entry (place in glossaire-entries.qmd)"
+  },
+  "Declare glossary term": {
+    "prefix": "cnam-terme",
+    "body": "{{< terme ${1:label} \"${2:word}\" \"${3:Definition}\" >}}",
+    "description": "Declare a new glossary term (place in glossaire-entries.qmd)"
+  },
+  "Reference glossary entry (auto)": {
+    "prefix": "cnam-gls",
+    "body": "{{< gls ${1:label} >}}",
+    "description": "Reference a glossary entry — first use expands to full form, then abbreviation (PDF: \\gls)"
+  },
+  "Reference acronym — short form": {
+    "prefix": "cnam-acrs",
+    "body": "{{< acrs ${1:label} >}}",
+    "description": "Always renders the abbreviation (PDF: \\acrshort)"
+  },
+  "Reference acronym — long form": {
+    "prefix": "cnam-acrl",
+    "body": "{{< acrl ${1:label} >}}",
+    "description": "Always renders the expanded form (PDF: \\acrlong)"
+  },
+  "Reference acronym — full form": {
+    "prefix": "cnam-acrf",
+    "body": "{{< acrf ${1:label} >}}",
+    "description": "Renders 'Long form (ABBR)' (PDF: \\acrfull)"
+  },
+  "Jury table (HTML)": {
+    "prefix": "cnam-jury-html",
+    "body": "{{< jury-html >}}",
+    "description": "Renders the jury table in HTML output (no-op in PDF)"
+  },
+  "Cnam logos (HTML)": {
+    "prefix": "cnam-logos",
+    "body": "{{< cnam-logos >}}",
+    "description": "Renders the Cnam logo bar in HTML (no-op in PDF)"
+  },
+  "Glossary table — all (HTML)": {
+    "prefix": "cnam-gloss-html",
+    "body": "{{< gloss-html >}}",
+    "description": "Renders all glossary entries as an HTML table (no-op in PDF)"
+  },
+  "Glossary table — acronyms only (HTML)": {
+    "prefix": "cnam-gloss-acronyms",
+    "body": "{{< gloss-html acronym >}}",
+    "description": "Renders acronym entries only as an HTML table"
+  },
+  "Glossary table — terms only (HTML)": {
+    "prefix": "cnam-gloss-terms",
+    "body": "{{< gloss-html main >}}",
+    "description": "Renders glossary term entries only as an HTML table"
+  },
+  "PDF download link (HTML)": {
+    "prefix": "cnam-pdf-link",
+    "body": "{{< pdf-link >}}",
+    "description": "Renders a PDF download button in HTML (no-op in PDF)"
+  }
+}

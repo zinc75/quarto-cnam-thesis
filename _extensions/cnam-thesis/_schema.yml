@@ -1,0 +1,179 @@
+# Schema for the cnam-thesis extension
+# https://m.canouil.dev/quarto-wizard/reference/schema-specification.html
+
+$schema: https://m.canouil.dev/quarto-wizard/assets/schema/v1/extension-schema.json
+
+options:
+  thesis-lang:
+    type: string
+    default: "fr"
+    description: "Language of the thesis body content ('fr' or 'en'). Controls babel language, section names, and TOC title."
+    enum:
+      - fr
+      - en
+  date-soutenance:
+    type: string
+    description: "Defence date displayed on the cover page (e.g. '12 juin 2026'). Do NOT use the standard `date:` key."
+  discipline:
+    type: string
+    description: "CNU section and discipline (e.g. '60e section CNU — Mécanique, génie mécanique, génie civil')."
+  specialite:
+    type: string
+    description: "Doctoral speciality (e.g. 'Acoustique')."
+  ecole-doctorale:
+    type: string
+    description: "Name of the doctoral school (e.g. 'Sciences des Métiers de l'Ingénieur')."
+  laboratoire:
+    type: string
+    description: "Research laboratory name and location."
+  directeur:
+    type: string
+    description: "Thesis supervisor (full name, title, institution)."
+  cotutelle:
+    type: boolean
+    default: false
+    description: "When true, displays the co-institution logo on the cover page and HTML header."
+  dedicace:
+    type: string
+    description: "Dedication text displayed on the dedication page."
+  jury:
+    type: array
+    description: "Jury members. Each entry requires 'nom', 'titre', and 'role'."
+    items:
+      type: object
+      properties:
+        nom:
+          type: string
+          description: "Full name of the jury member."
+        titre:
+          type: string
+          description: "Title, position, and institution of the jury member."
+        role:
+          type: string
+          description: "Role in the jury (e.g. 'Président du jury', 'Rapporteur', 'Évaluateur', 'Directeur de thèse')."
+  header-prefix:
+    type: string
+    description: "Override the HTML topbar label prefix (default: 'Thèse de doctorat' / 'PhD Thesis'). Only affects the topbar."
+  minitoc-newpage:
+    type: boolean
+    default: false
+    description: "When true, inserts \\newpage after each chapter mini-table of contents (PDF only)."
+  chapter-openright:
+    type: boolean
+    default: true
+    description: "When true (default), chapters start on a right-hand page (recto). Set to false for a digital/screen version."
+  index:
+    type: boolean
+    default: false
+    description: "When true, generates a back-of-book index. Use \\index{term} in LaTeX content."
+  glossaire:
+    type: boolean
+    default: true
+    description: "When true, loads the LaTeX glossaries package. glossaire-entries.qmd must be listed in chapters."
+  pagestyle-sections:
+    type: boolean
+    default: true
+    description: "When true, uses differentiated page numbering: roman for front matter, arabic for body, Roman for appendices."
+  bibliography-manual:
+    type: boolean
+    default: true
+    description: "When true, the bibliography is placed manually via backmatter/bibliography.qmd. When false, it is placed automatically at the end of the document."
+  comments:
+    type: object
+    description: "Collaborative annotation settings (extension zinc75/quarto-comments)."
+    properties:
+      enabled:
+        type: boolean
+        default: false
+        description: "When false, all comments are hidden in the output."
+      show_author:
+        type: boolean
+        default: true
+        description: "When false, author labels are hidden on comment callouts."
+      authors:
+        type: object
+        description: "Map of author keys to colour settings. Each key needs 'name', 'color_html', and 'color_latex'."
+
+shortcodes:
+  acr:
+    description: "Declare a new acronym entry for the glossary. Place all declarations in a single glossaire-entries.qmd file."
+    arguments:
+      - name: label
+        type: string
+        required: true
+        description: "Unique identifier for this acronym (used by {{< gls >}}, {{< acrs >}}, etc.)."
+      - name: abbr
+        type: string
+        required: true
+        description: "The abbreviation (e.g. 'AI')."
+      - name: full-form
+        type: string
+        required: true
+        description: "The expanded form (e.g. 'artificial intelligence')."
+
+  terme:
+    description: "Declare a new glossary term. Place all declarations in a single glossaire-entries.qmd file."
+    arguments:
+      - name: label
+        type: string
+        required: true
+        description: "Unique identifier for this term."
+      - name: word
+        type: string
+        required: true
+        description: "The term as it appears in the glossary (e.g. 'ontologie')."
+      - name: definition
+        type: string
+        required: true
+        description: "Definition of the term."
+
+  gls:
+    description: "Reference a glossary entry. PDF: \\gls{label} (first use expands to full form, then abbreviation). HTML: full form."
+    arguments:
+      - name: label
+        type: string
+        required: true
+        description: "Label of the acronym or term declared with {{< acr >}} or {{< terme >}}."
+
+  acrs:
+    description: "Always renders the short form (abbreviation) of an acronym. PDF: \\acrshort{label}."
+    arguments:
+      - name: label
+        type: string
+        required: true
+        description: "Label of the acronym declared with {{< acr >}}."
+
+  acrl:
+    description: "Always renders the long form of an acronym. PDF: \\acrlong{label}."
+    arguments:
+      - name: label
+        type: string
+        required: true
+        description: "Label of the acronym declared with {{< acr >}}."
+
+  acrf:
+    description: "Renders the full form of an acronym as 'Long form (ABBR)'. PDF: \\acrfull{label}."
+    arguments:
+      - name: label
+        type: string
+        required: true
+        description: "Label of the acronym declared with {{< acr >}}."
+
+  jury-html:
+    description: "Renders the jury table in HTML output. Does nothing in PDF (handled by before-body.tex). Place in the front matter page."
+
+  cnam-logos:
+    description: "Renders the Cnam logo bar in HTML. Does nothing in PDF. Shows co-institution logo when cotutelle: true."
+
+  gloss-html:
+    description: "Renders the glossary or acronym list as an HTML table. Does nothing in PDF (\\printnoidxglossary handles it)."
+    arguments:
+      - name: type
+        type: string
+        description: "Filter the table: 'acronym' for acronyms only, 'main' for glossary terms only. Omit for all entries."
+        enum:
+          - acronym
+          - main
+
+  pdf-link:
+    description: "Renders a PDF download button in HTML. Does nothing in PDF. The filename is derived from the book output-file and the author name slug."
