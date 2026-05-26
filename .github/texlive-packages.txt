@@ -16,7 +16,6 @@ babel-french
 titlesec
 changepage
 setspace
-indentfirst
 tocloft
 minitoc
 
@@ -27,7 +26,6 @@ diagbox
 caption
 
 # Figures and floats
-rotating
 pdfpages
 eso-pic
 
