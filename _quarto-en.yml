@@ -13,6 +13,8 @@ project:
 
 book:
   output-file: these_en
+  title: "User guide for the Quarto Cnam thesis template"
+  subtitle: "A self-documenting thesis document"
   chapters:
     - index.qmd                                         # entry point, do not remove / point d'entrée, ne pas supprimer
     - content_en/frontmatter/acknowledgements.qmd
