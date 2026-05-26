@@ -30,6 +30,12 @@ pdfa.xmpi
 # Generated cover image (extracted from PDF page 1 by postrender)
 images/cover.png
 
+# Generated landing page (rendered from _landing.qmd by the CI workflow)
+_landing.html
+
+# Assembled GitHub Pages site (built by the CI workflow)
+_site/
+
 # macOS
 .DS_Store
 

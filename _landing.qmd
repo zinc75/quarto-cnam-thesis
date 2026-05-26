@@ -1,0 +1,84 @@
+---
+title: "quarto-cnam-thesis"
+subtitle: "Template Quarto pour les thèses du Cnam · Quarto template for Cnam theses"
+lang: fr
+format:
+  html:
+    theme: [cosmo, _extensions/cnam-thesis/thesis.scss]
+    embed-resources: true
+    toc: false
+    page-layout: article
+execute:
+  echo: false
+  eval: false
+---
+
+Template Quarto permettant aux doctorants du Conservatoire national des arts et métiers
+de produire, depuis une seule source Markdown, un **PDF/A-1b** conforme à la maquette
+institutionnelle et un **HTML navigable** pour le partage et l'accessibilité.
+
+*A Quarto template for Cnam PhD students, producing an archivable PDF/A-1b and a
+navigable HTML output from the same Markdown source.*
+
+```{=html}
+<div class="row g-4 my-4">
+
+  <div class="col-12 col-md-6">
+    <div class="card h-100 shadow-sm position-relative">
+      <div class="card-body text-center py-4">
+        <p style="font-size:2.2rem; margin:0 0 .5rem">🇫🇷</p>
+        <h3 class="card-title" style="color:#d20025;">Documentation française</h3>
+        <p class="card-text text-muted">
+          Guide complet : structure, figures, équations,<br>
+          tableaux, callouts, code Python, références.
+        </p>
+        <a href="fr/" class="btn btn-primary mt-2 stretched-link">Lire le guide</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6">
+    <div class="card h-100 shadow-sm position-relative">
+      <div class="card-body text-center py-4">
+        <p style="font-size:2.2rem; margin:0 0 .5rem">🇬🇧</p>
+        <h3 class="card-title" style="color:#d20025;">English documentation</h3>
+        <p class="card-text text-muted">
+          Full guide: structure, figures, equations,<br>
+          tables, callouts, Python code, references.
+        </p>
+        <a href="en/" class="btn btn-primary mt-2 stretched-link">Read the guide</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+```
+
+## Installation
+
+```bash
+quarto use template zinc75/quarto-cnam-thesis
+```
+
+Choisir le profil de langue pour la rédaction et le rendu :
+*Choose the language profile to write and render:*
+
+```bash
+quarto render --profile fr   # → PDF + HTML en français  /  in French
+quarto render --profile en   # → PDF + HTML in English   /  en anglais
+```
+
+---
+
+```{=html}
+<p class="mt-3">
+  <a class="btn btn-outline-secondary btn-sm me-2"
+     href="https://github.com/zinc75/quarto-cnam-thesis#readme">
+    README (English)
+  </a>
+  <a class="btn btn-outline-secondary btn-sm"
+     href="https://github.com/zinc75/quarto-cnam-thesis/blob/main/README.fr.md">
+    README (Français)
+  </a>
+</p>
+```

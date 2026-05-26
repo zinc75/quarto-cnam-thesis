@@ -1,0 +1,127 @@
+# ==============================================================================
+# docs.yml — Build FR + EN documentation and deploy to GitHub Pages
+# Déclenché à chaque push sur main ; déclenchement manuel aussi disponible.
+# Triggered on every push to main; manual trigger also available.
+#
+# Prerequisites / Prérequis :
+#   • In repo Settings → Pages → Source: select "GitHub Actions"
+#   • Repo must be public, or GitHub Pages must be enabled for private repos
+# ==============================================================================
+
+name: Build and deploy documentation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Required for the native GitHub Pages deployment API.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never cancel an in-progress deployment — wait for it to finish.
+# Ne jamais annuler un déploiement en cours — attendre qu'il se termine.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # ── Source ──────────────────────────────────────────────────────────────
+      - uses: actions/checkout@v4
+
+      # ── Python ──────────────────────────────────────────────────────────────
+      # uv creates .venv/ at project root; Quarto auto-detects it — no manual
+      # activation needed before quarto render.
+      # uv crée .venv/ à la racine ; Quarto le détecte automatiquement.
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Create .venv and install Python dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+
+      # ── Quarto ──────────────────────────────────────────────────────────────
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      # ── LaTeX (TinyTeX) ──────────────────────────────────────────────────────
+      # Cache the full TinyTeX installation keyed on the package list.
+      # First run ≈ 3–5 min; subsequent runs: cache restore in ~30 s.
+      # Cache de l'installation TinyTeX indexé sur la liste de paquets.
+      # Première exécution ≈ 3–5 min ; suivantes : restauration en ~30 s.
+      - name: Cache TinyTeX
+        id: cache-tinytex
+        uses: actions/cache@v4
+        with:
+          path: ~/.TinyTeX
+          key: tinytex-${{ hashFiles('.github/texlive-packages.txt') }}
+          restore-keys: tinytex-
+
+      - name: Install TinyTeX
+        if: steps.cache-tinytex.outputs.cache-hit != 'true'
+        run: quarto install tinytex --no-prompt
+
+      # TinyTeX binaries must be on PATH whether freshly installed or from cache.
+      # Les binaires TinyTeX doivent être dans le PATH dans les deux cas.
+      - name: Add TinyTeX to PATH
+        run: echo "$HOME/.TinyTeX/bin/$(uname -m)-linux" >> $GITHUB_PATH
+
+      - name: Install LaTeX packages
+        if: steps.cache-tinytex.outputs.cache-hit != 'true'
+        run: |
+          tlmgr install \
+            $(grep -v '^\s*#' .github/texlive-packages.txt \
+              | grep -v '^\s*$' \
+              | tr '\n' ' ')
+
+      # ── System dependencies ──────────────────────────────────────────────────
+      # pdftoppm (poppler-utils): used by postrender.sh to generate images/cover.png
+      # from PDF page 1.
+      - name: Install poppler-utils
+        run: sudo apt-get install -y --no-install-recommends poppler-utils
+
+      # ── Render ──────────────────────────────────────────────────────────────
+      - name: Make postrender script executable
+        run: chmod +x _scripts/postrender.sh
+
+      - name: Render FR profile
+        run: quarto render --profile fr
+
+      - name: Render EN profile
+        run: quarto render --profile en
+
+      - name: Render landing page
+        run: quarto render _landing.qmd
+
+      # ── Assemble _site/ ──────────────────────────────────────────────────────
+      # _site/           ← landing page (index.html, self-contained)
+      # _site/fr/        ← _these_fr/   (French Quarto book)
+      # _site/en/        ← _thesis-en/  (English Quarto book)
+      - name: Assemble site
+        run: |
+          mkdir -p _site/fr _site/en
+          cp -r _these_fr/.  _site/fr/
+          cp -r _thesis-en/. _site/en/
+          mv _landing.html   _site/index.html
+
+      # ── Deploy ──────────────────────────────────────────────────────────────
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

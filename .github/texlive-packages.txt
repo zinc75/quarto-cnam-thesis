@@ -1,0 +1,64 @@
+# LaTeX packages required by _extensions/cnam-thesis/template.tex
+# that are NOT included in Quarto's default TinyTeX installation.
+# Installed by the CI workflow; one package name per non-comment line.
+
+# PDF/A compliance
+pdfx
+colorprofiles
+
+# Fonts — Palatino text (newpxtext) + math (newpxmath)
+newpx
+
+# Language
+babel-french
+
+# Layout and typography
+titlesec
+changepage
+setspace
+indentfirst
+tocloft
+minitoc
+
+# Tables
+booktabs
+multirow
+diagbox
+caption
+
+# Figures and floats
+rotating
+pdfpages
+eso-pic
+
+# Boxes and frames
+mdframed
+tcolorbox
+pgf
+
+# Text formatting
+soul
+ulem
+
+# Annotations / comments
+todonotes
+
+# Code listings
+fvextra
+
+# Algorithms
+algorithms
+
+# Page references
+lastpage
+
+# Glossary and acronyms
+glossaries
+
+# Bibliography
+natbib
+
+# Miscellaneous
+units
+zref
+needspace
