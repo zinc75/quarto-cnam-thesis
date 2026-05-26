@@ -9,6 +9,7 @@ rendre le template autonome comme documentation.
 
 | Fonctionnalité | Syntaxe clé | Chapitre |
 |:---|:---|:---:|
+| ===  | | |
 | [Structure]{rs=4} | Hiérarchie `#` / `##` / `###` / `####` | 1 |
 | ^ | `{.unnumbered}`, `{.toc-black}` | 1 |
 | ^ | `{#sec-label}` + `@sec-label` | 1 |

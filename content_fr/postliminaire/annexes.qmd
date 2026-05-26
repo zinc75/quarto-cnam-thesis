@@ -1,4 +1,4 @@
-# Configuration complète de `_quarto.yml` {.appendix}
+# Configuration complète de `_quarto.yml` {.appendix #sec-yaml-config-file}
 
 Cette annexe reproduit et commente le fichier `_quarto.yml` dans son intégralité,
 pour référence rapide.

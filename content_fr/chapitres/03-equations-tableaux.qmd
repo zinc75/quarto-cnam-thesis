@@ -244,7 +244,7 @@ La légende, précédée de `: `, doit être placée immédiatement après le ta
 
 : Préfixes de cross-références Quarto. {#tbl-crossref}
 
-Le @tbl-crossref récapitule les quatre préfixes à connaître.
+La @tbl-crossref récapitule les quatre préfixes à connaître.
 
 ::: {.callout-tip}
 ## Alignement des colonnes
@@ -272,7 +272,15 @@ capacités aux tableaux Markdown :
 - **Rowspan** : `[texte]{rs=N}` fusionne N lignes ; `^` continue la cellule fusionnée
 - **Colspan** : `[texte]{cs=N}` fusionne N colonnes
 - **Midrules** : `===` insère un séparateur horizontal ; `===2-4` une règle partielle
-  sur les colonnes 2 à 4
+  sur les colonnes 2 à 4 .
+
+::: {.callout-tip}
+## Documentation complète de l'extension `quartable`
+
+Pour voir toutes les fonctionnalités de cette extension (inspirée du package `booktabs` LaTeX),
+consultez <https://github.com/zinc75/quarto-quartable/> et <https://zinc75.github.io/quarto-quartable/test_quartable.pdf/>.
+:::
+
 
 ````markdown
 | Famille             | Fonctionnalité       | Chapitre |

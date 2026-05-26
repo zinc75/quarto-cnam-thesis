@@ -67,7 +67,7 @@ La page d'accueil
 RStudio, terminal).
 
 Pour explorer plus loin toutes les fonctionnalités de Quarto (livres, sites,
-présentations, widgets interactifs…), le guide complet est disponible su
+présentations, widgets interactifs…), le guide complet est disponible sur
 <https://quarto.org/docs/guide/>.
 
 ::: {.callout-tip}

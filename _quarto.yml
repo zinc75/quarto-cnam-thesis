@@ -119,6 +119,8 @@ pagestyle-sections: true
 #         gérée automatiquement en fin de document par template.tex
 bibliography-manual: true
 
+code-line-numbers: true
+
 # ------------------------------------------------------------------------------
 # TO FILL IN — Collaborative comments / À REMPLIR — Commentaires collaboratifs
 # Extension zinc75/quarto-comments: {{< comment >}}, {{< todo >}}, {{< note >}},
