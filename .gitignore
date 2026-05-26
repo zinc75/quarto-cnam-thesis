@@ -27,6 +27,9 @@ pdfa.xmpi
 *.ilg
 *.ind
 
+# Generated cover image (extracted from PDF page 1 by postrender)
+images/cover.png
+
 # macOS
 .DS_Store
 
