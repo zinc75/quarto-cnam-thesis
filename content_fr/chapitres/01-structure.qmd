@@ -180,6 +180,43 @@ l'on insère ou déplace un élément. La même logique s'applique aux sous-list
 :::
 
 
+### Listes de tâches {#sec-tasklists}
+
+La syntaxe `- [ ]` / `- [x]` produit une liste de tâches. La casse de `x` n'a
+pas d'importance (`X` fonctionne aussi) :
+
+````markdown
+- [ ] Rédiger l'introduction
+- [x] Choisir le template Quarto
+- [ ] Soumettre au directeur de thèse
+````
+
+Rendu :
+
+- [ ] Rédiger l'introduction
+- [x] Choisir le template Quarto
+- [ ] Soumettre au directeur de thèse
+
+::: {.callout-note}
+## Rendu différent selon le format de sortie
+
+En **HTML**, Quarto génère de vraies cases à cocher `<input type="checkbox">`
+(désactivées, non interactives).
+
+En **PDF** (pdflatex), Pandoc utilise les symboles mathématiques `$\square$`
+(case vide) et `$\boxtimes$` (case cochée) du package `amssymb`. L'apparence
+est correcte mais typographiquement différente des cases HTML.
+:::
+
+::: {.callout-caution}
+## Usage dans une thèse
+
+Les listes de tâches sont adaptées aux notes de travail, aux annexes
+méthodologiques, ou à un README. Dans le corps de la thèse, préférez
+une liste non ordonnée classique accompagnée d'un verbe d'état
+(« complété », « en cours »…) : c'est plus neutre et plus conforme
+au registre académique.
+:::
 
 ### Blockquotes
 
