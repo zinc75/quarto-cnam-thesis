@@ -399,9 +399,19 @@ local pass3 = {
       para.content = new_inlines
       content[1] = para
     end
-    local blocks = pandoc.List({ top_rule })
+    -- Wrap everything in adjustwidth so the block (rules + content) is narrower
+    -- than the surrounding text. \linewidth inside adjustwidth is updated, so the
+    -- TikZ rules automatically narrow to match. Floats placed with [H] will still
+    -- span the full text width (LaTeX float mechanics ignore list indentation). /
+    -- adjustwidth rétrécit l'ensemble (filets + contenu) ; \linewidth est mis à jour
+    -- donc les filets TikZ s'adaptent. Les flottants [H] gardent la pleine largeur.
+    local adj_begin = pandoc.RawBlock("latex",
+      "\\begin{adjustwidth}{1.2cm}{1.2cm}")
+    local adj_end   = pandoc.RawBlock("latex", "\\end{adjustwidth}")
+    local blocks = pandoc.List({ adj_begin, top_rule })
     for _, b in ipairs(content) do blocks:insert(b) end
     blocks:insert(bot_rule)
+    blocks:insert(adj_end)
     return blocks
   end,
 
