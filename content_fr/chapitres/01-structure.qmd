@@ -200,3 +200,45 @@ par Quarto mais produit un rendu sans style visuel particulier en pdflatex. Si v
 avez besoin de listes de définitions mises en forme, utilisez un tableau Markdown
 (voir @sec-tableaux-simples) ou un environnement LaTeX brut.
 :::
+
+### Notes de bas de page {#sec-footnotes}
+
+Quarto propose deux syntaxes pour les notes de bas de page.
+
+**Syntaxe inline** — la note est écrite directement dans le texte, entre `^[` et `]` :
+
+````markdown
+Le Cnam a été fondé en 1794^[Décret de la Convention nationale du 19 vendémiaire
+an III (10 octobre 1794).] à l'initiative de l'abbé Grégoire.
+````
+
+Rendu : Le Cnam a été fondé en 1794^[Décret de la Convention nationale du 19 vendémiaire
+an III (10 octobre 1794).] à l'initiative de l'abbé Grégoire.
+
+**Syntaxe par référence** — l'appel de note et son contenu sont séparés. Utile
+pour les notes longues ou pour garder le texte principal lisible :
+
+````markdown
+La thèse doit être déposée sur theses.fr[^depot] avant la soutenance.
+
+[^depot]: Portail national des thèses géré par l'{{< acrs abes >}},
+    accessible sur <https://theses.fr>.
+````
+
+Rendu : La thèse doit être déposée sur theses.fr[^depot] avant la soutenance.
+
+[^depot]: Portail national des thèses géré par l'{{< acrs abes >}},
+    accessible sur <https://theses.fr>.
+
+En PDF, les deux syntaxes produisent une note numérotée en bas de page. En HTML,
+elles produisent une note de bas de page interactive (numéro cliquable avec
+renvoi vers l'appel de note).
+
+::: {.callout-tip}
+## Quelle syntaxe choisir ?
+
+Préférez la **syntaxe inline** `^[…]` pour les notes courtes (une phrase) — le
+contenu reste visible au fil de la rédaction. Utilisez la **syntaxe par référence**
+`[^label]` pour les notes longues ou multi-paragraphes, et pour éviter de surcharger
+visuellement la source Markdown quand la note dépasse deux lignes.
+:::
