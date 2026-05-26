@@ -838,12 +838,10 @@ div.sourceCode pre {
   // "Rendu :" label — always the first paragraph inside the div.
   // Label « Rendu : » — toujours le premier paragraphe dans le div.
   > p:first-child {
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: darken($code-accent, 8%);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 0.55rem;
+    margin-bottom: 0.5rem;
   }
 }
 
