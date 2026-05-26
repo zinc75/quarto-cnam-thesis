@@ -102,6 +102,7 @@ $endif$
 
 % Graphics
 \usepackage[pdftex]{graphicx}
+\usepackage{float}     % H specifier: forces float placement at exact position (fig-pos='H')
 \usepackage{rotating}
 \usepackage{pdfpages}
 \usepackage{eso-pic}
@@ -109,6 +110,8 @@ $endif$
 % Colours and boxes
 \usepackage{xcolor}
 \definecolor{redHESAM}{RGB}{210,0,37}
+\definecolor{lilacode}{RGB}{153,102,204}
+\definecolor{lavendercode}{RGB}{211,211,255}
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{tcolorbox}
 \tcbuselibrary{skins,breakable}   % required for Quarto callouts (enhanced jigsaw skin)
@@ -235,7 +238,7 @@ $highlighting-macros$
 % Title command: \faCode icon + "Code" + optional "(lang)" in teletype. /
 % Commande de titre : icône + « Code » + « (langage) » en chasse fixe si défini.
 \newcommand{\cnam@code@title}{%
-  \textcolor{redHESAM}{\faCode}\hspace{0.5em}%
+  \textcolor{lilacode}{\faCode}\hspace{0.5em}%
   Code%
   \ifx\CodeBlockLangLabel\@empty\else
     ~(\texttt{\CodeBlockLangLabel})%
@@ -248,10 +251,10 @@ $highlighting-macros$
   cnam@code/.style={
     enhanced jigsaw,
     breakable,
-    colback=shadecolor,          % gray tint keeps code readable / teinte grise pour la lisibilité
-    colbacktitle=redHESAM!10!white,
+    colback=lavendercode!10!white,          % gray tint keeps code readable / teinte grise pour la lisibilité
+    colbacktitle=lilacode!30!white,
     opacitybacktitle=0.6,
-    colframe=redHESAM,
+    colframe=lilacode,
     coltitle=black,
     fonttitle=\small,
     titlerule=0mm,
