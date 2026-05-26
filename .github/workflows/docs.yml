@@ -56,35 +56,16 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      # ── LaTeX (TinyTeX) ──────────────────────────────────────────────────────
-      # Cache the full TinyTeX installation keyed on the package list.
-      # First run ≈ 3–5 min; subsequent runs: cache restore in ~30 s.
-      # Cache de l'installation TinyTeX indexé sur la liste de paquets.
-      # Première exécution ≈ 3–5 min ; suivantes : restauration en ~30 s.
-      - name: Cache TinyTeX
-        id: cache-tinytex
-        uses: actions/cache@v4
+      # ── TeX Live (full) ───────────────────────────────────────────────────────
+      # scheme-full eliminates all missing-package issues; cache: true makes
+      # subsequent runs fast (~1–2 min after the first ~20 min install).
+      # scheme-full élimine les problèmes de paquets manquants ; le cache rend
+      # les runs suivants rapides (~1–2 min après la première installation ~20 min).
+      - name: Set up TeX Live
+        uses: teatimeguest/setup-texlive-action@v3
         with:
-          path: ~/.TinyTeX
-          key: tinytex-${{ hashFiles('.github/texlive-packages.txt') }}
-          restore-keys: tinytex-
-
-      - name: Install TinyTeX
-        if: steps.cache-tinytex.outputs.cache-hit != 'true'
-        run: quarto install tinytex --no-prompt
-
-      # TinyTeX binaries must be on PATH whether freshly installed or from cache.
-      # Les binaires TinyTeX doivent être dans le PATH dans les deux cas.
-      - name: Add TinyTeX to PATH
-        run: echo "$HOME/.TinyTeX/bin/$(uname -m)-linux" >> $GITHUB_PATH
-
-      - name: Install LaTeX packages
-        if: steps.cache-tinytex.outputs.cache-hit != 'true'
-        run: |
-          tlmgr install \
-            $(grep -v '^\s*#' .github/texlive-packages.txt \
-              | grep -v '^\s*$' \
-              | tr '\n' ' ')
+          packages: scheme-full
+          cache: true
 
       # ── System dependencies ──────────────────────────────────────────────────
       # pdftoppm (poppler-utils): used by postrender.sh to generate images/cover.png
