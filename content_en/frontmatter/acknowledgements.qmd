@@ -1,3 +1,23 @@
 # Acknowledgements {.unnumbered .toc-black}
 
-{{< lipsum 1 >}}
+This work would not have been possible without the unfailing support of Donald Knuth, whose
+*\TeX{}book* [@Knuth1984] has accompanied generations of doctoral students through long
+nights debugging their LaTeX code.
+I also thank Leslie Lamport for making TeX accessible to ordinary mortals with LaTeX
+[@Lamport1994], and the Quarto team — J.J. Allaire, Charles Teague, Carlos Scheidegger,
+and Yihui Xie — for making reproducible scientific publishing a reality [@Allaire2022].
+
+My thanks go to my doctoral supervisor, Abbé Henri Grégoire, whose 1794 vision — bringing
+the arts and crafts within everyone's reach — resonates with the ideals of free software.
+I doubt he anticipated PDF/A-1b, but the spirit is there.
+
+I thank the members of the jury for their time and availability, in particular
+M. Vaucanson, whose expertise in mechanical automata proved more relevant than it might
+seem for understanding the pdflatex compilation pipeline and the magic behind Pandoc and
+Lua filters.
+
+Finally, a heartfelt thought for all doctoral students at the Cnam and elsewhere who have
+opened a poorly constructed `.tex` template file for the first time and wondered why they
+had one too many left braces. This guide is for you: thanks to Quarto, writing becomes as
+simple as Markdown, yet with almost unlimited possibilities, and the elegance of generating
+the same document in multiple output formats through a modern approach.

@@ -1,0 +1,196 @@
+# References, glossary, and annotations {short-title="References"}
+
+This chapter presents the bibliographic citation system (IEEE style via
+`IEEEtran-francais.bst`), the glossary and acronym system, collaborative comments,
+and special front matter pages.
+
+## Bibliographic citations {#sec-citations}
+
+### Basic syntax
+
+Citations are inserted with `[@key]`. The key corresponds to the BibTeX identifier
+defined in `references.bib`:
+
+````markdown
+Computer typesetting was revolutionised by Knuth [@Knuth1984],
+whose \TeX{} system was made accessible by Lamport with \LaTeX{} [@Lamport1994].
+Quarto [@Allaire2022] unifies these tools in a modern publishing environment.
+````
+
+::: {.render-demo}
+**Output:** Computer typesetting was revolutionised by Knuth
+[@Knuth1984], whose \TeX{} system was made accessible by Lamport with \LaTeX{}
+[@Lamport1994]. Quarto [@Allaire2022] unifies these tools in a modern publishing
+environment.
+:::
+
+### Multiple references
+
+````markdown
+Python visualisation tools [@Hunter2007] and typographic reference works
+[@Bringhurst2004; @Mittelbach2023] complement the author's toolkit.
+````
+
+::: {.render-demo}
+**Output:** Python visualisation tools [@Hunter2007] and typographic reference works
+[@Bringhurst2004; @Mittelbach2023] complement the author's toolkit.
+:::
+
+::: {.callout-warning}
+## Always use `[@key]` with brackets
+
+The `IEEEtran-francais.bst` style uses `natbib`. The `@key` syntax without brackets
+calls `\citet{}` which is broken with IEEEtran — it produces the author name followed
+by `[?]`. **Always use `[@key]`** to obtain `[N]` (IEEE numbering).
+:::
+
+### The `references.bib` file
+
+The `references.bib` file must be located **at the project root**. Pandoc in natbib
+mode generates `\bibliography{references}` (without a path), and BibTeX looks for the
+file in the current directory. A file in `content_en/references.bib` will not be
+found.
+
+::: {.callout-tip}
+## Bibliography managers
+
+Zotero (with the Better BibTeX connector), JabRef, or Mendeley export directly to
+`.bib` format. The `@IEEEtranBSTCTL` entry at the top of the file configures the
+IEEEtran style (number of authors before "et al.", etc.) — do not remove it.
+:::
+
+## Glossary and acronyms {#sec-glossary}
+
+### Declaring entries in `glossaire-entries.qmd`
+
+All entries are declared in
+`content_en/frontmatter/glossaire-entries.qmd` via two shortcodes:
+
+````markdown
+{{</* acr label ABBREV "Full expansion" */>}}
+{{</* terme label "word" "Complete definition of the term" */>}}
+````
+
+The shortcodes automatically write `_glossaire-entries.tex` (read by LaTeX) and
+populate the HTML tables. Labels must be unique.
+
+### Using acronyms in the text
+
+Four shortcodes allow referencing an acronym in the desired form:
+
+| Shortcode | PDF output | HTML output |
+|:----------|:-----------|:------------|
+| `{{</* gls cnam */>}}` | short form (1st use: long) | short form |
+| `{{</* acrs cnam */>}}` | always short form | always short form |
+| `{{</* acrl cnam */>}}` | always long form | always long form |
+| `{{</* acrf cnam */>}}` | long (short) | long (short) |
+
+: Glossary reference shortcodes. {#tbl-gloss-shortcuts}
+
+Examples in context:
+
+````markdown
+The {{</* acrs cnam */>}} ({{</* acrl cnam */>}}) was founded in 1794.
+The {{</* acrf qmd */>}} format is Quarto's native format.
+The {{< acrf toc >}} is generated automatically by Quarto.
+````
+
+::: {.render-demo}
+**Output:** The {{< acrs cnam >}} ({{< acrl cnam >}}) was founded in 1794. The
+{{< acrf qmd >}} format is Quarto's native format.
+:::
+
+::: {.callout-note}
+## PDF vs HTML behaviour
+
+In PDF, `{{< gls label >}}` expands on the first occurrence (long form + abbreviation
+in parentheses) then uses the short form. In HTML, this first-occurrence logic is not
+handled by the shortcode — it always produces the short form. For consistency, prefer
+`{{< acrf label >}}` on the first occurrence in the text, and `{{< acrs label >}}`
+thereafter.
+:::
+
+## Collaborative comments (`quarto-comments`) {#sec-comments}
+
+### Configuration in `_quarto.yml`
+
+The `quarto-comments` extension (folder `_extensions/comments/`) is configured via
+the `comments:` key in `_quarto.yml`:
+
+````yaml
+comments:
+  enabled: true
+  show_author: true
+  authors:
+    author:
+      name: "Eric Bavu"
+      color_html: "#005EA5"
+      color_latex: "blue!20"
+    supervisor:
+      name: "Abbé Grégoire"
+      color_html: "#D55E00"
+      color_latex: "orange!30"
+````
+
+### The four comment types
+
+````markdown
+{{</* comment "Rephrase this sentence, it is too long." author="supervisor" */>}}
+{{</* todo "Add a figure illustrating this point." author="author" */>}}
+{{</* note "See also Bringhurst 2004, §2.4." author="supervisor" */>}}
+{{</* question "Is this result reproducible on another dataset?" author="supervisor" inline=true */>}}
+````
+
+Rendered in context — here is a sentence with a margin annotation
+{{< comment "This is a 'comment' type annotation by the supervisor." author="dir" >}}
+and a task to complete:
+
+{{< todo "Replace this example with a real experimental result before the defence." author="auteur" >}}
+
+A bibliographic note {{< note "See Knuth 1984, chapter 12." author="dir" inline=true >}} inline.
+
+::: {.callout-important}
+## Disable comments before final submission
+
+Before submitting the thesis to the doctoral school and depositing it on theses.fr,
+set `comments: enabled: false` in `_quarto.yml`. Annotations must not appear in the
+official archived version.
+:::
+
+## Special front matter pages {#sec-frontmatter}
+
+### Résumé and abstract
+
+The `resume.qmd` and `abstract.qmd` pages use CSS classes that add a left border in
+HTML:
+
+````markdown
+::: {.resume-block}
+Text of the résumé in French.
+
+**Mots-clés :** mot1, mot2, mot3
+:::
+````
+
+::: {.callout-important}
+## French résumé mandatory for all Cnam theses
+
+Even for a thesis written in English, a French résumé is **mandatory** according to
+the {{< acrs abes >}} rules for deposit on theses.fr. This is the role of the file
+`content_en/frontmatter/resume.qmd` in the English profile.
+:::
+
+### The Individual Monitoring Committee ({{< acrs csi >}})
+
+::: {.callout-note}
+## French doctoral process — the {{< acrs csi >}}
+
+The {{< acrf csi >}} has been mandatory since 2016 for all doctoral students in
+France. It meets at least once a year, independently of the thesis supervisor, to
+verify progress, working conditions, and adherence to the schedule. The minutes of
+the {{< acrs csi >}} meeting must be included in the defence dossier.
+
+The HTML version of this thesis template is particularly well suited for {{< acrs csi >}}
+meetings: it allows sharing a link to the online version, which is easier to navigate
+than a 200-page PDF.
+:::

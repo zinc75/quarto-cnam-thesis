@@ -1,0 +1,287 @@
+# Figures and layout {short-title="Figures"}
+
+This chapter documents the insertion of static figures, the generation of figures from
+Python code, multi-column layout, and the special case of PDF-only figures (TikZ,
+PGFplots).
+
+## Static image with caption and cross-reference {#sec-fig-static}
+
+The basic syntax for inserting an image is:
+
+````markdown
+![Figure caption.](../../images/my-image.png){#fig-label width=80%}
+````
+
+The identifier `#fig-label` allows a cross-reference with `@fig-label`.
+The `width` attribute accepts percentages or absolute values (`5cm`, `0.5\linewidth`).
+
+Here is an example with the {{< acrs cnam >}} logo:
+
+````markdown
+![The official Cnam logo.](../../images/Cnam.jpg){#fig-logo-cnam width=40%}
+````
+
+![The official {{< acrs cnam >}} logo.](../../images/Cnam.jpg){#fig-logo-cnam width=40%}
+
+@fig-logo-cnam shows the official {{< acrs cnam >}} logo, loaded from the `images/`
+folder at the project root.
+
+::: {.callout-tip}
+## Recommended image formats
+
+- **PDF**: prefer vector formats `.pdf` or `.eps` for diagrams and charts (sharp at
+  all resolutions). For photographs, `.png` or `.jpg` at 300 dpi minimum.
+- **HTML**: all standard web formats (`.png`, `.jpg`, `.svg`). `.svg` files are
+  particularly well suited for diagrams.
+- Quarto automatically handles format conversion depending on the render target.
+:::
+
+::: {.callout-warning}
+## Paths are relative to the `.qmd` file, not to the project root
+
+Image paths are relative to the location of the `.qmd` file. From
+`content_en/chapters/`, the `images/` folder at the project root is at
+`../../images/myfile.png`. This behaviour is identical in PDF and HTML.
+:::
+
+## Python-generated figures {#sec-fig-python}
+
+Quarto can execute Python cells (via Jupyter) and include their graphical output as
+numbered figures. The chunk syntax uses options prefixed with `#|`:
+
+````markdown
+```{{python}}
+#| label: fig-sincos
+#| fig-cap: "Curves $\\sin(x)$ and $\\cos(x)$ over $[0, 2\\pi]$."
+#| echo: true
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * np.pi, 300)
+fig, axes = plt.subplots(1, 2, figsize=(8, 3))
+axes[0].plot(x, np.sin(x), color='#d20025')
+axes[0].set_title(r'$\sin(x)$')
+axes[1].plot(x, np.cos(x), color='#005EA5')
+axes[1].set_title(r'$\cos(x)$')
+for ax in axes:
+    ax.set_xlabel('$x$')
+    ax.grid(True, alpha=0.3)
+plt.tight_layout()
+```
+````
+
+::: {.render-demo}
+**Output:**
+
+```{python}
+#| label: fig-sincos
+#| fig-cap: "Curves $\\sin(x)$ and $\\cos(x)$ over $[0, 2\\pi]$."
+#| echo: true
+#| fig-pos: 'H'
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * np.pi, 300)
+fig, axes = plt.subplots(1, 2, figsize=(8, 3))
+axes[0].plot(x, np.sin(x), color='#d20025')
+axes[0].set_title(r'$\sin(x)$')
+axes[1].plot(x, np.cos(x), color='#005EA5')
+axes[1].set_title(r'$\cos(x)$')
+for ax in axes:
+    ax.set_xlabel('$x$')
+    ax.grid(True, alpha=0.3)
+plt.tight_layout()
+```
+
+:::
+
+@fig-sincos is generated at each compilation. With `execute: freeze: auto` in
+`_quarto.yml`, Quarto caches the results in `_freeze/` and only re-executes the code
+if the chunk has changed — useful for figures that take a long time to compute.
+
+::: {.callout-warning}
+## `plt.tight_layout()` is essential
+
+Without `plt.tight_layout()`, axis labels frequently overlap in the PDF. Always end
+your matplotlib figures with this line.
+:::
+
+::: {.callout-tip}
+## `echo: false` for the final document
+
+During writing, `echo: true` displays the code — convenient for review. For the
+version submitted to the doctoral school, switch figure chunks to `#| echo: false`
+to display only the graphic.
+:::
+
+## Multi-column layout {#sec-multicol}
+
+The `layout-ncol` directive places several figures side by side. Apply it to a div
+containing sub-figures:
+
+````markdown
+::: {#fig-duo layout-ncol=2}
+
+```{{python}}
+#| label: fig-duo-a
+#| fig-cap: "Function $x^2$"
+import matplotlib.pyplot as plt, numpy as np
+x = np.linspace(-2, 2, 200)
+plt.plot(x, x**2, color='#d20025'); plt.grid(True, alpha=0.3); plt.tight_layout()
+```
+
+```{{python}}
+#| label: fig-duo-b
+#| fig-cap: "Function $\\sqrt{|x|}$"
+import matplotlib.pyplot as plt, numpy as np
+x = np.linspace(-2, 2, 200)
+plt.plot(x, np.sqrt(np.abs(x)), color='#005EA5'); plt.grid(True, alpha=0.3); plt.tight_layout()
+```
+
+Two elementary functions.
+:::
+````
+
+::: {.render-demo}
+**Output:**
+
+::: {#fig-duo layout-ncol=2 fig-pos='H'}
+
+```{python}
+#| label: fig-duo-a
+#| fig-cap: "Function $x^2$"
+import matplotlib.pyplot as plt, numpy as np
+x = np.linspace(-2, 2, 200)
+plt.plot(x, x**2, color='#d20025'); plt.grid(True, alpha=0.3); plt.tight_layout()
+```
+
+```{python}
+#| label: fig-duo-b
+#| fig-cap: "Function $\\sqrt{|x|}$"
+import matplotlib.pyplot as plt, numpy as np
+x = np.linspace(-2, 2, 200)
+plt.plot(x, np.sqrt(np.abs(x)), color='#005EA5'); plt.grid(True, alpha=0.3); plt.tight_layout()
+```
+
+Two elementary functions.
+:::
+
+:::
+
+@fig-duo groups the two sub-figures @fig-duo-a and @fig-duo-b. The last line of text
+in the div becomes the overall caption.
+
+## PDF-only figures (TikZ, PGFplots) {#sec-fig-latex}
+
+Some complex figures can only be generated in LaTeX (TikZ, PGFplots,
+`circuitikz`…). They are inserted via a `{=latex}` block inside a figure div,
+accompanied by replacement content visible in HTML:
+
+````markdown
+:::{#fig-tikz fig-pos='h'}
+```{=latex}
+\centering
+\begin{tikzpicture}
+  \draw[thick, ->] (0,0) -- (3,0) node[right] {$x$};
+  \draw[thick, ->] (0,0) -- (0,2) node[above] {$y$};
+  \draw[blue, thick] plot[domain=0:2.8, samples=50] (\x, {sin(\x r)});
+\end{tikzpicture}
+```
+
+::: {.content-visible when-format="html"}
+*(TikZ figure — available in the PDF version only)*
+:::
+
+Example TikZ figure inserted as raw LaTeX.
+:::
+````
+
+::: {.render-demo}
+**Output:**
+
+:::{#fig-tikz fig-pos='H'}
+```{=latex}
+\centering
+\begin{tikzpicture}
+  \draw[thick, ->] (0,0) -- (3,0) node[right] {$x$};
+  \draw[thick, ->] (0,0) -- (0,2) node[above] {$y$};
+  \draw[blue, thick] plot[domain=0:2.8, samples=50] (\x, {sin(\x r)});
+\end{tikzpicture}
+```
+
+::: {.content-visible when-format="html"}
+*(TikZ figure — available in the PDF version only)*
+:::
+
+Example TikZ figure inserted as raw LaTeX.
+:::
+
+:::
+
+::: {.callout-tip}
+## Alternative: compile the TikZ figure as a separate PDF
+
+For complex TikZ figures, a more robust approach is to compile them as a standalone
+`.pdf` file, then include them as a regular image:
+
+```markdown
+![Caption.](figures/my-tikz-diagram.pdf){#fig-tikz width=80%}
+```
+
+This avoids package conflicts and speeds up compilation.
+:::
+
+## Float positioning (PDF) {#sec-float-pos}
+
+In LaTeX, figures and tables are *floats*: LaTeX decides their position to achieve the
+best possible layout. The `fig-pos` attribute (figures) or `tbl-pos` (tables) allows
+you to give it instructions.
+
+````markdown
+![Caption.](../../images/Cnam.jpg){#fig-ex fig-pos='tb'}
+````
+
+Specifiers can be freely combined in a string:
+
+| Specifier | Meaning |
+|:---:|:---|
+| `h` | *here* — at the exact point in the text (if space allows) |
+| `t` | *top* — at the top of the current or next page |
+| `b` | *bottom* — at the bottom of the current or next page |
+| `p` | *page* — on a page dedicated to floats |
+| `!` | Ignores LaTeX's internal constraints (density, float count) |
+| `H` | Forces placement *here*, without any floating (requires `\usepackage{float}`) |
+
+The default value in Quarto is `tbp`. For a Python chunk, the specifier is passed as
+a cell option:
+
+````markdown
+```{{python}}
+#| label: fig-python
+#| fig-cap: "My figure."
+#| fig-pos: 'h'
+```
+````
+
+To set a default specifier for the entire document, add to `_quarto.yml`:
+
+````yaml
+fig-pos: 'H'
+````
+
+::: {.callout-warning}
+## `h` is not a guarantee
+
+The `h` specifier asks LaTeX to place the float *here if possible*, but LaTeX may
+ignore it if there is insufficient space. The combination `ht` (here, then top of page)
+is generally more robust. `H` forces placement unconditionally, but can create nearly
+empty pages if the figure is large — reserve it for cases where position is truly
+critical.
+:::
+
+::: {.callout-note}
+## Floats only apply to PDF
+
+In HTML, `fig-pos` and `tbl-pos` are ignored: figures and tables are inserted in the
+document flow at their insertion point, like any other element.
+:::

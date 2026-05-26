@@ -16,14 +16,24 @@
      Label usage in text (PDF):
        \acrshort{label}  →  ABBREV
        \acrlong{label}   →  Full expansion
-       \acrfull{label)   →  Full expansion (ABBREV)
+       \acrfull{label}   →  Full expansion (ABBREV)
        \gls{label}       →  ABBREV (expanded on first use)
      ============================================================ -->
 
 {{< acr cnam Cnam "Conservatoire national des arts et métiers" >}}
-{{< acr ai AI "artificial intelligence" >}}
-{{< acr ml ML "machine learning" >}}
-{{< acr dof DOF "degree of freedom" >}}
+{{< acr qmd QMD "Quarto Markdown Document" >}}
+{{< acr yaml YAML "Yet Another Markup Language" >}}
+{{< acr toc TOC "Table of Contents" >}}
+{{< acr lof LOF "List of Figures" >}}
+{{< acr lot LOT "List of Tables" >}}
+{{< acr cnu CNU "Conseil National des Universités" >}}
+{{< acr hdr HDR "Habilitation à Diriger des Recherches" >}}
+{{< acr abes ABES "Agence Bibliographique de l'Enseignement Supérieur" >}}
+{{< acr csi CSI "Comité de Suivi Individuel" >}}
 
-{{< terme ontology "Ontology" "Formal representation of a set of concepts and their relationships in a domain of knowledge" >}}
-{{< terme corpus "Corpus" "Structured set of documents forming the basis of an analysis or machine learning task" >}}
+{{< terme quarto "Quarto" "Open-source scientific publishing system based on Pandoc, developed by Posit PBC; produces PDF, HTML, EPUB, Word, slideshows, websites and books from QMD files" >}}
+{{< terme pandoc "Pandoc" "Universal document converter developed by John MacFarlane; technical foundation of Quarto" >}}
+{{< terme liminaire "Liminaire" "Set of pages placed before the main body of a thesis: acknowledgements, résumé, abstract, tables of contents, figures and tables, list of acronyms, glossary" >}}
+{{< terme postliminaire "Postliminaire" "Set of pages placed after the main body of a thesis: general conclusion, bibliography, appendices" >}}
+{{< terme callout "Callout" "Highlighted block designed to draw the reader's attention; produced by the ::: {.callout-*} syntax with five types: note, tip, warning, important, caution" >}}
+{{< terme pdfx "pdfx" "LaTeX package enabling PDF/A and PDF/X compliance; used in this template to produce a PDF/A-1b (option a-1b)" >}}

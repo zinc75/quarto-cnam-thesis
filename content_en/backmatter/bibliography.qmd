@@ -4,7 +4,6 @@
 # Bibliography {.unnumbered .unlisted .no-latex}
 :::
 
-::: {.content-visible when-format="pdf"}
 ```{=latex}
 \chapter*{Bibliography}
 \phantomsection
@@ -14,4 +13,3 @@
 \bibliographystyle{IEEEtran-francais}
 \bibliography{references}
 ```
-:::

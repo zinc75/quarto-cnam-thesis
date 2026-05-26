@@ -1,15 +1,81 @@
-# Appendix A Title {.appendix}
+# Complete `_quarto.yml` configuration {.appendix #sec-yaml-config-file}
 
-{{< lipsum 1 >}}
+This appendix reproduces and comments on the `_quarto.yml` file in its entirety,
+for quick reference.
 
-## Proofs
+## Document metadata for the cover page
 
-{{< lipsum 1 >}}
+```yaml
+book:
+  title: "Thesis title"
+  subtitle: "Optional subtitle"        # remove if absent
+  author: "First LAST"
+  downloads: [pdf]                     # PDF button in the HTML sidebar
 
-$$
-\int_0^\infty e^{-x^2}\,\mathrm{d}x = \frac{\sqrt{\pi}}{2}
-$$
+date-soutenance: "12 June 2026"        # DO NOT use date:
+discipline: "60th CNU section — Mechanics, mechanical engineering, civil engineering"
+specialite: "Acoustics"
+ecole-doctorale: "Sciences des Métiers de l'Ingénieur"
+laboratoire: "MACS Laboratory, Cnam Paris"
+directeur: "Prof. First LAST, Full Professor, Cnam Paris"
+cotutelle: false
 
-## Additional Material
+dedicace: "Optional dedication…"       # remove if absent
+```
 
-{{< lipsum 1 >}}
+## Jury composition for the cover page
+
+```yaml
+jury:
+  - nom: "Ms First LAST"
+    titre: "Title, Research Unit, Institution"
+    role: "Chair"
+  - nom: "Mr First LAST"
+    titre: "Title, Research Unit, Institution"
+    role: "Reviewer"
+  - nom: "Ms First LAST"
+    titre: "Title, Research Unit, Institution"
+    role: "Reviewer"
+  - nom: "Mr First LAST"
+    titre: "Associate Professor HDR, Unit, Institution"
+    role: "Examiner"
+  - nom: "Mr First LAST"
+    titre: "Full Professor, MACS, Cnam Paris"
+    role: "Thesis supervisor"
+```
+
+## Infrastructure section options
+
+```yaml
+glossaire: true          # true = loads the LaTeX glossaries package
+pagestyle-sections: true # true = roman/arabic/Roman numbering per section
+bibliography-manual: true
+minitoc-newpage: false   # true = page break after each mini-TOC
+chapter-openright: true  # false = for digital version without right-hand page
+index: false             # true = generates an index via \index{term}
+```
+
+## Collaborative comments
+
+```yaml
+comments:
+  enabled: true          # false before final deposit on theses.fr
+  show_author: true
+  authors:
+    author:
+      name: "First LAST"
+      color_html: "#005EA5"
+      color_latex: "blue!20"
+    supervisor:
+      name: "Supervisor"
+      color_html: "#D55E00"
+      color_latex: "orange!30"
+```
+
+## Python execution
+
+```yaml
+execute:
+  freeze: auto    # recomputes only if the chunk code changes
+  echo: true      # shows code by default (overridable per chunk)
+```
