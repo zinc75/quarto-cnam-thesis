@@ -152,8 +152,31 @@ Rendu :
   - Sous-élément (indentation 2 espaces)
 
 1. Premier élément ordonné
-2. Deuxième élément
-   1. Sous-élément (indentation 3 espaces)
+1. Deuxième élément
+   a. Sous-élément (indentation 3 espaces)
+
+::: {.callout-note}
+## Le numéro écrit n'a pas d'importance
+
+Pandoc ne lit que le numéro du **premier** élément (pour déterminer le départ du
+compteur) ; tous les suivants sont ignorés et auto-incrémentés. Ces deux syntaxes
+produisent le même rendu :
+
+```markdown
+1. Premier    2. Deuxième
+3. Troisième
+```
+
+```markdown
+1. Premier
+1. Deuxième
+1. Troisième
+```
+
+La convention `1. 1. 1.` est même recommandée : plus besoin de renuméroter si
+l'on insère ou déplace un élément. La même logique s'applique aux sous-listes :
+`a. a. a.` suffit pour obtenir `a.`, `b.`, `c.`…
+:::
 
 ### Blockquotes
 
