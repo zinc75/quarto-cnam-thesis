@@ -15,7 +15,9 @@ $\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x\xi}\,\mathrm{d}x$.
 ````
 
 ::: {.render-demo}
-**Rendu :** la transformée de Fourier d'une fonction $f$ est définie par
+**Rendu :** 
+
+La transformée de Fourier d'une fonction $f$ est définie par
 $\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x\xi}\,\mathrm{d}x$.
 :::
 

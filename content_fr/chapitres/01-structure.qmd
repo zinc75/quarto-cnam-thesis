@@ -83,9 +83,12 @@ Comme expliqué en @sec-titres, les niveaux vont de `#` à `####`.
 ````
 
 ::: {.render-demo}
-**Rendu :** comme expliqué en @sec-titres, les niveaux vont de `#` à `####`. Quarto
-résout automatiquement le numéro et le lien hypertexte dans les deux formats.
+**Rendu :** 
+
+Comme expliqué en @sec-titres, les niveaux vont de `#` à `####`.
 :::
+
+Quarto résout automatiquement le numéro et le lien hypertexte dans les deux formats.
 
 ::: {.callout-tip}
 ## Convention de nommage des labels
@@ -125,7 +128,9 @@ déborder lui aussi selon la mise en page.
 ````
 
 ::: {.render-demo}
-**Rendu :** **gras**, *italique*, ***gras italique***, `code inline`,
+**Rendu :** 
+
+**gras**, *italique*, ***gras italique***, `code inline`,
 ~~barré~~, ^exposant^, ~indice~.
 :::
 
@@ -285,7 +290,9 @@ an III (10 octobre 1794).] à l'initiative de l'abbé Grégoire.
 ````
 
 ::: {.render-demo}
-**Rendu :** Le Cnam a été fondé en 1794^[Décret de la Convention nationale du 19 vendémiaire
+**Rendu :** 
+
+Le Cnam a été fondé en 1794^[Décret de la Convention nationale du 19 vendémiaire
 an III (10 octobre 1794).] à l'initiative de l'abbé Grégoire.
 :::
 
@@ -300,7 +307,9 @@ La thèse doit être déposée sur theses.fr[^depot] avant la soutenance.
 ````
 
 ::: {.render-demo}
-**Rendu :** La thèse doit être déposée sur theses.fr[^depot] avant la soutenance.
+**Rendu :** 
+
+La thèse doit être déposée sur theses.fr[^depot] avant la soutenance.
 
 [^depot]: Portail national des thèses géré par l'{{< acrs abes >}},
     accessible sur <https://theses.fr>.

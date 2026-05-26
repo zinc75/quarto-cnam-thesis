@@ -366,18 +366,43 @@ local pass3 = {
   Div = function(el)
     if not el.classes:includes("render-demo") then return el end
     if FORMAT ~= "latex" then return el end
-    -- Thin light-gray rule (xcolor black!15) — not a box, just a paragraph-level
-    -- rule so LaTeX floats inside the content can move freely. /
-    -- Règle fine gris clair — pas une boîte, les flottants dans le contenu restent libres.
-    local rule_tex = "\\vspace{4pt}\\noindent{\\color{black!15}\\rule{\\linewidth}{0.3pt}}\\vspace{4pt}"
+    -- Dashed rule in lilacode!65, using TikZ (loaded by mdframed with tikz framemethod).
+    -- \tikz inline form keeps it as a paragraph element so floats inside are free. /
+    -- Règle pointillée lilacode!65 via TikZ. Forme inline \tikz → les flottants restent libres.
+    local rule_tex =
+      "\\vspace{4pt}\\noindent" ..
+      "\\tikz[baseline=-0.5ex]{" ..
+      "\\draw[color=lilacode!65,line width=0.6pt,dash pattern=on 4pt off 3pt]" ..
+      "(0,0)--(\\linewidth,0);" ..
+      "}\\vspace{4pt}"
     local top_rule = pandoc.RawBlock("latex", rule_tex)
     local bot_rule = pandoc.RawBlock("latex", rule_tex)
-    local blocks = pandoc.List({ top_rule })
-    for _, b in ipairs(el.content) do
-      blocks:insert(b)
+    -- Color the "Rendu :" label (first Strong in the first Para) in lilacode,
+    -- without coloring any inline rendered text that may follow on the same line. /
+    -- Colore uniquement le premier Strong (label « Rendu : ») en lilacode,
+    -- sans toucher au texte rendu inline qui peut suivre sur la même ligne.
+    local content = el.content
+    if content[1] and content[1].t == "Para" then
+      local para = content[1]
+      local new_inlines = pandoc.List()
+      local colored = false
+      for _, inline in ipairs(para.content) do
+        if not colored and inline.t == "Strong" then
+          colored = true
+          new_inlines:insert(pandoc.RawInline("latex", "\\textcolor{lilacode}{"))
+          new_inlines:insert(inline)
+          new_inlines:insert(pandoc.RawInline("latex", "}"))
+        else
+          new_inlines:insert(inline)
+        end
+      end
+      para.content = new_inlines
+      content[1] = para
     end
+    local blocks = pandoc.List({ top_rule })
+    for _, b in ipairs(content) do blocks:insert(b) end
     blocks:insert(bot_rule)
-    return blocks   -- list of blocks, not a Div — floats work normally
+    return blocks
   end,
 
   CodeBlock = function(el)

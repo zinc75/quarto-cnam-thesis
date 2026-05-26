@@ -830,8 +830,8 @@ div.sourceCode pre {
 // par le filtre Lua ; en HTML, les bordures CSS suffisent.
 
 .render-demo {
-  border-top: 1px solid rgba(0, 0, 0, 0.10);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+  border-top: 1.5px dashed rgba($code-accent, 0.45);
+  border-bottom: 1.5px dashed rgba($code-accent, 0.45);
   padding: 0.6rem 0 0.7rem;
   margin: 0.2rem 0 1.1rem;
 
