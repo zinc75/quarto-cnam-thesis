@@ -51,3 +51,8 @@ these_*.tex
 
 # Generated HTML library assets
 site_libs/
+
+# Make sure we DO ship the workflow even if a parent / global
+# .gitignore swallows .github (some setups blanket-ignore it).
+!.github/
+!.github/**
