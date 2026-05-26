@@ -229,6 +229,27 @@ pip install matplotlib numpy pandas
 
 ## Blocs de code — avec exécution Python {#sec-code-exec}
 
+Dans ce document, tous les exemples de code exécutable — y compris les figures
+matplotlib du @sec-fig-python — utilisent `#| echo: true` pour afficher à la
+fois le code source et le résultat. Dans une thèse finalisée, on masque
+généralement le code en passant `#| echo: false` : seule la figure ou le tableau
+apparaît, sans le code qui l'a produit.
+
+::: {.callout-note}
+## Langages pris en charge nativement par Quarto
+
+Quarto prend en charge trois langages de calcul scientifique **sans configuration
+supplémentaire** : **Python**, **R** et **Julia**. La syntaxe des options de chunk
+(`#| echo:`, `#| fig-cap:`, etc.) et le mécanisme de cross-référence (`#| label:`)
+sont identiques pour les trois langages. Ce document n'illustre que Python.
+
+Documentation officielle :
+
+- Python : <https://quarto.org/docs/computations/python.html>
+- R : <https://quarto.org/docs/computations/r.html>
+- Julia : <https://quarto.org/docs/computations/julia.html>
+:::
+
 Un chunk Python avec `eval: true` (valeur par défaut) exécute le code et affiche
 la sortie. Voici un exemple avec `pandas` :
 
