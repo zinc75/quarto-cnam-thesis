@@ -3,6 +3,9 @@
 _these_fr/
 _thesis-en/
 
+# Original TeX template
+_reference/
+
 # LaTeX artefacts
 *.aux
 *.lof
