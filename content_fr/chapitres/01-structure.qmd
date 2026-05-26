@@ -189,6 +189,7 @@ hypertexte. Pour mettre en valeur un terme, utilisez `*italique*` ou `**gras**`.
 1. Premier élément ordonné
 1. Deuxième élément
    a. Sous-élément (indentation 3 espaces)
+:::
 
 ::: {.callout-note}
 ## Le numéro écrit n'a pas d'importance
@@ -232,6 +233,7 @@ pas d'importance (`X` fonctionne aussi) :
 - [ ] Rédiger l'introduction
 - [x] Choisir le template Quarto
 - [ ] Soumettre au directeur de thèse
+:::
 
 ::: {.callout-note}
 ## Rendu différent selon le format de sortie
@@ -268,6 +270,7 @@ au registre académique.
 > « La typographie est le métier de donner une forme visuelle au langage. »
 >
 > — Robert Bringhurst [@Bringhurst2004]
+:::
 
 ::: {.callout-caution}
 ## Listes de définitions en pdflatex
