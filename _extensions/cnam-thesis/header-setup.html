@@ -147,11 +147,86 @@
     }
   }
 
+  /* Maps Pandoc/Quarto language class names to human-readable display names.
+     A language class that is not in the map is title-cased (e.g. "prolog" → "Prolog").
+     Convertit les noms de classes de langage en noms affichables. */
+  function formatLang(lang) {
+    if (!lang) return 'Code';
+    var map = {
+      python: 'Python', r: 'R', bash: 'Bash', sh: 'Shell', zsh: 'Zsh',
+      yaml: 'YAML', json: 'JSON', html: 'HTML', css: 'CSS', scss: 'SCSS',
+      javascript: 'JavaScript', js: 'JavaScript',
+      typescript: 'TypeScript', ts: 'TypeScript',
+      sql: 'SQL', xml: 'XML',
+      latex: 'LaTeX', tex: 'LaTeX', bibtex: 'BibTeX',
+      markdown: 'Markdown', md: 'Markdown',
+      cpp: 'C++', c: 'C', java: 'Java', rust: 'Rust', go: 'Go',
+      scala: 'Scala', julia: 'Julia', matlab: 'MATLAB', fortran: 'Fortran',
+      lua: 'Lua', ruby: 'Ruby', swift: 'Swift', kotlin: 'Kotlin',
+      haskell: 'Haskell', perl: 'Perl', php: 'PHP', 'r-script': 'R'
+    };
+    var key = lang.toLowerCase();
+    return map[key] || (lang.charAt(0).toUpperCase() + lang.slice(1));
+  }
+
+  /* Extracts the programming language from a <pre> element's class list.
+     Skips known non-language classes (sourceCode, numberSource, number-lines, etc.).
+     Extracts le langage de programmation des classes CSS du <pre>. */
+  function extractLang(pre) {
+    var skip = {
+      sourceCode: 1, numberSource: 1,
+      'number-lines': 1, 'code-with-copy': 1
+    };
+    var lang = null;
+    pre.classList.forEach(function(cls) {
+      if (!skip[cls]) lang = cls;
+    });
+    return lang;
+  }
+
+  /* Injects a .code-block-title bar (icon + language name) into each code block.
+     Works with the scaffold wrapper (.code-copy-outer-scaffold) produced by Quarto
+     when the copy button is enabled, and falls back to bare .sourceCode divs.
+     Injecte une barre de titre (icône + nom du langage) dans chaque bloc de code. */
+  function buildCodeBlockTitles() {
+    // Primary path: scaffold wrapper (copy button enabled — the normal case).
+    // Chemin principal : scaffold (bouton de copie actif — cas normal).
+    document.querySelectorAll('div.code-copy-outer-scaffold').forEach(function(scaffold) {
+      if (scaffold.querySelector('.code-block-title')) return;
+      var sourceDiv = scaffold.querySelector('div.sourceCode');
+      if (!sourceDiv) return;
+      var pre = sourceDiv.querySelector('pre');
+      if (!pre) return;
+      var title = document.createElement('div');
+      title.className = 'code-block-title';
+      title.innerHTML =
+        '<i class="bi bi-code-slash"></i>' +
+        '<span>' + formatLang(extractLang(pre)) + '</span>';
+      scaffold.insertBefore(title, sourceDiv);
+    });
+
+    // Fallback: bare .sourceCode divs not inside a scaffold.
+    // Fallback : .sourceCode sans scaffold (bouton de copie désactivé).
+    document.querySelectorAll('div.sourceCode').forEach(function(div) {
+      if (div.closest('.code-copy-outer-scaffold')) return;
+      if (div.querySelector('.code-block-title')) return;
+      var pre = div.querySelector('pre');
+      if (!pre) return;
+      var title = document.createElement('div');
+      title.className = 'code-block-title';
+      title.innerHTML =
+        '<i class="bi bi-code-slash"></i>' +
+        '<span>' + formatLang(extractLang(pre)) + '</span>';
+      div.insertBefore(title, pre);
+    });
+  }
+
   function init() {
     build();
     buildSidebarDownload();
     linkCoverToPdf();
     repositionPageNav();
+    buildCodeBlockTitles();
   }
 
   if (document.readyState === 'loading') {
