@@ -238,11 +238,13 @@ la sortie. Voici un exemple avec `pandas` :
 #| label: tbl-pandas
 #| tbl-cap: "Statistiques descriptives des fonctions trigonométriques."
 import numpy as np, pandas as pd
+from IPython.display import Markdown
 
 x = np.linspace(0, 2 * np.pi, 1000)
-df = pd.DataFrame({'$\\sin(x)$': np.sin(x), '$\\cos(x)$': np.cos(x),
-                   '$\\tan(x)$ (tronqué)': np.clip(np.tan(x), -5, 5)})
-df.describe().round(3)
+df = pd.DataFrame({r'$\sin(x)$':           np.sin(x),
+                   r'$\cos(x)$':           np.cos(x),
+                   r'$\tan(x)$ (tronqué)': np.clip(np.tan(x), -5, 5)})
+Markdown(df.describe().round(3).to_markdown())
 ```
 ````
 
@@ -254,11 +256,13 @@ df.describe().round(3)
 #| label: tbl-pandas
 #| tbl-cap: "Statistiques descriptives des fonctions trigonométriques."
 import numpy as np, pandas as pd
+from IPython.display import Markdown
 
 x = np.linspace(0, 2 * np.pi, 1000)
-df = pd.DataFrame({'$\\sin(x)$': np.sin(x), '$\\cos(x)$': np.cos(x),
-                   '$\\tan(x)$ (tronqué)': np.clip(np.tan(x), -5, 5)})
-df.describe().round(3)
+df = pd.DataFrame({r'$\sin(x)$':           np.sin(x),
+                   r'$\cos(x)$':           np.cos(x),
+                   r'$\tan(x)$ (tronqué)': np.clip(np.tan(x), -5, 5)})
+Markdown(df.describe().round(3).to_markdown())
 ```
 :::
 
