@@ -133,6 +133,29 @@ sa première introduction, ou à citer un *titre d'ouvrage*. Les utiliser pour
 décorer le texte ou insister sur des phrases entières est une pratique à éviter.
 :::
 
+### Soulignement
+
+Markdown n'a pas de syntaxe native pour le soulignement. Quarto utilise la
+notation span avec la classe `.underline` :
+
+````markdown
+[texte souligné]{.underline}
+````
+
+Rendu : [texte souligné]{.underline}.
+
+En PDF, Pandoc génère `\underline{…}` ; en HTML, un `<span>` avec
+`text-decoration: underline`. La syntaxe `<u>texte</u>` fonctionne en HTML
+mais est ignorée en PDF.
+
+::: {.callout-caution}
+## Le soulignement est à éviter dans une thèse
+
+Le soulignement est un héritage de la machine à écrire, époque où l'italique
+n'était pas disponible. Dans un document typographié, il est réservé aux liens
+hypertexte. Pour mettre en valeur un terme, utilisez `*italique*` ou `**gras**`.
+:::
+
 ### Listes {#sec-listes}
 
 ````markdown
