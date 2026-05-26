@@ -5,9 +5,13 @@
 # PDF/A compliance
 pdfx
 colorprofiles
+xmpincl     # dependency of pdfx (XMP metadata inclusion)
+pict2e      # vector graphics extension, pulled in by pdfx/mdframed deps
 
 # Fonts — Palatino text (newpxtext) + math (newpxmath)
+# txfonts provides t1xtt.tfm (typewriter metrics used by newpxtext)
 newpx
+txfonts
 
 # Language
 babel-french
