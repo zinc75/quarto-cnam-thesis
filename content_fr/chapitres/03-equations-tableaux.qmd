@@ -76,12 +76,17 @@ $$
 $$ {#eq-statespace}
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 $$
 \begin{cases}
   \dot{x}(t) = Ax(t) + Bu(t) \\
   y(t) = Cx(t) + Du(t)
 \end{cases}
 $$ {#eq-statespace}
+
+:::
 
 La représentation d'état (@eq-statespace) est la forme standard en automatique.
 
@@ -96,6 +101,8 @@ $$
 $$ {#eq-maxwell}
 ````
 
+::: {.render-demo}
+**Rendu :** 
 $$
 \begin{aligned}
   \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
@@ -104,6 +111,7 @@ $$
   \nabla \times \mathbf{B} &= \mu_0\mathbf{J} + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
 \end{aligned}
 $$ {#eq-maxwell}
+:::
 
 Les équations de Maxwell (@eq-maxwell) en notation vectorielle — un seul numéro
 pour l'ensemble du bloc.
@@ -140,6 +148,9 @@ $$
 :::
 `````
 
+::: {.render-demo}
+**Rendu :** 
+
 ::: {.content-visible when-format="pdf"}
 ```{=latex}
 \begin{align}
@@ -162,6 +173,8 @@ $$
     + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
 \end{align}
 $$
+:::
+
 :::
 
 Chaque `\\` reçoit son propre numéro séquentiel. Pour supprimer le numéro d'une
@@ -242,6 +255,9 @@ La légende, précédée de `: `, doit être placée immédiatement après le ta
 : Préfixes de cross-références Quarto. {#tbl-crossref}
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 | Commande          | Format PDF    | Format HTML   |
 |:------------------|:-------------:|:-------------:|
 | `@fig-label`      | numéro figure | lien hypert.  |
@@ -250,6 +266,8 @@ La légende, précédée de `: `, doit être placée immédiatement après le ta
 | `@sec-label`      | numéro section| lien hypert.  |
 
 : Préfixes de cross-références Quarto. {#tbl-crossref}
+
+:::
 
 La @tbl-crossref récapitule les quatre préfixes à connaître.
 
@@ -308,6 +326,9 @@ consultez <https://github.com/zinc75/quarto-quartable/> et <https://zinc75.githu
 : Récapitulatif des fonctionnalités par famille. {#tbl-recap}
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 | Famille             | Fonctionnalité       | Chapitre |
 |:--------------------|:---------------------|:--------:|
 | ===                 |                      |          |
@@ -324,6 +345,8 @@ consultez <https://github.com/zinc75/quarto-quartable/> et <https://zinc75.githu
 | ^                   | Tableaux simples     | 3        |
 
 : Récapitulatif des fonctionnalités des chapitres 1 à 3. {#tbl-recap}
+
+:::
 
 ::: {.callout-warning}
 ## `quartable` doit être dans `filters:`

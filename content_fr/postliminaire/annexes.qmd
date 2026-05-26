@@ -3,7 +3,7 @@
 Cette annexe reproduit et commente le fichier `_quarto.yml` dans son intégralité,
 pour référence rapide.
 
-## Métadonnées du livre
+## Métadonnées du document pour la page de garde
 
 ```yaml
 book:
@@ -23,7 +23,7 @@ cotutelle: false
 dedicace: "Dédicace optionnelle…"   # supprimer si absent
 ```
 
-## Composition du jury
+## Composition du jury pour la page de garde
 
 ```yaml
 jury:

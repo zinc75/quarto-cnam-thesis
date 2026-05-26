@@ -9,8 +9,11 @@ tous avec des exemples tirés du contexte doctoral.
 Quarto définit cinq types de callouts, chacun avec une sémantique précise :
 
 ````markdown
-::: {.callout-note}
-Contenu de la note.
+::: {.callout-specification}
+## Titre (optionnel) du callout
+Contenu du callout, avec `specification` qui peut prendre les valeurs 
+`note`, `tip`, `warning`, `important`, ou `caution`, chacun étant associé à
+un code couleur et une icône en entête du bloc de callout. 
 :::
 ````
 
@@ -26,12 +29,16 @@ Le jury d'une thèse Cnam comprend au minimum un président, deux rapporteurs
 :::
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 ::: {.callout-note}
 ## Composition du jury
 
 Le jury d'une thèse Cnam comprend au minimum un président, deux rapporteurs
 (ayant l'{{< acrs hdr >}}) et un ou deux examinateurs. La soutenance dure environ
 45 minutes de présentation, suivies des questions du jury.
+:::
 :::
 
 ### `callout-tip` — conseil actionnable
@@ -46,12 +53,16 @@ Même des ébauches imparfaites valent mieux que des sections vides.
 :::
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 ::: {.callout-tip}
 ## Commencez à rédiger tôt
 
 Commencez à rédiger votre thèse dès la deuxième année de doctorat. La rédaction
 tardive est la première cause de dépassement de la durée contractuelle de thèse.
 Même des ébauches imparfaites valent mieux que des sections vides.
+:::
 :::
 
 ### `callout-warning` — piège à éviter
@@ -66,12 +77,16 @@ les fichiers manquants et échouera silencieusement.
 :::
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 ::: {.callout-warning}
 ## Ne renommez pas les chapitres sans mettre à jour le profil
 
 Si vous renommez un fichier `.qmd`, mettez à jour la liste `chapters:` dans
 `_quarto-fr.yml` (ou `_quarto-en.yml`). Quarto ne détecte pas automatiquement
 les fichiers manquants et échouera silencieusement.
+:::
 :::
 
 ### `callout-important` — point non négociable
@@ -86,12 +101,16 @@ ce package du template.
 :::
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 ::: {.callout-important}
 ## PDF/A-1b obligatoire pour theses.fr
 
 L'{{< acrs abes >}} exige un PDF/A pour l'archivage sur theses.fr. Ce template
 génère automatiquement un PDF/A-1b via `\usepackage[a-1b]{pdfx}`. Ne retirez pas
 ce package du template.
+:::
 :::
 
 ### `callout-caution` — danger avec conséquences
@@ -106,12 +125,16 @@ exclusivement la clé personnalisée `date-soutenance:` prévue dans ce template
 :::
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 ::: {.callout-caution}
 ## N'utilisez pas `date:` pour la date de soutenance
 
 Quarto interprète la clé `date:` comme une date JavaScript et produit
 « Invalid Date » pour les dates françaises (ex. « 12 juin 2026 »). Utilisez
 exclusivement la clé personnalisée `date-soutenance:` prévue dans ce template.
+:::
 :::
 
 ## Callouts avec titre et repliement {#sec-callouts-options}
@@ -129,11 +152,15 @@ toujours en entier (le repliement est une fonctionnalité HTML uniquement).
 :::
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 ::: {.callout-tip collapse="true"}
 ## Cliquer pour voir le conseil (replié par défaut)
 
 Ce callout est replié à l'ouverture du document HTML. En PDF, il s'affiche
 toujours en entier (le repliement est une fonctionnalité HTML uniquement).
+:::
 :::
 
 ## Blocs de code — affichage seul {#sec-code-display}
@@ -151,12 +178,16 @@ print(x.mean())
 ```
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 ```python
 # Ce bloc est affiché mais non exécuté
 import numpy as np
 x = np.linspace(0, 10, 100)
 print(x.mean())
 ```
+:::
 
 Pour afficher le code d'un chunk exécutable sans l'exécuter (utile pour des
 exemples d'installation ou de configuration) :
@@ -170,12 +201,16 @@ pip install matplotlib numpy pandas
 ```
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 ```{python}
 #| eval: false
 #| echo: true
 # Installation des dépendances du template
 # pip install matplotlib numpy pandas
 ```
+:::
 
 ::: {.callout-tip}
 ## Options de chunk les plus utiles
@@ -211,6 +246,9 @@ df.describe().round(3)
 ```
 ````
 
+::: {.render-demo}
+**Rendu :** 
+
 ```{python}
 #| echo: true
 #| label: tbl-pandas
@@ -222,6 +260,7 @@ df = pd.DataFrame({'$\\sin(x)$': np.sin(x), '$\\cos(x)$': np.cos(x),
                    '$\\tan(x)$ (tronqué)': np.clip(np.tan(x), -5, 5)})
 df.describe().round(3)
 ```
+:::
 
 ::: {.callout-note}
 ## `freeze: auto` dans `_quarto.yml`
