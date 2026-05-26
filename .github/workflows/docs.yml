@@ -200,7 +200,6 @@ quarto render --profile en   # → PDF + HTML in English   /  en anglais</code><
           mkdir -p _site/fr _site/en
           cp -r _these_fr/.  _site/fr/
           cp -r _thesis-en/. _site/en/
-          mv _landing.html   _site/index.html
 
       # ── Deploy ──────────────────────────────────────────────────────────────
       - name: Upload Pages artifact
