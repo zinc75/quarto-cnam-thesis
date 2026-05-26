@@ -1,7 +1,177 @@
 # Introduction {.unnumbered}
 
-{{< lipsum 1 >}}
+## Context and objectives {.unnumbered}
 
-Example citation: the method described in [@Zhou2015] was extended in [@Patil2015]. For a general introduction, see [@Morand1995].
+Doctoral students at the Conservatoire national des arts et métiers ({{< acrs cnam >}}) must
+submit their thesis as a PDF compliant with the institutional template, while also wanting
+a navigable HTML version for sharing and accessibility. This dual objective — archivable
+PDF/A and readable HTML — is precisely what the Quarto publishing system [@Allaire2022]
+offers, provided a template configured for the specific constraints of the Cnam is available.
 
-{{< lipsum 1 >}}
+The present document is both the *user guide* for the `quarto-cnam-thesis` template and
+its *live demonstration*: every feature described here is simultaneously explained, shown
+in raw syntax, and rendered before your eyes in this very document.
+
+## Structure of this guide {.unnumbered}
+
+This guide is organised into five thematic chapters:
+
+1. **Structure and formatting** — heading hierarchy, numbering, section cross-references,
+   inline formatting, lists.
+2. **Figures and layout** — static images, Python-generated figures,
+   multi-column layout, PDF-only figures.
+3. **Equations and tables** — mathematical syntax, simple Markdown tables,
+   advanced tables with the `quartable` extension.
+4. **Callouts and code blocks** — the five callout types, displayed code without
+   execution, executed code with Python.
+5. **References, glossary, and annotations** — bibliographic citations, acronym and
+   term system, collaborative comments.
+
+The guiding principle is constant: for each feature, a code block displays the exact
+Markdown syntax (not executed), immediately followed by the actual rendered output.
+
+## Prerequisites {.unnumbered}
+
+The thesis source files are ordinary text files with the `.qmd` extension (Quarto
+Markdown). They can be opened and edited with any text editor — VS Code, RStudio,
+Neovim, Notepad++ or even the system notepad.
+
+### Quarto and LaTeX {.unnumbered}
+
+This template requires **Quarto 1.4** or later. The compilation engine is pdflatex —
+XeLaTeX and LuaLaTeX are not supported due to constraints of the `pdfx` package used
+for PDF/A-1b compliance. An up-to-date **TeX Live 2023+** or **MiKTeX** distribution
+is required for PDF output.
+
+::: {.callout-tip}
+## Installing Quarto and LaTeX
+
+Quarto: <https://quarto.org/docs/get-started/> (`.pkg`, `.msi` or `.deb` installer
+depending on the platform; step-by-step editor guide included).
+
+TeX Live: <https://tug.org/texlive/> — MiKTeX: <https://miktex.org/> (Windows).
+:::
+
+| System | Quarto | LaTeX |
+|:--------|:-------|:------|
+| **macOS** | `.pkg` or `brew install quarto` | MacTeX (`brew install --cask mactex`) |
+| **Windows** | `.msi` (64-bit) | MiKTeX or TeX Live |
+| **Linux (Debian/Ubuntu)** | `sudo dpkg -i quarto-*.deb` | `sudo apt install texlive-full` |
+
+### Python {.unnumbered}
+
+Python is **optional**: it is only needed if the thesis contains executable code cells —
+computed figures (matplotlib…) or tables (pandas…). A thesis written in pure text with
+static images only needs a basic Python installation for the post-render scripts
+(author slug generation, cover image).
+
+If the thesis contains executable code, Quarto uses **Jupyter** to run it. The packages
+required by the examples in this document are listed in `requirements.txt` at the project
+root: `numpy`, `matplotlib`, `pandas`, `tabulate`.
+
+**Virtual environment — why it matters.** A virtual environment isolates this project's
+packages from the rest of the system Python installation, avoids version conflicts, and
+facilitates reproducibility. Installing packages directly into the system Python is
+strongly discouraged.
+
+#### `uv` — recommended {.unnumbered}
+
+[`uv`](https://docs.astral.sh/uv/) installs Python, creates the virtual environment, and
+manages packages in a single command, without requiring Python on the system beforehand.
+Quarto automatically detects the `.venv/` folder created — no manual activation is
+needed before `quarto render`.
+
+```bash
+# Step 1 — install uv (once, on the system)
+# macOS / Linux:
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# Windows (PowerShell):
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Step 2 — in the thesis directory:
+uv python install 3.12          # downloads and installs Python 3.12
+uv venv                         # creates .venv/ in the current directory
+uv pip install -r requirements.txt  # installs all packages + Jupyter
+```
+
+#### `venv` + `pip` — alternative {.unnumbered}
+
+If Python 3.10+ is already installed on the system:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # macOS / Linux
+# .venv\Scripts\activate         # Windows (cmd)
+# .venv\Scripts\Activate.ps1     # Windows (PowerShell)
+pip install jupyter -r requirements.txt
+```
+
+::: {.callout-note}
+## Conda, pyenv…
+
+Conda users can create a dedicated environment:
+`conda create -n mythesis python=3.12 && conda activate mythesis && pip install jupyter -r requirements.txt`.
+pyenv users install the target version with pyenv, then use `venv` as above.
+:::
+
+### Installing the template {.unnumbered}
+
+::: {.callout-tip}
+## Installing the template
+
+```bash
+quarto use template zinc75/quarto-cnam-thesis
+```
+:::
+
+This command copies all source files into the current directory, including the `.qmd`
+files of this documentation, which serve as a starting point. The content files to modify
+are located in `content_fr/` (French profile) and `content_en/` (English profile),
+together with the `yaml` configuration files (see @sec-yaml-config-file).
+
+## Rendering the document
+
+In Quarto, this is called **rendering**: it triggers the generation of the `.tex` file,
+the compilation, and the creation of `html` files, since this template provides dual
+`PDF` and `HTML` output. To do this, run one of the following commands depending on the
+language in which you are writing the thesis (French or English, according to the rules
+of the doctoral schools and the composition of your jury):
+
+::: {.callout-important}
+## Always use a language profile
+
+```bash
+quarto render --profile fr   # → _these_fr/these_fr_<author>.pdf + HTML
+quarto render --profile en   # → _thesis-en/these_en_<author>.pdf + HTML
+```
+
+`quarto render` without a profile fails: the chapter list is defined in the profiles
+`_quarto-fr.yml` and `_quarto-en.yml`, not in `_quarto.yml`.
+:::
+
+## Live preview {.unnumbered}
+
+During writing, there is no need to rerun `quarto render` after every change. The
+`quarto preview` command watches the source files and automatically rebuilds the document
+whenever a `.qmd` file is saved:
+
+```bash
+quarto preview --profile en
+```
+
+Quarto then opens the HTML version in the browser and refreshes it within seconds on each
+save. Only the modified chapter is recompiled (incremental rebuild), which makes the
+edit–preview cycle very fast — even with Python code blocks, thanks to the
+`freeze: auto` cache.
+
+::: {.callout-tip}
+## Recommended workflow during writing
+
+Use `quarto preview` daily to check formatting, cross-references, and figures. Run
+`quarto render` periodically (before a supervision meeting, before submission) to
+obtain the final PDF. Both outputs — HTML and PDF — are consistent: what renders
+correctly in HTML compiles correctly in PDF.
+
+For **VS Code** or **RStudio** users, the Quarto extension integrates a *Render* button
+and a preview panel directly in the editor — without using the terminal.
+:::

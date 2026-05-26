@@ -1,0 +1,302 @@
+# Callouts and code blocks {short-title="Callouts and code"}
+
+Callouts allow important information to be highlighted. Code blocks allow code to be
+displayed or executed. This chapter presents both with examples drawn from a doctoral
+context.
+
+## The five callout types {#sec-callouts}
+
+Quarto defines five callout types, each with a precise semantic:
+
+````markdown
+::: {.callout-specification}
+## Title (optional) of the callout
+Content of the callout, with `specification` taking one of the values
+`note`, `tip`, `warning`, `important`, or `caution`, each associated with
+a colour code and an icon in the callout header.
+:::
+````
+
+### `callout-note` — neutral information
+
+````markdown
+::: {.callout-note}
+## Jury composition
+
+A Cnam thesis jury comprises at minimum a chair, two reviewers
+(with {{< acrs hdr >}}) and one or two examiners. The defence lasts approximately
+45 minutes of presentation, followed by questions from the jury.
+:::
+````
+
+::: {.render-demo}
+**Output:**
+
+::: {.callout-note}
+## Jury composition
+
+A Cnam thesis jury comprises at minimum a chair, two reviewers
+(with {{< acrs hdr >}}) and one or two examiners. The defence lasts approximately
+45 minutes of presentation, followed by questions from the jury.
+:::
+:::
+
+### `callout-tip` — actionable advice
+
+````markdown
+::: {.callout-tip}
+## Start writing early
+
+Start writing your thesis from the second year of doctoral study. Late writing is
+the primary cause of exceeding the contractual thesis duration. Even imperfect drafts
+are better than empty sections.
+:::
+````
+
+::: {.render-demo}
+**Output:**
+
+::: {.callout-tip}
+## Start writing early
+
+Start writing your thesis from the second year of doctoral study. Late writing is
+the primary cause of exceeding the contractual thesis duration. Even imperfect drafts
+are better than empty sections.
+:::
+:::
+
+### `callout-warning` — pitfall to avoid
+
+````markdown
+::: {.callout-warning}
+## Do not rename chapters without updating the profile
+
+If you rename a `.qmd` file, update the `chapters:` list in
+`_quarto-en.yml` (or `_quarto-fr.yml`). Quarto does not automatically detect
+missing files and will fail silently.
+:::
+````
+
+::: {.render-demo}
+**Output:**
+
+::: {.callout-warning}
+## Do not rename chapters without updating the profile
+
+If you rename a `.qmd` file, update the `chapters:` list in
+`_quarto-en.yml` (or `_quarto-fr.yml`). Quarto does not automatically detect
+missing files and will fail silently.
+:::
+:::
+
+### `callout-important` — non-negotiable point
+
+````markdown
+::: {.callout-important}
+## PDF/A-1b mandatory for theses.fr
+
+The {{< acrs abes >}} requires a PDF/A for archiving on theses.fr. This template
+automatically generates a PDF/A-1b via `\usepackage[a-1b]{pdfx}`. Do not remove
+this package from the template.
+:::
+````
+
+::: {.render-demo}
+**Output:**
+
+::: {.callout-important}
+## PDF/A-1b mandatory for theses.fr
+
+The {{< acrs abes >}} requires a PDF/A for archiving on theses.fr. This template
+automatically generates a PDF/A-1b via `\usepackage[a-1b]{pdfx}`. Do not remove
+this package from the template.
+:::
+:::
+
+### `callout-caution` — danger with consequences
+
+````markdown
+::: {.callout-caution}
+## Do not use `date:` for the defence date
+
+Quarto interprets the `date:` key as a JavaScript date and produces
+"Invalid Date" for French date strings (e.g. "12 June 2026"). Use exclusively
+the custom key `date-soutenance:` provided in this template.
+:::
+````
+
+::: {.render-demo}
+**Output:**
+
+::: {.callout-caution}
+## Do not use `date:` for the defence date
+
+Quarto interprets the `date:` key as a JavaScript date and produces
+"Invalid Date" for French date strings (e.g. "12 June 2026"). Use exclusively
+the custom key `date-soutenance:` provided in this template.
+:::
+:::
+
+## Callouts with title and collapsing {#sec-callouts-options}
+
+The title is added with a `## Title` line inside the callout (as in the examples
+above). To make a callout collapsed by default (click to open), use the `collapse`
+attribute:
+
+````markdown
+::: {.callout-tip collapse="true"}
+## Click to see the tip (collapsed by default)
+
+This callout is collapsed when the HTML document opens. In PDF, it always appears
+in full (collapsing is an HTML-only feature).
+:::
+````
+
+::: {.render-demo}
+**Output:**
+
+::: {.callout-tip collapse="true"}
+## Click to see the tip (collapsed by default)
+
+This callout is collapsed when the HTML document opens. In PDF, it always appears
+in full (collapsing is an HTML-only feature).
+:::
+:::
+
+## Code blocks — display only {#sec-code-display}
+
+To display code without executing it, use either a block delimited by backticks without
+a language specifier in curly braces, or a chunk with `eval: false`:
+
+````markdown
+```python
+# This block is displayed but not executed
+import numpy as np
+x = np.linspace(0, 10, 100)
+print(x.mean())
+```
+````
+
+::: {.render-demo}
+**Output:**
+
+```python
+# This block is displayed but not executed
+import numpy as np
+x = np.linspace(0, 10, 100)
+print(x.mean())
+```
+:::
+
+To display the code of an executable chunk without executing it (useful for installation
+or configuration examples):
+
+````markdown
+```{{python}}
+#| eval: false
+#| echo: true
+# Installing dependencies
+pip install matplotlib numpy pandas
+```
+````
+
+::: {.render-demo}
+**Output:**
+
+```{python}
+#| eval: false
+#| echo: true
+# Installing template dependencies
+# pip install matplotlib numpy pandas
+```
+:::
+
+::: {.callout-tip}
+## Most useful chunk options
+
+| Option | Values | Effect |
+|:-------|:--------|:------|
+| `echo` | `true`/`false` | shows or hides the code |
+| `eval` | `true`/`false` | executes or skips the code |
+| `output` | `true`/`false` | shows or hides the output |
+| `warning` | `true`/`false` | shows or hides warnings |
+| `fig-cap` | text | caption for the produced figure |
+| `label` | `fig-...` or `tbl-...` | identifier for cross-reference |
+
+: Frequently used Quarto chunk options. {#tbl-chunk-options}
+:::
+
+## Code blocks — with Python execution {#sec-code-exec}
+
+In this document, all executable code examples — including the matplotlib figures of
+@sec-fig-python — use `#| echo: true` to display both the source code and the result.
+In a finalised thesis, code is generally hidden by switching to `#| echo: false`: only
+the figure or table appears, without the code that produced it.
+
+::: {.callout-note}
+## Languages natively supported by Quarto
+
+Quarto supports three scientific computing languages **without additional configuration**:
+**Python**, **R**, and **Julia**. The chunk option syntax
+(`#| echo:`, `#| fig-cap:`, etc.) and the cross-reference mechanism (`#| label:`)
+are identical for all three languages. This document illustrates Python only.
+
+Official documentation:
+
+- Python: <https://quarto.org/docs/computations/python.html>
+- R: <https://quarto.org/docs/computations/r.html>
+- Julia: <https://quarto.org/docs/computations/julia.html>
+:::
+
+A Python chunk with `eval: true` (the default) executes the code and displays the
+output. Here is an example with `pandas`:
+
+````markdown
+```{{python}}
+#| echo: true
+#| label: tbl-pandas
+#| tbl-cap: "Descriptive statistics of trigonometric functions."
+import numpy as np, pandas as pd
+from IPython.display import Markdown
+
+x = np.linspace(0, 2 * np.pi, 1000)
+df = pd.DataFrame({r'$\sin(x)$':           np.sin(x),
+                   r'$\cos(x)$':           np.cos(x),
+                   r'$\tan(x)$ (clipped)': np.clip(np.tan(x), -5, 5)})
+Markdown(df.describe().round(3).to_markdown())
+```
+````
+
+::: {.render-demo}
+**Output:**
+
+```{python}
+#| echo: true
+#| label: tbl-pandas
+#| tbl-cap: "Descriptive statistics of trigonometric functions."
+import numpy as np, pandas as pd
+from IPython.display import Markdown
+
+x = np.linspace(0, 2 * np.pi, 1000)
+df = pd.DataFrame({r'$\sin(x)$':           np.sin(x),
+                   r'$\cos(x)$':           np.cos(x),
+                   r'$\tan(x)$ (tronqué)': np.clip(np.tan(x), -5, 5)})
+Markdown(df.describe().round(3).to_markdown())
+```
+:::
+
+::: {.callout-note}
+## `freeze: auto` in `_quarto.yml`
+
+With `execute: freeze: auto`, Quarto stores cell results in `_freeze/` and only
+recomputes them if the chunk code has changed. This considerably speeds up successive
+renders for theses with many computations.
+:::
+
+::: {.callout-caution}
+## Remember to version the `_freeze/` folder
+
+If you version your thesis on GitHub and want reviewers to be able to compile without
+Python installed, commit the `_freeze/` folder. The cached results are stored there
+and will be used instead of re-executing the code.
+:::

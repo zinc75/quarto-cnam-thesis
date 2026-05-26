@@ -1,0 +1,363 @@
+# Equations and tables {short-title="Equations and tables"}
+
+This chapter covers mathematical syntax (inline equations, numbered block equations,
+advanced environments) and two levels of tables: simple Markdown pipe tables and
+enriched tables via the `quartable` extension.
+
+## Inline equations {#sec-eq-inline}
+
+Inline equations are written between dollar signs: `$...$`. In PDF they use the native
+LaTeX math mode; in HTML they are rendered by KaTeX.
+
+````markdown
+The Fourier transform of a function $f$ is defined by
+$\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x\xi}\,\mathrm{d}x$.
+````
+
+::: {.render-demo}
+**Output:**
+
+The Fourier transform of a function $f$ is defined by
+$\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\,e^{-2\pi i x\xi}\,\mathrm{d}x$.
+:::
+
+::: {.callout-tip}
+## Thin spaces in mathematics
+
+Use `\,` for thin spaces: `f(x)\,\mathrm{d}x` gives $f(x)\,\mathrm{d}x$.
+Use `\mathrm{d}` (roman) rather than `d` (italic) for differentials — this is the
+ISO 80000-2 standard.
+:::
+
+## Numbered block equations {#sec-eq-block}
+
+Block equations are delimited by `$$...$$`. To number them and create a cross-reference,
+add `{#eq-label}`:
+
+````markdown
+$$
+i\hbar\frac{\partial \Psi}{\partial t} = \hat{H}\Psi
+$$ {#eq-schrodinger}
+
+The Schrödinger equation (@eq-schrodinger) describes the time evolution…
+````
+
+::: {.render-demo}
+**Output:**
+
+$$
+i\hbar\frac{\partial \Psi}{\partial t} = \hat{H}\Psi
+$$ {#eq-schrodinger}
+
+:::
+
+The Schrödinger equation (@eq-schrodinger) describes the time evolution of a quantum
+system.
+
+::: {.callout-warning}
+## `@eq-label` without brackets
+
+An equation cross-reference is written `@eq-label`, **without brackets**. Brackets
+`[@eq-label]` are reserved for bibliographic citations and will not work for equations.
+:::
+
+## Advanced mathematical environments {#sec-eq-advanced}
+
+LaTeX environments such as `aligned`, `cases`, `bmatrix` work natively in Quarto,
+both in PDF (pure LaTeX) and in HTML (KaTeX):
+
+````markdown
+$$
+\begin{cases}
+  \dot{x}(t) = Ax(t) + Bu(t) \\
+  y(t) = Cx(t) + Du(t)
+\end{cases}
+$$ {#eq-statespace}
+````
+
+::: {.render-demo}
+**Output:**
+
+$$
+\begin{cases}
+  \dot{x}(t) = Ax(t) + Bu(t) \\
+  y(t) = Cx(t) + Du(t)
+\end{cases}
+$$ {#eq-statespace}
+
+:::
+
+The state-space representation (@eq-statespace) is the standard form in control theory.
+
+````markdown
+$$
+\begin{aligned}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J} + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{aligned}
+$$ {#eq-maxwell}
+````
+
+::: {.render-demo}
+**Output:**
+$$
+\begin{aligned}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J} + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{aligned}
+$$ {#eq-maxwell}
+:::
+
+Maxwell's equations (@eq-maxwell) in vector notation — a single number for the entire
+block.
+
+To assign **one number per line**, use `align` (without the final `d`) instead of
+`aligned`. The `align` environment is self-contained — it does not nest inside
+`$$…$$`. Pandoc wraps every `$$…$$` in `\[…\]` or `\begin{equation}`, and nesting
+`\begin{align}` inside is invalid (amsmath error). A raw `{=latex}` block is needed
+for PDF and `$$…$$` for HTML:
+
+`````markdown
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{align}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J}
+    + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{align}
+```
+:::
+
+::: {.content-visible when-format="html"}
+$$
+\begin{align}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J}
+    + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{align}
+$$
+:::
+`````
+
+::: {.render-demo}
+**Output:**
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{align}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J}
+    + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{align}
+```
+:::
+
+::: {.content-visible when-format="html"}
+$$
+\begin{align}
+  \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\
+  \nabla \cdot \mathbf{B}  &= 0 \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+  \nabla \times \mathbf{B} &= \mu_0\mathbf{J}
+    + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+\end{align}
+$$
+:::
+
+:::
+
+Each `\\` receives its own sequential number. To suppress the number on a line, add
+`\notag` before the `\\`. To reference an individual line, use `\label{my-label}`
+inside the `{=latex}` block and `\eqref{my-label}` in the text (PDF only — KaTeX
+does not generate addressable labels).
+
+::: {.callout-warning}
+## `\begin{align}` is incompatible with `$$…$$` in Quarto
+
+Quarto (Pandoc) wraps every `$$…$$` in `\[…\]` (without label) or
+`\begin{equation}…\end{equation}` (with `{#eq-}`). Both forms create invalid nesting
+with `\begin{align}`, which amsmath rejects:
+
+```
+Package amsmath Error: Erroneous nesting of equation structures
+```
+
+The systematic solution is the dual `{.content-visible}` pattern: raw `{=latex}`
+block for PDF, `$$\begin{align}…\end{align}$$` for HTML (KaTeX supports `align`
+natively).
+:::
+
+::: {.callout-tip}
+## `aligned` vs `align` — what is the difference?
+
+| Environment | Quarto syntax | Numbering | `@eq-` |
+|:---|:---|:---|:---:|
+| `aligned` | `$$\begin{aligned}…\end{aligned}$$` | one number for the **block** | $\checkmark$ |
+| `align`   | `{=latex}` + `$$…$$` (dual)         | one number **per line**       | $\times$     |
+| `align*`  | `{=latex}` + `$$…$$` (dual)         | none                          | —            |
+
+Practical rule: calculation development → `aligned` (one number, `@eq-` possible).
+Independent equations → `align` with the dual pattern.
+:::
+
+::: {.callout-note}
+## Hierarchical numbering (3.1a), (3.1b) with `subequations`
+
+For **(3.1a)**, **(3.1b)**… numbering, combine `subequations` and `align` in a
+`{=latex}` block (KaTeX does not support `subequations`):
+
+````markdown
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{subequations}\label{eq-navier}
+\begin{align}
+  \rho\,\frac{D\mathbf{u}}{Dt}
+    &= -\nabla p + \mu\,\nabla^2\mathbf{u} + \mathbf{f}
+    \label{eq-navier-momentum} \\
+  \nabla \cdot \mathbf{u} &= 0
+    \label{eq-navier-incomp}
+\end{align}
+\end{subequations}
+```
+:::
+````
+
+`\label{eq-navier}` references the group; `\label{eq-navier-momentum}` and
+`\label{eq-navier-incomp}` reference the lines — accessible with `\eqref{}`.
+Add a sibling `{.content-visible when-format="html"}` block with
+`$$\begin{align}…\end{align}$$` for HTML rendering.
+:::
+
+## Simple Markdown tables {#sec-tables-simple}
+
+Pandoc/Quarto's *pipe table* syntax creates tables with per-column alignment.
+The caption, preceded by `: `, must be placed immediately after the table:
+
+````markdown
+| Command           | PDF format    | HTML format   |
+|:------------------|:-------------:|:-------------:|
+| `@fig-label`      | figure number | hyperlink     |
+| `@tbl-label`      | table number  | hyperlink     |
+| `@eq-label`       | eq. number    | hyperlink     |
+| `@sec-label`      | section num.  | hyperlink     |
+
+: Quarto cross-reference prefixes. {#tbl-crossref}
+````
+
+::: {.render-demo}
+**Output:**
+
+| Command           | PDF format    | HTML format   |
+|:------------------|:-------------:|:-------------:|
+| `@fig-label`      | figure number | hyperlink     |
+| `@tbl-label`      | table number  | hyperlink     |
+| `@eq-label`       | eq. number    | hyperlink     |
+| `@sec-label`      | section num.  | hyperlink     |
+
+: Quarto cross-reference prefixes. {#tbl-crossref}
+
+:::
+
+@tbl-crossref summarises the four prefixes to know.
+
+::: {.callout-tip}
+## Column alignment
+
+- `:---` — left-aligned
+- `:---:` — centred
+- `---:` — right-aligned
+
+The line `|:---|:---:|---:|` defines the alignment of each column.
+:::
+
+::: {.callout-warning}
+## The caption must be flush against the table
+
+The `: Caption. {#tbl-label}` line must be placed **immediately** after the table,
+with no blank line in between. A blank line breaks the table-caption association and
+produces an orphan caption with no numbering.
+:::
+
+## Advanced tables with `quartable` {#sec-quartable}
+
+The `quartable` extension (listed in the `filters:` key of `_quarto.yml`) adds three
+capabilities to Markdown tables:
+
+- **Rowspan**: `[text]{rs=N}` merges N rows; `^` continues the merged cell
+- **Colspan**: `[text]{cs=N}` merges N columns
+- **Midrules**: `===` inserts a horizontal separator; `===2-4` a partial rule
+  spanning columns 2 to 4.
+
+::: {.callout-tip}
+## Full documentation for the `quartable` extension
+
+To see all the features of this extension (inspired by the LaTeX `booktabs` package),
+see <https://github.com/zinc75/quarto-quartable/> and <https://zinc75.github.io/quarto-quartable/test_quartable.pdf/>.
+:::
+
+
+````markdown
+| Family              | Feature              | Chapter |
+|:--------------------|:---------------------|:-------:|
+| ===                 |                      |         |
+| [Structure]{rs=3}   | Headings and levels  | 1       |
+| ^                   | Cross-references     | 1       |
+| ^                   | Inline formatting    | 1       |
+| ===                 |                      |         |
+| [Visuals]{rs=3}     | Static figures       | 2       |
+| ^                   | Python figures       | 2       |
+| ^                   | Multi-column         | 2       |
+| ===                 |                      |         |
+| [Math & data]{rs=3} | Equations            | 3       |
+| ^                   | Simple tables        | 3       |
+| ^                   | `quartable`          | 3       |
+
+: Summary of features by family. {#tbl-recap}
+````
+
+::: {.render-demo}
+**Output:**
+
+| Family              | Feature              | Chapter |
+|:--------------------|:---------------------|:-------:|
+| ===                 |                      |         |
+| [Structure]{rs=3}   | Headings and levels  | 1       |
+| ^                   | Cross-references     | 1       |
+| ^                   | Inline formatting    | 1       |
+| ===                 |                      |         |
+| [Visuals]{rs=3}     | Static figures       | 2       |
+| ^                   | Python figures       | 2       |
+| ^                   | Multi-column         | 2       |
+| ===                 |                      |         |
+| [Math & data]{rs=3} | Equations            | 3       |
+| ^                   | Advanced equations   | 3       |
+| ^                   | Simple tables        | 3       |
+
+: Summary of features for chapters 1 to 3. {#tbl-recap}
+
+:::
+
+::: {.callout-warning}
+## `quartable` must be in `filters:`
+
+The `[text]{rs=N}` syntax is only recognised if `quartable` is listed in the
+`filters:` key of `_quarto.yml`. Without this, the curly braces remain displayed
+as-is in the output.
+:::
+
+::: {.callout-note}
+## Partial rules with `===N-M`
+
+`===2-4` inserts a rule that spans only columns 2 to 4 (inclusive). Useful for
+underlining a sub-group of columns without separating the entire row.
+:::

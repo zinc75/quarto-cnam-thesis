@@ -1,0 +1,371 @@
+# Document structure and formatting {short-title="Structure"}
+
+This chapter presents the basic building blocks of any Quarto document: heading hierarchy,
+numbering, section cross-references, and inline formatting.
+
+## Heading hierarchy {#sec-headings}
+
+Quarto supports four levels of numbered headings in this template (parameter
+`number-depth: 4` in `_extension.yml`). The syntax uses Markdown hashes:
+
+````markdown
+# Chapter heading (level 1)
+
+## Section heading (level 2)
+
+### Subsection heading (level 3)
+
+#### Sub-subsection heading (level 4)
+````
+
+In PDF, these levels correspond respectively to the LaTeX commands `\chapter`,
+`\section`, `\subsection`, and `\subsubsection`. In HTML, they generate the tags
+`<h2>` through `<h5>` (with `<h1>` reserved for the book title).
+
+### Demonstration subsection {#sec-demo-subsection}
+
+This is a `###` in context. The automatic numbering produces "1.1.1" here.
+
+#### Demonstration sub-subsection
+
+And this is a `####`, numbered "1.1.1.1". Beyond this level, Quarto stops numbering —
+use lists or bold paragraphs if you need a fifth level.
+
+::: {.callout-warning}
+## Recommended maximum depth
+
+A four-level numbered outline is generally the maximum acceptable in a thesis. A deeper
+outline is often a sign that the structure needs rethinking.
+:::
+
+## Numbered and unnumbered sections {#sec-numbering}
+
+By default, all headings from level 1 to 4 are numbered. To remove the numbering, add
+the class `{.unnumbered}`:
+
+````markdown
+## Section without number {.unnumbered}
+````
+
+For front matter and back matter pages (acknowledgements, abstract, conclusion…), combine
+`{.unnumbered}` with `{.toc-black}` — the latter class instructs the Lua filter to display
+the title in black in the table of contents, and triggers roman numeral page numbering in
+the front matter when `pagestyle-sections: true`:
+
+````markdown
+# Conclusion {.unnumbered}
+
+# Acknowledgements {.unnumbered .toc-black}
+````
+
+::: {.callout-important}
+## `.unnumbered` vs `.unnumbered .toc-black`
+
+- `{.unnumbered}` alone: unnumbered heading, displayed in colour in the {{< acrs toc >}}
+  (chapters in the thesis body: introduction, conclusion).
+- `{.unnumbered .toc-black}`: unnumbered heading, displayed in **black** in the
+  {{< acrs toc >}} (front matter and back matter sections).
+
+Never put `{.unnumbered}` on a numbered body chapter (chapters 1, 2, 3…) — it would be
+inconsistent with the overall structure.
+:::
+
+## Section cross-references (`@sec-`) {#sec-crossref}
+
+To create a cross-reference to a section, you need to: (1) give an identifier to the
+target heading with `{#sec-label}`, then (2) reference it with `@sec-label`:
+
+````markdown
+## Heading hierarchy {#sec-headings}
+
+As explained in @sec-headings, levels range from `#` to `####`.
+````
+
+::: {.render-demo}
+**Output:**
+
+As explained in @sec-headings, levels range from `#` to `####`.
+:::
+
+Quarto automatically resolves the number and hyperlink in both formats.
+
+::: {.callout-tip}
+## Label naming convention
+
+Use the prefix `sec-` for sections, `fig-` for figures, `tbl-` for tables, `eq-` for
+equations. These prefixes are required by Quarto for cross-references to work correctly
+in both output formats.
+:::
+
+## Short title (`short-title`) {#sec-short-title}
+
+When a chapter or section title is too long to fit in the PDF running header or in the
+table of contents, use the `short-title` attribute:
+
+````markdown
+# A really very long title that overflows into the header {short-title="Short title"}
+
+## A subsection with an extremely long title {short-title="Short title"}
+````
+
+The short title is used in the running header (recto/verso page header) and in the table
+of contents. The long title remains unchanged in the body of the text.
+
+::: {.callout-tip}
+Aim for 40 to 50 characters maximum for a `short-title`. Beyond that, it may also
+overflow depending on the layout.
+:::
+
+## Inline formatting {#sec-inline}
+
+### Emphasis and code
+
+````markdown
+**bold**, *italic*, ***bold italic***, `inline code`
+~~strikethrough~~, ^superscript^, ~subscript~
+:::
+````
+
+::: {.render-demo}
+**Output:**
+
+**bold**, *italic*, ***bold italic***, `inline code`,
+~~strikethrough~~, ^superscript^, ~subscript~.
+:::
+
+::: {.callout-important}
+## Academic use of bold and italic
+
+In a thesis, bold and italic serve to mark **terminology** at first introduction, or to
+cite a *book title*. Using them to decorate text or emphasise entire sentences is a
+practice to avoid.
+:::
+
+### Underline
+
+Markdown has no native syntax for underlining. Quarto uses the span notation with the
+`.underline` class:
+
+````markdown
+[underlined text]{.underline}
+````
+
+::: {.render-demo}
+**Output:** [underlined text]{.underline}.
+:::
+
+In PDF, Pandoc generates `\underline{…}`; in HTML, a `<span>` with
+`text-decoration: underline`. The `<u>text</u>` syntax works in HTML but is ignored
+in PDF.
+
+::: {.callout-caution}
+## Underlining should be avoided in a thesis
+
+Underlining is a legacy of the typewriter era, when italic was not available. In a
+typeset document, it is reserved for hyperlinks. To highlight a term, use `*italic*`
+or `**bold**`.
+:::
+
+### Lists {#sec-lists}
+
+````markdown
+- First unordered item
+- Second item
+  - Sub-item (2-space indentation)
+
+1. First ordered item
+2. Second item
+   1. Sub-item (3-space indentation)
+````
+
+::: {.render-demo}
+**Output:**
+
+- First unordered item
+- Second item
+  - Sub-item (2-space indentation)
+
+1. First ordered item
+1. Second item
+   a. Sub-item (3-space indentation)
+:::
+
+::: {.callout-note}
+## The written number does not matter
+
+Pandoc only reads the number of the **first** item (to determine the counter start);
+all subsequent numbers are ignored and auto-incremented. These two syntaxes produce
+the same output:
+
+```markdown
+1. First
+2. Second
+3. Third
+```
+
+```markdown
+1. First
+1. Second
+1. Third
+```
+
+The `1. 1. 1.` convention is even recommended: no need to renumber if an item is
+inserted or moved. The same logic applies to sub-lists: `a. a. a.` is sufficient
+to obtain `a.`, `b.`, `c.`…
+:::
+
+
+### Task lists {#sec-tasklists}
+
+The `- [ ]` / `- [x]` syntax produces a task list. The case of `x` does not matter
+(`X` works too):
+
+````markdown
+- [ ] Write the introduction
+- [x] Choose the Quarto template
+- [ ] Submit to the thesis supervisor
+````
+
+::: {.render-demo}
+**Output:**
+
+- [ ] Write the introduction
+- [x] Choose the Quarto template
+- [ ] Submit to the thesis supervisor
+:::
+
+::: {.callout-note}
+## Different rendering depending on the output format
+
+In **HTML**, Quarto generates real `<input type="checkbox">` elements (disabled,
+non-interactive).
+
+In **PDF** (pdflatex), Pandoc uses the mathematical symbols `$\square$` (empty box)
+and `$\boxtimes$` (checked box) from the `amssymb` package. The appearance is correct
+but typographically different from HTML checkboxes.
+:::
+
+::: {.callout-caution}
+## Use in a thesis
+
+Task lists are suited to working notes, methodological appendices, or a README. In
+the thesis body, prefer a plain unordered list accompanied by a state verb ("completed",
+"in progress"…): it is more neutral and more consistent with academic register.
+:::
+
+### Blockquotes
+
+````markdown
+> "Typography is the craft of endowing human language with a durable visual form."
+>
+> — Robert Bringhurst [@Bringhurst2004]
+````
+
+::: {.render-demo}
+**Output:**
+
+> "Typography is the craft of endowing human language with a durable visual form."
+>
+> — Robert Bringhurst [@Bringhurst2004]
+:::
+
+::: {.callout-caution}
+## Definition lists in pdflatex
+
+Pandoc's definition list syntax (`term\n:  definition`) is supported by Quarto but
+produces no particular visual style in pdflatex. If you need formatted definition
+lists, use a Markdown table (see @sec-tables-simple) or a raw LaTeX environment.
+:::
+
+### Footnotes {#sec-footnotes}
+
+Quarto offers two syntaxes for footnotes.
+
+**Inline syntax** — the note is written directly in the text, between `^[` and `]`:
+
+````markdown
+The Cnam was founded in 1794^[Decree of the National Convention of 19 Vendémiaire
+Year III (10 October 1794).] on the initiative of Abbé Grégoire.
+````
+
+::: {.render-demo}
+**Output:**
+
+The Cnam was founded in 1794^[Decree of the National Convention of 19 Vendémiaire
+Year III (10 October 1794).] on the initiative of Abbé Grégoire.
+:::
+
+**Reference syntax** — the footnote call and its content are separated. Useful for
+long notes or to keep the main text readable:
+
+````markdown
+The thesis must be deposited on theses.fr[^deposit] before the defence.
+
+[^deposit]: National thesis portal managed by the {{< acrs abes >}},
+    accessible at <https://theses.fr>.
+````
+
+::: {.render-demo}
+**Output:**
+
+The thesis must be deposited on theses.fr[^deposit] before the defence.
+
+[^deposit]: National thesis portal managed by the {{< acrs abes >}},
+    accessible at <https://theses.fr>.
+:::
+
+In PDF, both syntaxes produce a numbered footnote at the bottom of the page. In HTML,
+they produce an interactive footnote (clickable number with a back-reference to the
+call site).
+
+::: {.callout-tip}
+## Which syntax to choose?
+
+Prefer the **inline syntax** `^[…]` for short notes (one sentence) — the content
+remains visible while writing. Use the **reference syntax** `[^label]` for long or
+multi-paragraph notes, and to avoid visually cluttering the Markdown source when the
+note exceeds two lines.
+:::
+
+### Page breaks {#sec-pagebreak}
+
+Quarto provides the `{{< pagebreak >}}` shortcode to insert a page break compatible
+with both output formats:
+
+````markdown
+End of this section's content.
+
+{{</* pagebreak */>}}
+
+Start of the next section.
+````
+
+In PDF, `{{< pagebreak >}}` generates `\newpage`. In HTML, it inserts a
+`page-break-after: always` style rule — with no visible effect on screen, but useful
+if the HTML page is printed from the browser.
+
+::: {.callout-tip}
+## `\newpage` vs `\clearpage`
+
+If you need `\clearpage` (flushes pending floats before jumping) rather than
+`\newpage`, use a raw LaTeX block inside a `{.content-visible when-format="pdf"}`:
+
+````markdown
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\clearpage
+```
+:::
+````
+
+In a thesis with many figures, `\clearpage` is often preferable to prevent floats
+from accumulating and appearing well after their insertion point in the text.
+:::
+
+::: {.callout-caution}
+## Manual page breaks should be used sparingly
+
+As a general rule, let LaTeX manage the layout. Manual page breaks solve a local
+problem but can create others further on in the document (blank pages, displaced
+floats). Prefer to adjust them at the very end of writing, once the content is fixed.
+:::

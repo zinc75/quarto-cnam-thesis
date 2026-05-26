@@ -1,7 +1,57 @@
 # Conclusion {.unnumbered}
 
-{{< lipsum 1 >}}
+This guide has presented the features of the `quarto-cnam-thesis` template following
+the *code + output* principle: each syntax is shown exactly as typed, then immediately
+rendered in the document. This self-referential approach aims to make the template
+self-sufficient as documentation.
 
-{{< lipsum 1 >}}
+## Feature summary {.unnumbered}
 
-{{< lipsum 1 >}}
+| Feature | Key syntax | Chapter |
+|:---|:---|:---:|
+| ===  | | |
+| [Structure]{rs=4} | Hierarchy `#` / `##` / `###` / `####` | 1 |
+| ^ | `{.unnumbered}`, `{.toc-black}` | 1 |
+| ^ | `{#sec-label}` + `@sec-label` | 1 |
+| ^ | `short-title="…"` | 1 |
+| ===  | | |
+| [Figures]{rs=4} | `![cap](img){#fig-label width=X%}` | 2 |
+| ^ | Chunk `{python}` with `#\| label: fig-…` | 2 |
+| ^ | `layout-ncol=2` | 2 |
+| ^ | `{=latex}` block in `:::{#fig-}` div | 2 |
+| ===  | | |
+| [Math & tables]{rs=4} | `$…$` / `$$…$$ {#eq-label}` | 3 |
+| ^ | `\begin{aligned}`, `\begin{cases}` | 3 |
+| ^ | Pipe table + `: Caption. {#tbl-label}` | 3 |
+| ^ | `[text]{rs=N}`, `^`, `===` (`quartable`) | 3 |
+| ===  | | |
+| [Callouts]{rs=5} | `{.callout-note}` | 4 |
+| ^ | `{.callout-tip}` | 4 |
+| ^ | `{.callout-warning}` | 4 |
+| ^ | `{.callout-important}` | 4 |
+| ^ | `{.callout-caution}` | 4 |
+| ===  | | |
+| [References]{rs=4} | `[@key]` / `[@key1; @key2]` | 5 |
+| ^ | `{{</* acr */>}}`, `{{</* terme */>}}`, `{{</* acrs */>}}` | 5 |
+| ^ | `{{</* comment */>}}`, `{{</* todo */>}}`, `{{</* note */>}}` | 5 |
+| ^ | `.resume-block`, `.abstract-block` | 5 |
+
+: Summary of all documented features. {#tbl-conclusion}
+
+## Recommended workflow {.unnumbered}
+
+::: {.callout-tip}
+## Daily writing cycle
+
+1. **Write in HTML**: `quarto render --profile en --to cnam-thesis-html --no-clean`
+   — fast rendering, easy navigation, ideal for proofreading.
+2. **Check the PDF** before each {{< acrs csi >}} meeting:
+   `quarto render --profile en` — compiles everything and generates the PDF/A-1b.
+3. **Version regularly**: commit at least after each writing session, ideally before
+   and after each supervision meeting.
+4. **Disable comments** before final submission:
+   `comments: enabled: false` in `_quarto.yml`.
+:::
+
+The template is maintained on GitHub. To report an issue or propose an improvement:
+[zinc75/quarto-cnam-thesis](https://github.com/zinc75/quarto-cnam-thesis).
