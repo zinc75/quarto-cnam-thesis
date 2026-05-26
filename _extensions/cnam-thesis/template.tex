@@ -414,6 +414,14 @@ $endif$
 }
 \makeatother
 
+% Pandoc/Quarto crossref workaround (pandoc issue #11201):
+% When crossref: chapters: true is set, Pandoc generates \arabic{none} for
+% figures/tables in unnumbered chapters (\chapter*). On TeX Live ≤ 2024,
+% the 'none' counter does not exist and LaTeX throws "No counter 'none'
+% defined". Declaring it here as a zero counter makes \arabic{none} produce
+% "0" harmlessly. Fixed upstream in newer Pandoc/TeX Live but needed for CI.
+\newcounter{none}
+
 %============================================================
 \begin{document}
 
