@@ -172,8 +172,10 @@ jobs:
                 Choisir le profil de langue pour la rédaction et le rendu&nbsp;:<br>
                 <em>Choose the language profile to write and render:</em>
               </p>
-              <pre><code>quarto render --profile fr   # → PDF + HTML en français  /  in French
-              quarto render --profile en   # → PDF + HTML in English   /  en anglais</code></pre>
+              <pre><code>
+              quarto render --profile fr   # → PDF + HTML en français  /  in French
+              quarto render --profile en   # → PDF + HTML in English   /  en anglais
+              </code></pre>
               <hr class="my-4">
               <p>
                 <a class="btn btn-outline-secondary btn-sm me-2"
