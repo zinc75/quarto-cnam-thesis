@@ -174,8 +174,8 @@ or `**bold**`.
   - Sub-item (2-space indentation)
 
 1. First ordered item
-2. Second item
-   1. Sub-item (3-space indentation)
+1. Second item
+   a. Sub-item (3-space indentation)
 ````
 
 ::: {.render-demo}

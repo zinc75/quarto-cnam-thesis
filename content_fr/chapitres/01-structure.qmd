@@ -176,7 +176,7 @@ hypertexte. Pour mettre en valeur un terme, utilisez `*italique*` ou `**gras**`.
 
 1. Premier élément ordonné
 2. Deuxième élément
-   1. Sous-élément (indentation 3 espaces)
+   a. Sous-élément (indentation 3 espaces)
 ````
 
 ::: {.render-demo}
