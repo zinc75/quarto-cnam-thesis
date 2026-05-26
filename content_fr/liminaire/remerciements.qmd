@@ -1,6 +1,6 @@
 # Remerciements {.unnumbered .toc-black}
 
-Ce travail n'aurait pas été possible sans le soutien indéfectible de Donald Knuth, dont
+Ce travail n'aurait pas été possible sans le soutien indéfectible des écrits de Donald Knuth ;
 le *\TeX{}book* [@Knuth1984] a accompagné des générations de doctorants pendant des nuits
 de débogage de leur code LaTeX.
 Je remercie également Leslie Lamport pour avoir rendu TeX accessible au commun des mortels
@@ -8,11 +8,12 @@ avec LaTeX [@Lamport1994], ainsi que l'équipe Quarto — J.J. Allaire, Charles 
 Carlos Scheidegger et Yihui Xie — pour avoir fait de la publication scientifique
 reproductible une réalité [@Allaire2022].
 
-Mes remerciements vont à mon directeur de thèse, l'Abbé Henri Grégoire, dont la vision
-de 1794 — mettre les arts et les métiers à la portée de tous — résonne avec l'idéal du
-logiciel libre. Je doute qu'il ait anticipé les PDF/A-1b, mais l'esprit est là.
+Mes remerciements vont à mon directeur de thèse virtuel pour les besoins de ce document, 
+l'Abbé Henri Grégoire, dont la vision de 1794 — mettre les arts et les métiers à la portée 
+de tous — résonne avec l'idéal du logiciel libre. Je doute qu'il ait anticipé les PDF/A-1b, 
+mais l'esprit est là.
 
-Je remercie les membres du jury pour leur disponibilité, en particulier M. Vaucanson dont
+Je remercie les membres du jury virtuel pour leur disponibilité, en particulier M. Vaucanson dont
 l'expertise en automates mécaniques s'est avérée plus pertinente qu'il n'y paraît pour
 comprendre le pipeline de compilation pdflatex et la magie derrière Pandoc et les filtres
 Lua.
