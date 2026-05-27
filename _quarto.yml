@@ -41,7 +41,7 @@ book:
 # Note: lang: fr is always fixed (Cnam structure is always in French) /
 # Note : lang: fr reste fixe (structure Cnam toujours française)
 
-date-soutenance: "12 juin 2026"        # do NOT use `date:` (encoding issue) / NE PAS utiliser `date:`
+date-soutenance: "12 Juin 2026"        # do NOT use `date:` (encoding issue) / NE PAS utiliser `date:`
 discipline: "60e section CNU — Mécanique, génie mécanique, génie civil"
 specialite: "Acoustique"
 ecole-doctorale: "Sciences des Métiers de l'Ingénieur"
