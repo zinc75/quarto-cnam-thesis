@@ -58,17 +58,6 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       # ── TeX Live (full) ───────────────────────────────────────────────────────
-      # Cache the downloaded .deb files so subsequent runs skip the download
-      # (~5–8 min first run, ~2–3 min with cache).
-      # Cache des .deb téléchargés — les runs suivants évitent le téléchargement.
-      # Bump the key suffix (v1 → v2 …) to force a full cache refresh.
-      - name: Cache TeX Live apt archives
-        uses: actions/cache@v4
-        with:
-          path: /var/cache/apt/archives
-          key: apt-texlive-${{ runner.os }}-v1
-          restore-keys: apt-texlive-${{ runner.os }}-
-
       - name: Install TeX Live
         run: |
           sudo apt-get update
