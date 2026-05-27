@@ -116,6 +116,15 @@ $endif$
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{tcolorbox}
 \tcbuselibrary{skins,breakable}   % required for Quarto callouts (enhanced jigsaw skin)
+% PDF/A-1b §6.4 — neutralise tcolorbox opacity keys so they always resolve to 1.
+% Quarto hardcodes opacityback=0 / opacitybacktitle=0.6 in every callout tcolorbox;
+% these keys create PDF transparency operators that violate ISO 19005-1 §6.4.
+% Redefining the /.code handler to always write 1 into the internal macro eliminates
+% all transparency while keeping the colour keys (colback, colbacktitle) intact.
+\tcbset{
+  opacityback/.code={\def\kvtcb@opacityback{1}},
+  opacitybacktitle/.code={\def\kvtcb@opacitybacktitle{1}},
+}
 \usepackage{soul}                 % required for strikethrough (~~text~~ → \st{text})
 \usepackage[normalem]{ulem}       % \dashuline for dashed URL underline; normalem preserves \emph
 
@@ -254,7 +263,6 @@ $highlighting-macros$
     breakable,
     colback=lavendercode!10!white,          % gray tint keeps code readable / teinte grise pour la lisibilité
     colbacktitle=lilacode!30!white,
-    opacitybacktitle=0.6,
     colframe=lilacode,
     coltitle=black,
     fonttitle=\small,

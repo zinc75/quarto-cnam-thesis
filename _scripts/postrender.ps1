@@ -172,7 +172,7 @@ if ($Mode -eq "pdfa" -and $pdfGenerated -and (Test-Path $dstPdf)) {
             $beforeKB  = [math]::Round($sizeBefore / 1KB)
             $afterKB   = [math]::Round($sizeAfter  / 1KB)
             Write-Host "PDF/A-1b conversion done: ${beforeKB} KB → ${afterKB} KB"
-            Write-Host "Validate on pdfforge.org before submitting to theses.fr."
+            Write-Host "Validate on facile.cines.fr before submitting to theses.fr."
         } else {
             Remove-Item $pdfaTmp -Force -ErrorAction SilentlyContinue
             Write-Warning "Ghostscript conversion failed (exit $LASTEXITCODE) — original PDF preserved."

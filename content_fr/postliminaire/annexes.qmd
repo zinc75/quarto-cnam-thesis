@@ -83,18 +83,37 @@ execute:
 # Soumission PDF/A-1b sur theses.fr {.appendix #sec-pdfa}
 
 La plateforme nationale de dépôt des thèses **theses.fr** exige un fichier PDF/A-1b
-conforme à la norme ISO 19005-1. Le PDF produit directement par `pdflatex` présente
-des violations connues liées aux callouts Quarto et aux figures matplotlib — elles sont
-corrigées par une étape de post-traitement Ghostscript.
+conforme à la norme ISO 19005-1. Le PDF produit par ce template est **directement valide**
+selon le validateur de référence — aucun post-traitement n'est nécessaire dans le cas général.
 
-## Sources de non-conformité
+## Validateur de référence
 
-| Violation | Origine | Traitement par GS |
-|:---|:---|:---|
-| §6.4 transparence | `opacityback=0` dans les callouts tcolorbox | Aplatissement vers opaque |
-| §6.4 transparence | `alpha < 1.0` dans les figures matplotlib | Aplatissement vers opaque |
-| §6.3.5/§6.3.6 polices | Métriques FontAwesome5 (icônes callouts) | Re-embarquement |
-| §6.3.5/§6.3.6 polices | DejaVu Type 3 (labels axes matplotlib) | Conversion/suppression |
+Utiliser **[facile.cines.fr](https://facile.cines.fr)** (CINES, moteur veraPDF) pour
+valider le PDF avant dépôt. C'est le validateur de référence des plateformes
+institutionnelles françaises d'archivage, dont theses.fr.
+
+::: {.callout-warning}
+## Ne pas utiliser pdfforge.org pour ce template
+
+pdfforge.org génère des **faux positifs** sur les PDF produits par ce template :
+il signale des violations §6.4 (transparence des callouts) et §6.3.5/§6.3.6 (métriques
+de polices) qui ne sont pas détectées par veraPDF. La transparence des callouts est
+supprimée directement dans le template LaTeX ; les métriques FontAwesome5 sont conformes
+selon veraPDF. Ne pas utiliser pdfforge pour valider un dépôt institutionnel.
+:::
+
+## Quand utiliser Ghostscript
+
+Le post-traitement Ghostscript n'est utile que si la thèse contient des figures
+matplotlib en format **vectoriel** (`fig-format: pdf` dans `_quarto.yml`) avec des
+transparences (`alpha < 1`), par exemple :
+
+```python
+ax.grid(True, alpha=0.3)   # génère des opérateurs de transparence PDF en mode vectoriel
+```
+
+Dans le **workflow standard** (figures en PNG, format par défaut de Quarto+pdflatex),
+aucune violation §6.4 n'est produite et Ghostscript n'est pas nécessaire.
 
 ## Installation de Ghostscript
 
@@ -148,16 +167,15 @@ Le script affiche les tailles avant/après :
 ```
 Running Ghostscript PDF/A-1b conversion…
 PDF/A-1b conversion done: 835 KB → 1403 KB
-Validate on pdfforge.org before submitting to theses.fr.
+Validate on facile.cines.fr before submitting to theses.fr.
 ```
 
 ::: {.callout-warning}
 ## Validation obligatoire avant dépôt
 
-Déposer le PDF converti sur **[pdfforge.org](https://www.pdfforge.org/pdfcreator/features/pdfa-validator)**
-pour vérifier la conformité avant soumission sur theses.fr.
-Ghostscript corrige la majorité des violations mais ne garantit pas la conformité
-à 100% dans tous les cas de figure.
+Valider le PDF sur **[facile.cines.fr](https://facile.cines.fr)** avant soumission
+sur theses.fr. Ghostscript corrige les violations de transparence vectorielle mais
+ne garantit pas la conformité à 100 % dans tous les cas de figure.
 :::
 
 ::: {.callout-tip}
@@ -170,10 +188,9 @@ le dépôt final.
 
 ## Augmentation de taille
 
-La conversion entraîne une augmentation de taille d'environ **60–70 %** pour un
-document contenant des figures matplotlib avec transparence (grilles avec `alpha < 1`).
-Cette augmentation est inhérente à l'aplatissement vectoriel de la transparence.
-Pour la minimiser, utiliser des couleurs opaques directement dans matplotlib :
+En présence de figures matplotlib vectorielles avec transparence, la conversion entraîne
+une augmentation de taille d'environ **60–70 %** (aplatissement vectoriel).
+Pour l'éviter, utiliser des couleurs opaques directement dans matplotlib :
 
 ```python
 # À la place de :  ax.grid(True, alpha=0.3)

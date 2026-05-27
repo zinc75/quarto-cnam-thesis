@@ -223,7 +223,7 @@ if [ "$PDFA_MODE" = "pdfa" ] && [ "$PDF_GENERATED" = true ] && [ -f "$DST_PDF" ]
       cp -p "$DST_PDF" "$SRC_PDF"   # keep canonical copy in sync
       SIZE_AFTER=$(wc -c < "$DST_PDF" | tr -d ' ')
       echo "PDF/A-1b conversion done: $((SIZE_BEFORE / 1024)) KB → $((SIZE_AFTER / 1024)) KB"
-      echo "Validate on pdfforge.org before submitting to theses.fr."
+      echo "Validate on facile.cines.fr before submitting to theses.fr."
     else
       rm -f "$PDFA_TMP"
       echo "postrender.sh: Ghostscript conversion failed (exit $GS_STATUS) — original PDF preserved." >&2
