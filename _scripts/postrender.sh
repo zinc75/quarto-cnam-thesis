@@ -1,13 +1,18 @@
 #!/bin/bash
 # Post-render: clean LaTeX build artifacts and rename PDF and .tex output files.
-# Usage: ./postrender.sh <lang> <output-dir>
+# Usage: ./postrender.sh <lang> <output-dir> [pdfa]
+#   pdfa  (optional) — run Ghostscript PDF/A-1b conversion after rendering.
+#                      Use only for the final submission to theses.fr.
+#                      Requires Ghostscript: brew install ghostscript (macOS)
+#                                            apt install ghostscript  (Linux)
 # Called via post-render in _quarto-fr.yml / _quarto-en.yml.
 
 LANG="$1"
 OUTPUT_DIR="$2"
+PDFA_MODE="$3"   # optional: "pdfa" to enable Ghostscript conversion
 
 if [ -z "$LANG" ] || [ -z "$OUTPUT_DIR" ]; then
-  echo "postrender.sh: usage: postrender.sh <lang> <output-dir>" >&2
+  echo "postrender.sh: usage: postrender.sh <lang> <output-dir> [pdfa]" >&2
   exit 1
 fi
 
@@ -181,5 +186,47 @@ if [ "$PDF_GENERATED" = true ] && [ -f "$DST_PDF" ]; then
     mkdir -p "${OUTPUT_DIR}/images"
     cp "$COVER_SRC" "$COVER_DST" \
       && echo "Cover image copied to: $COVER_DST"
+  fi
+fi
+
+# ── Optional: Ghostscript PDF/A-1b conversion ─────────────────────────────────
+# Activated by passing "pdfa" as a third argument:
+#   - ./_scripts/postrender.sh fr _these_fr pdfa     (in _quarto-fr.yml)
+# Flattens transparency (§6.4) and fixes font metrics (§6.3.5/§6.3.6).
+# Intended for the final submission to theses.fr — not needed for daily builds.
+# Processing time: ~1–2 min depending on PDF size and number of figures.
+# Activated en passant "pdfa" en troisième argument. Aplatit la transparence
+# et corrige les métriques de polices. Uniquement pour la soumission finale.
+if [ "$PDFA_MODE" = "pdfa" ] && [ "$PDF_GENERATED" = true ] && [ -f "$DST_PDF" ]; then
+  GS_BIN=$(command -v gs 2>/dev/null)
+  if [ -z "$GS_BIN" ]; then
+    echo "postrender.sh: 'gs' (Ghostscript) not found — PDF/A conversion skipped." >&2
+    echo "  macOS : brew install ghostscript" >&2
+    echo "  Linux : apt install ghostscript   or   dnf install ghostscript" >&2
+  else
+    echo "Running Ghostscript PDF/A-1b conversion…"
+    SIZE_BEFORE=$(wc -c < "$DST_PDF" | tr -d ' ')
+    PDFA_TMP="${DST_PDF}.tmp"
+    "$GS_BIN" \
+      -dPDFA=1 \
+      -dBATCH \
+      -dNOPAUSE \
+      -dNOOUTERSAVE \
+      -dPDFACompatibilityPolicy=2 \
+      -sColorConversionStrategy=UseDeviceIndependentColor \
+      -sDEVICE=pdfwrite \
+      -sOutputFile="$PDFA_TMP" \
+      "$DST_PDF"
+    GS_STATUS=$?
+    if [ $GS_STATUS -eq 0 ] && [ -s "$PDFA_TMP" ]; then
+      mv "$PDFA_TMP" "$DST_PDF"
+      cp -p "$DST_PDF" "$SRC_PDF"   # keep canonical copy in sync
+      SIZE_AFTER=$(wc -c < "$DST_PDF" | tr -d ' ')
+      echo "PDF/A-1b conversion done: $((SIZE_BEFORE / 1024)) KB → $((SIZE_AFTER / 1024)) KB"
+      echo "Validate on pdfforge.org before submitting to theses.fr."
+    else
+      rm -f "$PDFA_TMP"
+      echo "postrender.sh: Ghostscript conversion failed (exit $GS_STATUS) — original PDF preserved." >&2
+    fi
   fi
 fi

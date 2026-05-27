@@ -9,7 +9,12 @@ thesis-lang: fr
 project:
   output-dir: _these_fr
   post-render:
+    # Standard render (development / review):
     - ./_scripts/postrender.sh fr _these_fr    # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
+    # PDF/A-1b submission (theses.fr): add "pdfa" as a third argument, then validate on pdfforge.org.
+    # Requires Ghostscript (brew install ghostscript / apt install ghostscript / winget install ArtifexSoftware.GhostScript).
+    # Soumission PDF/A-1b (theses.fr) : ajouter "pdfa" comme 3e argument, puis valider sur pdfforge.org.
+    #- ./_scripts/postrender.sh fr _these_fr pdfa    # Windows: postrender.bat fr _these_fr pdfa
 
 book:
   title: "Guide d'utilisation du template Quarto Cnam pour les thèses"

@@ -79,3 +79,103 @@ execute:
   freeze: auto    # recalcule seulement si le code du chunk change
   echo: true      # affiche le code par défaut (surchargeable par chunk)
 ```
+
+# Soumission PDF/A-1b sur theses.fr {.appendix #sec-pdfa}
+
+La plateforme nationale de dépôt des thèses **theses.fr** exige un fichier PDF/A-1b
+conforme à la norme ISO 19005-1. Le PDF produit directement par `pdflatex` présente
+des violations connues liées aux callouts Quarto et aux figures matplotlib — elles sont
+corrigées par une étape de post-traitement Ghostscript.
+
+## Sources de non-conformité
+
+| Violation | Origine | Traitement par GS |
+|:---|:---|:---|
+| §6.4 transparence | `opacityback=0` dans les callouts tcolorbox | Aplatissement vers opaque |
+| §6.4 transparence | `alpha < 1.0` dans les figures matplotlib | Aplatissement vers opaque |
+| §6.3.5/§6.3.6 polices | Métriques FontAwesome5 (icônes callouts) | Re-embarquement |
+| §6.3.5/§6.3.6 polices | DejaVu Type 3 (labels axes matplotlib) | Conversion/suppression |
+
+## Installation de Ghostscript
+
+Ghostscript n'est **pas inclus** dans TeX Live — il doit être installé séparément.
+
+::: {.callout-note}
+## Installation selon votre système
+
+**macOS :**
+```bash
+brew install ghostscript
+```
+
+**Linux (Debian/Ubuntu) :**
+```bash
+apt install ghostscript
+```
+
+**Linux (Fedora/RHEL) :**
+```bash
+dnf install ghostscript
+```
+
+**Windows :**
+```powershell
+winget install ArtifexSoftware.GhostScript
+```
+:::
+
+## Workflow de soumission
+
+La conversion PDF/A-1b s'active en ajoutant `pdfa` comme troisième argument dans
+`_quarto-fr.yml` (ou `_quarto-en.yml`) :
+
+```yaml
+# Dans _quarto-fr.yml — pour la soumission finale uniquement :
+project:
+  post-render:
+    - ./_scripts/postrender.sh fr _these_fr pdfa
+    # Windows : ./_scripts/postrender.bat fr _these_fr pdfa
+```
+
+Puis lancer le rendu PDF :
+
+```bash
+quarto render --profile fr --to cnam-thesis-pdf
+```
+
+Le script affiche les tailles avant/après :
+
+```
+Running Ghostscript PDF/A-1b conversion…
+PDF/A-1b conversion done: 835 KB → 1403 KB
+Validate on pdfforge.org before submitting to theses.fr.
+```
+
+::: {.callout-warning}
+## Validation obligatoire avant dépôt
+
+Déposer le PDF converti sur **[pdfforge.org](https://www.pdfforge.org/pdfcreator/features/pdfa-validator)**
+pour vérifier la conformité avant soumission sur theses.fr.
+Ghostscript corrige la majorité des violations mais ne garantit pas la conformité
+à 100% dans tous les cas de figure.
+:::
+
+::: {.callout-tip}
+## Après la soumission
+
+Remettre la ligne sans `pdfa` dans `_quarto-fr.yml` pour les rendus quotidiens —
+la conversion GS ajoute environ 1–2 minutes de traitement et n'est utile que pour
+le dépôt final.
+:::
+
+## Augmentation de taille
+
+La conversion entraîne une augmentation de taille d'environ **60–70 %** pour un
+document contenant des figures matplotlib avec transparence (grilles avec `alpha < 1`).
+Cette augmentation est inhérente à l'aplatissement vectoriel de la transparence.
+Pour la minimiser, utiliser des couleurs opaques directement dans matplotlib :
+
+```python
+# À la place de :  ax.grid(True, alpha=0.3)
+ax.grid(True, color='lightgray')   # équivalent visuel, sans transparence
+```

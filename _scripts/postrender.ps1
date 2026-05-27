@@ -1,11 +1,15 @@
 # Post-render: clean LaTeX build artifacts, remove Quarto resource-scan artefacts,
 # rename PDF and .tex output files, fix HTML navigation links, generate cover image.
-# Usage: postrender.ps1 -Lang <lang> -OutputDir <output-dir>
+# Usage: postrender.ps1 -Lang <lang> -OutputDir <output-dir> [-Mode pdfa]
+#   -Mode pdfa  (optional) — run Ghostscript PDF/A-1b conversion after rendering.
+#               Use only for the final submission to theses.fr.
+#               Requires Ghostscript: winget install ArtifexSoftware.GhostScript
 # Windows equivalent of postrender.sh — called via postrender.bat.
 
 param(
     [Parameter(Mandatory)][string]$Lang,
-    [Parameter(Mandatory)][string]$OutputDir
+    [Parameter(Mandatory)][string]$OutputDir,
+    [string]$Mode = ""   # optional: "pdfa" to enable Ghostscript PDF/A-1b conversion
 )
 
 # ── Remove spurious directories copied by Quarto's resource scanner ──────────
@@ -117,5 +121,61 @@ if ($pdfGenerated -and (Test-Path $dstPdf)) {
         New-Item -ItemType Directory -Path "$OutputDir\images" -Force | Out-Null
         Copy-Item $coverSrc $coverDst -Force
         Write-Host "Cover image copied to: $coverDst"
+    }
+}
+
+# ── Optional: Ghostscript PDF/A-1b conversion ─────────────────────────────────
+# Activated by passing -Mode pdfa (via postrender.bat with "pdfa" as 3rd arg).
+# Flattens transparency (§6.4) and fixes font metrics (§6.3.5/§6.3.6).
+# Intended for the final submission to theses.fr — not needed for daily builds.
+# Processing time: ~1–2 min depending on PDF size and number of figures.
+if ($Mode -eq "pdfa" -and $pdfGenerated -and (Test-Path $dstPdf)) {
+    # Locate Ghostscript — try common names then TeX Live's bin directory.
+    $GS = $null
+    foreach ($name in @('gswin64c', 'gswin32c', 'gs')) {
+        if (Get-Command $name -ErrorAction SilentlyContinue) { $GS = $name; break }
+    }
+    if (-not $GS) {
+        $pdflatexCmd = Get-Command pdflatex -ErrorAction SilentlyContinue
+        if ($pdflatexCmd) {
+            $texBin = Split-Path $pdflatexCmd.Source
+            foreach ($name in @('gswin64c.exe', 'gswin32c.exe', 'gs.exe')) {
+                $path = Join-Path $texBin $name
+                if (Test-Path $path) { $GS = $path; break }
+            }
+        }
+    }
+
+    if (-not $GS) {
+        Write-Warning "Ghostscript not found — PDF/A conversion skipped."
+        Write-Warning "  Install: winget install ArtifexSoftware.GhostScript"
+    } else {
+        Write-Host "Running Ghostscript PDF/A-1b conversion..."
+        $sizeBefore = (Get-Item $dstPdf).Length
+        $pdfaTmp    = "$dstPdf.tmp"
+
+        & $GS `
+            -dPDFA=1 `
+            -dBATCH `
+            -dNOPAUSE `
+            -dNOOUTERSAVE `
+            -dPDFACompatibilityPolicy=2 `
+            -sColorConversionStrategy=UseDeviceIndependentColor `
+            -sDEVICE=pdfwrite `
+            "-sOutputFile=$pdfaTmp" `
+            $dstPdf
+
+        if ($LASTEXITCODE -eq 0 -and (Test-Path $pdfaTmp) -and (Get-Item $pdfaTmp).Length -gt 0) {
+            Move-Item $pdfaTmp $dstPdf -Force
+            Copy-Item  $dstPdf $srcPdf -Force   # keep canonical copy in sync
+            $sizeAfter = (Get-Item $dstPdf).Length
+            $beforeKB  = [math]::Round($sizeBefore / 1KB)
+            $afterKB   = [math]::Round($sizeAfter  / 1KB)
+            Write-Host "PDF/A-1b conversion done: ${beforeKB} KB → ${afterKB} KB"
+            Write-Host "Validate on pdfforge.org before submitting to theses.fr."
+        } else {
+            Remove-Item $pdfaTmp -Force -ErrorAction SilentlyContinue
+            Write-Warning "Ghostscript conversion failed (exit $LASTEXITCODE) — original PDF preserved."
+        }
     }
 }
