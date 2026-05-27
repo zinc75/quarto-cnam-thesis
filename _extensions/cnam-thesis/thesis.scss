@@ -963,3 +963,44 @@ blockquote {
 .sidebar-item:has(a[href*="bibliography.html"]) {
   display: none !important;
 }
+
+
+// ── Line-numbered code blocks (CSS-counter approach) ─────────────────────────
+// Quarto uses ::before pseudo-elements on each <span id="cbN-N">, positioned
+// with a negative left offset outside the <pre> — overflow:hidden clips them.
+// Quarto utilise des ::before positionnés en négatif — overflow:hidden les coupe.
+
+div.code-copy-outer-scaffold,
+div.sourceCode:not(div.code-copy-outer-scaffold > div.sourceCode) {
+  &:has(pre.numberSource) {
+    overflow: visible;
+  }
+}
+
+// Restore the margin-left and padding-left that Quarto sets on numberSource <pre>.
+// These are overridden by the global pre rule above (lines 789-798).
+// Restaurer margin-left et padding-left écrasés par la règle globale sur pre.
+div.code-copy-outer-scaffold pre.numberSource,
+div.sourceCode pre.numberSource {
+  margin-left: 3em !important;
+  padding-left: 0.5rem !important;
+  border-left: 1px solid rgba($code-accent, 0.35) !important;
+}
+
+
+// ── Code block horizontal scroll ─────────────────────────────────────────────
+// Scroll on the container, not the <pre> — allows overflow:visible on the <pre>
+// for ::before line-number counters while still containing long lines.
+// Scroll sur le conteneur : overflow:visible reste sur le <pre> pour les numéros.
+
+div.code-copy-outer-scaffold > div.sourceCode,
+div.sourceCode:not(div.code-copy-outer-scaffold > div.sourceCode) {
+  overflow-x: auto !important;
+}
+
+// pre must stay visible so ::before line counters are not clipped.
+// Le pre reste visible pour que les compteurs ::before ne soient pas coupés.
+div.code-copy-outer-scaffold pre,
+div.sourceCode pre {
+  overflow: visible !important;
+}
