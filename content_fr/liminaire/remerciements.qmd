@@ -5,7 +5,7 @@ le *\TeX{}book* [@Knuth1984] a accompagné des générations de doctorants penda
 de débogage de leur code LaTeX.
 Je remercie également Leslie Lamport pour avoir rendu TeX accessible au commun des mortels
 avec LaTeX [@Lamport1994], ainsi que l'équipe Quarto — J.J. Allaire, Charles Teague,
-Carlos Scheidegger et Yihui Xie — pour avoir fait de la publication scientifique
+Carlos Scheidegger, Yihui Xie, Christophe Dervieux notamment — pour avoir fait de la publication scientifique
 reproductible une réalité [@Allaire2022].
 
 Mes remerciements vont à mon directeur de thèse virtuel pour les besoins de ce document, 
