@@ -16,7 +16,7 @@
 book:
   title: "Guide d'utilisation du template Quarto Cnam pour les thèses"
   subtitle: "Un document de thèse auto-documenté"
-  author: "Eric Bavu"
+  author: "Éric Bavu"
   # output-file and chapters are defined in the language profile /
   # output-file et chapters sont définis dans le profil de langue
   downloads: [pdf]            # adds PDF download button to the HTML sidebar / ajoute un bouton PDF dans la barre HTML
