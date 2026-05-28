@@ -43,3 +43,4 @@ format:
 
 
 date-soutenance: "10 Octobre 1794"        # do NOT use `date:` (encoding issue) / NE PAS utiliser `date:`
+btn-resume: "content_en/frontmatter/resume.html"  # "Start reading" button link in index.qmd / lien du bouton dans index.qmd

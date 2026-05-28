@@ -5,6 +5,7 @@
 # ==============================================================================
 
 thesis-lang: fr
+is-french: true    # used by index.qmd conditional divs — do not remove / utilisé par les div conditionnels de index.qmd
 validate: false
 
 project:
@@ -44,3 +45,4 @@ book:
 # Optionnel : remplace le préfixe de la barre HTML (n'affecte que la barre, pas la page de garde PDF).
 # Utile pour une branche documentation ou GitHub Pages.
 header-prefix: "Documentation du template Quarto cnam-thesis"
+btn-resume: "documentation/content_fr/liminaire/resume.html"  # "Commencer la lecture" button link in index.qmd

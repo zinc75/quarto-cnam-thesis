@@ -50,3 +50,4 @@ format:
 # Optionnel : remplace le préfixe de la barre HTML (n'affecte que la barre, pas la page de garde PDF).
 # Utile pour une branche documentation ou GitHub Pages.
 header-prefix: "Quarto cnam-thesis template documentation"
+btn-resume: "documentation/content_en/frontmatter/resume.html"  # "Start reading" button link in index.qmd

@@ -44,13 +44,13 @@
 
 {{< cnam-logos >}}
 
-::: {.content-visible when-profile="fr"}
+::: {.content-visible when-meta="is-french"}
 ::: {.thesis-header-banner}
 Thèse de doctorat — Conservatoire national des arts et métiers
 :::
 :::
 
-::: {.content-visible when-profile="en"}
+::: {.content-visible unless-meta="is-french"}
 ::: {.thesis-header-banner}
 PhD Thesis — Conservatoire national des arts et métiers
 :::
@@ -73,7 +73,7 @@ PhD Thesis — Conservatoire national des arts et métiers
 </div>
 <div class="thesis-cover-meta">
 
-::: {.content-visible when-profile="fr"}
+::: {.content-visible when-meta="is-french"}
 ::: {.thesis-meta}
 **Soutenue le :** {{< meta date-soutenance >}}
 
@@ -88,10 +88,10 @@ PhD Thesis — Conservatoire national des arts et métiers
 **Directeur·trice de thèse :** {{< meta directeur >}}
 :::
 
-[Commencer la lecture](content_fr/liminaire/resume.html){.btn-start-reading}
+[Commencer la lecture]({{< meta btn-resume >}}){.btn-start-reading}
 :::
 
-::: {.content-visible when-profile="en"}
+::: {.content-visible unless-meta="is-french"}
 ::: {.thesis-meta}
 **Defended on:** {{< meta date-soutenance >}}
 
@@ -106,7 +106,7 @@ PhD Thesis — Conservatoire national des arts et métiers
 **Thesis supervisor:** {{< meta directeur >}}
 :::
 
-[Start reading](content_en/frontmatter/resume.html){.btn-start-reading}
+[Start reading]({{< meta btn-resume >}}){.btn-start-reading}
 :::
 
 </div>
