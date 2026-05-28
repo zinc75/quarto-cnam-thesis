@@ -9,7 +9,7 @@ PDF-only (TikZ, PGFplots).
 La syntaxe de base pour insérer une image est :
 
 ````markdown
-![Légende de la figure.](../../images/mon-image.png){#fig-label width=80%}
+![Légende de la figure.](../../../images/mon-image.png){#fig-label width=80%}
 ````
 
 L'identifiant `#fig-label` permet de faire une cross-référence avec `@fig-label`.
@@ -18,10 +18,10 @@ L'attribut `width` accepte des pourcentages ou des valeurs absolues (`5cm`, `0.5
 Voici un exemple avec le logo du {{< acrs cnam >}} :
 
 ````markdown
-![Le logo officiel du Cnam.](../../images/Cnam.jpg){#fig-logo-cnam width=40%}
+![Le logo officiel du Cnam.](../../../images/Cnam.jpg){#fig-logo-cnam width=40%}
 ````
 
-![Le logo officiel du {{< acrs cnam >}}.](../../images/Cnam.jpg){#fig-logo-cnam width=40%}
+![Le logo officiel du {{< acrs cnam >}}.](../../../images/Cnam.jpg){#fig-logo-cnam width=40%}
 
 La @fig-logo-cnam montre le logo officiel du {{< acrs cnam >}}, chargé depuis le
 dossier `images/` à la racine du projet.
@@ -240,7 +240,7 @@ position pour obtenir la meilleure mise en page possible. L'attribut `fig-pos`
 (figures) ou `tbl-pos` (tables) permet de lui donner des instructions.
 
 ````markdown
-![Légende.](../../images/Cnam.jpg){#fig-ex fig-pos='tb'}
+![Légende.](../../../images/Cnam.jpg){#fig-ex fig-pos='tb'}
 ````
 
 Les spécificateurs se combinent librement dans une chaîne :
