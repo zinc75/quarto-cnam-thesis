@@ -964,6 +964,16 @@ blockquote {
   display: none !important;
 }
 
+// Same pages must also be hidden from the prev/next chapter navigation at the
+// bottom of each page — sidebar CSS does not affect those links.
+// Les mêmes pages doivent être masquées dans la navigation bas de page (précédent/suivant).
+.nav-page:has(a[href*="tables.html"]),
+.nav-page:has(a[href*="glossaire-entries.html"]),
+.nav-page:has(a[href*="bibliographie.html"]),
+.nav-page:has(a[href*="bibliography.html"]) {
+  display: none !important;
+}
+
 
 // ── Line-numbered code blocks (CSS-counter approach) ─────────────────────────
 // Quarto uses ::before pseudo-elements on each <span id="cbN-N">, positioned
