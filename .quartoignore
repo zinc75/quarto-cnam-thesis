@@ -5,3 +5,5 @@ documentation/
 README.md
 README.fr.md
 _glossaire-entries.tex
+_quarto-docs-fr.yml
+_quarto-docs-en.yml
