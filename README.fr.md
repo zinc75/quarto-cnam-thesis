@@ -27,20 +27,23 @@ Produit un **PDF** conforme à la maquette officielle Cnam 2024–2025 et une
 
 ## Prérequis
 
-| Outil | Version minimale | Notes |
-|-------|-----------------|-------|
-| [Quarto](https://quarto.org/docs/get-started/) | 1.4 | |
-| LaTeX avec **pdflatex** | TinyTeX (recommandé) ou TeX Live 2023+ / MiKTeX | |
-| Python 3 | 3.10 | requis par les scripts post-render et par Quarto pour l'exécution des cellules de code |
+Installer les trois outils ci-dessous **dans l'ordre** :
 
-**Pas de LaTeX ?** Lancez `quarto install tinytex` après avoir installé Quarto. TinyTeX
-est une distribution minimale qui télécharge automatiquement les packages manquants au
-premier rendu (connexion internet requise pour ce premier rendu ; entièrement hors ligne
-ensuite).
+**Étape 1 — Quarto 1.4+** — <https://quarto.org/docs/get-started/>
 
-**Vous avez déjà LaTeX ?** Toute distribution TeX Live 2023+ ou MiKTeX à jour
-fonctionne sans configuration supplémentaire. Si votre distribution est ancienne,
-mettez-la à jour ou passez à TinyTeX.
+**Étape 2 — LaTeX (pdflatex).** Si vous n'avez pas encore LaTeX, installez TinyTeX *après* Quarto :
+
+```bash
+quarto install tinytex
+```
+
+TinyTeX est la distribution minimale intégrée à Quarto. Elle télécharge automatiquement
+les packages manquants au premier rendu (connexion internet requise ; entièrement hors
+ligne ensuite). **Vous avez déjà TeX Live 2023+ ou MiKTeX ?** Ça fonctionne sans
+configuration supplémentaire.
+
+**Étape 3 — Python 3.10+** — requis par les scripts post-render. Également nécessaire
+pour l'exécution des cellules de code si la thèse contient des figures ou tableaux calculés.
 
 > **Utilisateurs Windows sans WSL :** remplacer `.sh` par `.bat` dans les entrées
 > `post-render` de `_quarto-fr.yml` / `_quarto-en.yml`.
