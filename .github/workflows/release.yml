@@ -1,0 +1,31 @@
+# ==============================================================================
+# release.yml — Create a GitHub release on every v* tag push
+# Triggered automatically when a tag matching v* is pushed.
+# The annotated tag message becomes the release body.
+# ==============================================================================
+
+name: Create release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write   # required to create releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --notes-from-tag \
+            --verify-tag
