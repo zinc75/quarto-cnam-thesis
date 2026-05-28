@@ -1,0 +1,98 @@
+<script>
+/* nav-skip.js — fix prev/next chapter navigation to skip PDF-only pages.
+ * These pages exist for PDF output but have no useful HTML content; their
+ * sidebar entries are hidden via CSS. This script also replaces any prev/next
+ * bottom-of-page nav link that points to one of these pages with the correct
+ * neighbour, derived from the ordered sidebar chapter list.
+ *
+ * Ces pages existent pour le PDF mais n'ont pas de contenu HTML utile ; leurs
+ * entrées sidebar sont masquées via CSS. Ce script remplace aussi les liens de
+ * navigation bas de page qui pointent vers ces pages par le voisin correct,
+ * déterminé depuis la liste ordonnée des chapitres dans la sidebar.
+ */
+(function () {
+  "use strict";
+
+  // Same skip list as the CSS sidebar-item and nav-page rules in thesis.scss.
+  // Même liste que les règles CSS sidebar-item et nav-page dans thesis.scss.
+  var SKIP = [
+    "tables.html",
+    "glossaire-entries.html",
+    "bibliographie.html",
+    "bibliography.html"
+  ];
+
+  function isSkipped(href) {
+    return href != null && SKIP.some(function (p) { return href.indexOf(p) !== -1; });
+  }
+
+  // Canonical pathname for comparison (strip hash and trailing slash).
+  // Chemin canonique pour comparaison (sans ancre ni slash final).
+  function canonical(href) {
+    try {
+      var u = new URL(href, location.href);
+      u.hash = "";
+      return u.pathname.replace(/\/$/, "");
+    } catch (e) { return href; }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Collect chapter-level sidebar links: must have no fragment and not be a
+    // skip page. Quarto book sidebars only contain chapter-level links (section
+    // links live in the floating TOC), so the fragment guard is a safety net.
+    // Collecter les liens chapitre de la sidebar : sans ancre et pas une page masquée.
+    var raw = document.querySelectorAll(
+      "#quarto-sidebar a[href]:not([href*='#']), " +
+      ".sidebar-nav a[href]:not([href*='#'])"
+    );
+
+    // Deduplicate and filter skipped pages.
+    // Dédupliquer et filtrer les pages masquées.
+    var seen = Object.create(null);
+    var chapters = [];
+    for (var i = 0; i < raw.length; i++) {
+      var a = raw[i];
+      if (isSkipped(a.href)) continue;
+      var key = canonical(a.href);
+      if (seen[key]) continue;
+      seen[key] = true;
+      chapters.push(a);
+    }
+
+    if (!chapters.length) return;
+
+    // Locate current page in the chapter list.
+    // Localiser la page courante dans la liste des chapitres.
+    var cur = canonical(location.href);
+    var idx = -1;
+    for (var j = 0; j < chapters.length; j++) {
+      if (canonical(chapters[j].href) === cur) { idx = j; break; }
+    }
+    // Current page not in visible chapter list (e.g. one of the skip pages itself).
+    // La page courante n'est pas dans la liste visible (par ex. une des pages masquées).
+    if (idx === -1) return;
+
+    // Fix a single prev or next nav link if it currently points to a skip page.
+    // Corriger un lien nav (précédent ou suivant) s'il pointe vers une page masquée.
+    function fixNav(selector, delta) {
+      var navEl = document.querySelector(selector);
+      if (!navEl) return;
+      var link = navEl.querySelector("a");
+      if (!link || !isSkipped(link.href)) return;
+
+      var target = chapters[idx + delta];
+      if (target) {
+        link.href = target.href;
+        var textEl = link.querySelector(".nav-page-text");
+        if (textEl) textEl.textContent = target.textContent.trim();
+        navEl.style.display = ""; // undo any CSS display:none
+      } else {
+        navEl.style.display = "none";
+      }
+    }
+
+    fixNav(".nav-page-previous", -1);
+    fixNav(".nav-page-next",     +1);
+  });
+}());
+</script>

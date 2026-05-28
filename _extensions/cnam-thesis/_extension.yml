@@ -26,6 +26,8 @@ contributes:
         - cnam-thesis.lua     # injects <meta name="thesis-author"> on every page / injecte le meta auteur sur toutes les pages
       include-in-header:
         - header-setup.html   # custom topbar: logo | title | author / barre : logo | titre | auteur
+      include-after-body:
+        - nav-skip.html       # fix prev/next nav links that point to PDF-only pages / corrige les liens nav vers les pages PDF uniquement
       lightbox: true          # click-to-zoom on figures / zoom au clic sur les figures
       cite-method: citeproc
       theme: [cosmo, thesis.scss]
