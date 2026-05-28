@@ -203,8 +203,7 @@ jobs:
                       <div class="step-badge">4</div>
                       <h6 class="card-title mt-2 mb-1">Compiler</h6>
                       <p class="card-text text-muted small mb-2">Render (PDF + HTML)</p>
-                      <pre class="step-code"><code>quarto render --profile fr
-quarto render --profile en</code></pre>
+                      <pre class="step-code"><code>quarto render --profile fr<br>quarto render --profile en</code></pre>
                     </div>
                   </div>
                 </div>
