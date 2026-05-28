@@ -64,14 +64,12 @@ jobs:
           sudo apt-get install -y --no-install-recommends texlive-full
 
       # ── System dependencies ──────────────────────────────────────────────────
-      # pdftoppm (poppler-utils): used by postrender.sh to generate images/cover.png
+      # pdftoppm (poppler-utils): used by postrender.ts to generate images/cover.png
       # from PDF page 1.
       - name: Install poppler-utils
         run: sudo apt-get install -y --no-install-recommends poppler-utils
 
       # ── Render ──────────────────────────────────────────────────────────────
-      - name: Make postrender script executable
-        run: chmod +x _scripts/postrender.sh
 
       - name: Render FR documentation profile
         run: quarto render --profile docs-fr
