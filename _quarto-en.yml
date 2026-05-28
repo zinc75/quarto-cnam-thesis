@@ -10,7 +10,7 @@ validate: false    # set to true before depositing to theses.fr / mettre à true
 project:
   output-dir: _thesis-en
   post-render:
-    - ./_scripts/postrender.sh en _thesis-en  # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
+    - ./_scripts/postrender.ts en _thesis-en
 
 book:
   output-file: these_en
