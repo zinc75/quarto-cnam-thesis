@@ -40,23 +40,39 @@ Neovim, Notepad++ or even the system notepad.
 
 This template requires **Quarto 1.4** or later. The compilation engine is pdflatex —
 XeLaTeX and LuaLaTeX are not supported due to constraints of the `pdfx` package used
-for PDF/A-1b compliance. An up-to-date **TeX Live 2023+** or **MiKTeX** distribution
-is required for PDF output.
+for PDF/A-1b compliance.
+
+**No LaTeX yet?** Use TinyTeX, Quarto's built-in minimal distribution. It installs
+in seconds and automatically downloads any missing package on first render:
+
+```bash
+quarto install tinytex
+```
+
+::: {.callout-note}
+## First render requires an internet connection
+
+On the first render, TinyTeX downloads the packages required by the template
+(`pdfx`, `minitoc`, `tcolorbox`, `glossaries`…). This may take a few minutes.
+All subsequent renders run entirely offline.
+:::
+
+**Already have LaTeX?** Any up-to-date **TeX Live 2023+** or **MiKTeX** installation
+works with no additional configuration. If your distribution is older, either update
+it or run `quarto install tinytex` to switch to TinyTeX.
 
 ::: {.callout-tip}
-## Installing Quarto and LaTeX
+## Installing Quarto
 
-Quarto: <https://quarto.org/docs/get-started/> (`.pkg`, `.msi` or `.deb` installer
-depending on the platform; step-by-step editor guide included).
-
-TeX Live: <https://tug.org/texlive/> — MiKTeX: <https://miktex.org/> (Windows).
+<https://quarto.org/docs/get-started/> — `.pkg`, `.msi` or `.deb` installer
+depending on the platform; step-by-step editor guide for VS Code, RStudio and more.
 :::
 
 | System | Quarto | LaTeX |
 |:--------|:-------|:------|
-| **macOS** | `.pkg` or `brew install quarto` | MacTeX (`brew install --cask mactex`) |
-| **Windows** | `.msi` (64-bit) | MiKTeX or TeX Live |
-| **Linux (Debian/Ubuntu)** | `sudo dpkg -i quarto-*.deb` | `sudo apt install texlive-full` |
+| **macOS** | `.pkg` or `brew install quarto` | `quarto install tinytex` *(recommended)* or [TeX Live / MacTeX](https://tug.org/mactex/) |
+| **Windows** | `.msi` (64-bit) | `quarto install tinytex` *(recommended)* or [MiKTeX](https://miktex.org/) / [TeX Live](https://tug.org/texlive/) |
+| **Linux (Debian/Ubuntu)** | `sudo dpkg -i quarto-*.deb` | `quarto install tinytex` *(recommended)* or `sudo apt install texlive-full` |
 
 ### Python {.unnumbered}
 

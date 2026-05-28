@@ -41,23 +41,40 @@ texte — VS Code, RStudio, Neovim, Notepad++ ou même le bloc-notes du système
 
 Ce template requiert **Quarto 1.4** ou supérieur. Le moteur de compilation est
 pdflatex — XeLaTeX et LuaLaTeX ne sont pas supportés en raison des contraintes du
-package `pdfx` utilisé pour la conformité PDF/A-1b. Une distribution **TeX Live
-2023+** ou **MiKTeX** à jour est nécessaire pour la sortie PDF.
+package `pdfx` utilisé pour la conformité PDF/A-1b.
+
+**Pas de LaTeX ?** Utilisez TinyTeX, la distribution minimale intégrée à Quarto.
+Elle s'installe en quelques secondes et télécharge automatiquement les packages
+manquants au premier rendu :
+
+```bash
+quarto install tinytex
+```
+
+::: {.callout-note}
+## Le premier rendu nécessite une connexion internet
+
+Au premier rendu, TinyTeX télécharge les packages requis par le template
+(`pdfx`, `minitoc`, `tcolorbox`, `glossaries`…). Cela peut prendre quelques minutes.
+Les rendus suivants fonctionnent entièrement hors ligne.
+:::
+
+**Vous avez déjà LaTeX ?** Toute distribution **TeX Live 2023+** ou **MiKTeX** à
+jour fonctionne sans configuration supplémentaire. Si votre distribution est
+ancienne, mettez-la à jour ou lancez `quarto install tinytex` pour passer à TinyTeX.
 
 ::: {.callout-tip}
-## Installer Quarto et LaTeX
+## Installer Quarto
 
-Quarto : <https://quarto.org/docs/get-started/> (installeur `.pkg`, `.msi` ou `.deb`
-selon la plateforme ; guide pas à pas par éditeur inclus).
-
-TeX Live : <https://tug.org/texlive/> — MiKTeX : <https://miktex.org/> (Windows).
+<https://quarto.org/docs/get-started/> — installeur `.pkg`, `.msi` ou `.deb`
+selon la plateforme ; guide pas à pas pour VS Code, RStudio et autres éditeurs inclus.
 :::
 
 | Système | Quarto | LaTeX |
 |:--------|:-------|:------|
-| **macOS** | `.pkg` ou `brew install quarto` | MacTeX (`brew install --cask mactex`) |
-| **Windows** | `.msi` (64 bits) | MiKTeX ou TeX Live |
-| **Linux (Debian/Ubuntu)** | `sudo dpkg -i quarto-*.deb` | `sudo apt install texlive-full` |
+| **macOS** | `.pkg` ou `brew install quarto` | `quarto install tinytex` *(recommandé)* ou [TeX Live / MacTeX](https://tug.org/mactex/) |
+| **Windows** | `.msi` (64 bits) | `quarto install tinytex` *(recommandé)* ou [MiKTeX](https://miktex.org/) / [TeX Live](https://tug.org/texlive/) |
+| **Linux (Debian/Ubuntu)** | `sudo dpkg -i quarto-*.deb` | `quarto install tinytex` *(recommandé)* ou `sudo apt install texlive-full` |
 
 ### Python {.unnumbered}
 

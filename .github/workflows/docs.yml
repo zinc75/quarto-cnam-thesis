@@ -105,6 +105,13 @@ jobs:
               .card-title { color: var(--cnam-red); }
               pre { background: #f4f4f4; border-radius: 4px;
                     padding: .75rem 1rem; font-size: .875rem; }
+              .step-badge { display:inline-flex; align-items:center; justify-content:center;
+                            width:2rem; height:2rem; border-radius:50%;
+                            background:var(--cnam-red); color:#fff;
+                            font-weight:700; font-size:.9rem; }
+              .step-code  { background:#f4f4f4; border-radius:4px;
+                            padding:.4rem .6rem; font-size:.78rem;
+                            margin:0; white-space:pre-wrap; word-break:break-all; }
             </style>
           </head>
           <body>
@@ -155,16 +162,57 @@ jobs:
                   </div>
                 </div>
               </div>
-              <h2 class="h5 mt-4">Installation</h2>
-              <pre><code>quarto use template zinc75/quarto-cnam-thesis</code></pre>
-              <p class="mt-3">
-                Choisir le profil de langue pour la rédaction et le rendu&nbsp;:<br>
-                <em>Choose the language profile to write and render:</em>
+              <h2 class="h5 mt-5 mb-3">Démarrage rapide &middot; Quick start</h2>
+              <div class="row g-3 mb-4">
+                <div class="col-12 col-sm-6 col-lg-3">
+                  <div class="card h-100 shadow-sm">
+                    <div class="card-body p-3">
+                      <div class="step-badge">1</div>
+                      <h6 class="card-title mt-2 mb-1">Installer Quarto</h6>
+                      <p class="card-text text-muted small mb-2">Install Quarto</p>
+                      <a href="https://quarto.org/docs/get-started/" target="_blank"
+                         class="btn btn-sm btn-outline-secondary w-100">
+                        quarto.org →
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                  <div class="card h-100 shadow-sm">
+                    <div class="card-body p-3">
+                      <div class="step-badge">2</div>
+                      <h6 class="card-title mt-2 mb-1">Installer LaTeX</h6>
+                      <p class="card-text text-muted small mb-2">Install LaTeX (skip if already installed)</p>
+                      <pre class="step-code"><code>quarto install tinytex</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                  <div class="card h-100 shadow-sm">
+                    <div class="card-body p-3">
+                      <div class="step-badge">3</div>
+                      <h6 class="card-title mt-2 mb-1">Créer le projet</h6>
+                      <p class="card-text text-muted small mb-2">Create the project</p>
+                      <pre class="step-code"><code>quarto use template zinc75/quarto-cnam-thesis</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                  <div class="card h-100 shadow-sm">
+                    <div class="card-body p-3">
+                      <div class="step-badge">4</div>
+                      <h6 class="card-title mt-2 mb-1">Compiler</h6>
+                      <p class="card-text text-muted small mb-2">Render (PDF + HTML)</p>
+                      <pre class="step-code"><code>quarto render --profile fr
+quarto render --profile en</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="text-muted small">
+                ℹ️ Au premier rendu, TinyTeX télécharge les packages LaTeX nécessaires (connexion internet requise).
+                &bull; <em>On first render, TinyTeX downloads the required LaTeX packages (internet connection needed).</em>
               </p>
-              <pre><code>
-              quarto render --profile fr   # → PDF + HTML en français  /  in French
-              quarto render --profile en   # → PDF + HTML in English   /  en anglais
-              </code></pre>
               <hr class="my-4">
               <p>
                 <a class="btn btn-outline-secondary btn-sm me-2"

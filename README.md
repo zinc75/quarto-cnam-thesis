@@ -31,8 +31,15 @@ Produces a **PDF** that conforms to the official Cnam 2024–2025 template and a
 | Tool | Minimum version | Notes |
 |------|----------------|-------|
 | [Quarto](https://quarto.org/docs/get-started/) | 1.4 | |
-| LaTeX distribution with **pdflatex** | TeX Live 2023+ or MiKTeX | |
+| LaTeX with **pdflatex** | TinyTeX (recommended) or TeX Live 2023+ / MiKTeX | |
 | Python 3 | 3.10 | required by post-render scripts and by Quarto to execute code cells |
+
+**No LaTeX yet?** Run `quarto install tinytex` after installing Quarto. TinyTeX is a
+minimal distribution that auto-downloads any missing package on first render (internet
+required for that first run; fully offline afterwards).
+
+**Already have LaTeX?** Any up-to-date TeX Live 2023+ or MiKTeX works as-is. If
+your distribution is older, update it or switch to TinyTeX.
 
 > **Windows users without WSL:** replace `.sh` with `.bat` in the `post-render`
 > entries of `_quarto-fr.yml` / `_quarto-en.yml`.
