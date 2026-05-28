@@ -129,6 +129,38 @@ files of this documentation, which serve as a starting point. The content files 
 are located in `content_fr/` (French profile) and `content_en/` (English profile),
 together with the `yaml` configuration files (see @sec-yaml-config-file).
 
+## Adapting the template to your thesis {.unnumbered}
+
+Two files need to be edited before the first render.
+
+**`_quarto.yml`** — thesis metadata: title, author, jury, defence date, discipline…
+This file is shared by both the PDF and HTML outputs.
+A complete reference is given in @sec-yaml-config-file.
+
+**`_quarto-en.yml`** (or `_quarto-fr.yml`) — the list of chapters that make up the
+book. This is the first place to edit: replace the example chapters with your own
+`.qmd` files:
+
+```yaml
+book:
+  chapters:
+    - index.qmd                                    # do not remove
+    - content_en/frontmatter/acknowledgements.qmd
+    - content_en/frontmatter/resume.qmd
+    - content_en/frontmatter/abstract.qmd
+    - content_en/frontmatter/tables.qmd            # do not remove
+    - content_en/chapters/00-introduction.qmd
+    - content_en/chapters/01-my-chapter.qmd        # <- your chapters here
+    - content_en/chapters/02-my-chapter.qmd
+    - content_en/backmatter/conclusion.qmd
+    - content_en/backmatter/bibliography.qmd
+  appendices:
+    - content_en/backmatter/appendices.qmd
+```
+
+To create a chapter: add a `.qmd` file in `content_en/chapters/` and insert
+it into this list.
+
 ## Rendering the document
 
 In Quarto, this is called **rendering**: it triggers the generation of the `.tex` file,

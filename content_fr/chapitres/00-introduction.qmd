@@ -131,6 +131,38 @@ fichiers de contenu à modifier se trouvent dans `content_fr/` (profil français
 `content_en/` (profil anglais), ainsi que les fichiers de configuration `yaml`
 (voir @sec-yaml-config-file).
 
+## Adapter le template à votre thèse {.unnumbered}
+
+Deux fichiers sont à modifier avant le premier rendu.
+
+**`_quarto.yml`** — les métadonnées de la thèse : titre, auteur, jury, date de
+soutenance, discipline… Ce fichier est commun aux deux sorties PDF et HTML.
+Une référence complète est donnée en @sec-yaml-config-file.
+
+**`_quarto-fr.yml`** (ou `_quarto-en.yml`) — la liste des chapitres qui constituent
+le livre. C'est le premier endroit à modifier : remplacer les chapitres d'exemple
+par vos propres fichiers `.qmd` :
+
+```yaml
+book:
+  chapters:
+    - index.qmd                                    # ne pas supprimer
+    - content_fr/liminaire/remerciements.qmd
+    - content_fr/liminaire/resume.qmd
+    - content_fr/liminaire/abstract.qmd
+    - content_fr/liminaire/tables.qmd              # ne pas supprimer
+    - content_fr/chapitres/00-introduction.qmd
+    - content_fr/chapitres/01-mon-chapitre.qmd     # ← vos chapitres ici
+    - content_fr/chapitres/02-mon-chapitre.qmd
+    - content_fr/postliminaire/conclusion.qmd
+    - content_fr/postliminaire/bibliographie.qmd
+  appendices:
+    - content_fr/postliminaire/annexes.qmd
+```
+
+Pour créer un chapitre : ajouter un fichier `.qmd` dans `content_fr/chapitres/`
+et l'insérer dans cette liste.
+
 ## Générer le document
 
 En Quarto, on appelle ça le **rendu** : cela lance la génération du fichier `.tex`, la compilation, et la création des
