@@ -42,7 +42,7 @@ les packages manquants au premier rendu (connexion internet requise ; entièreme
 ligne ensuite). **Vous avez déjà TeX Live 2023+ ou MiKTeX ?** Ça fonctionne sans
 configuration supplémentaire.
 
-**Étape 3 — Python 3.10+** — requis par les scripts post-render. Également nécessaire
+**Étape 3 — [Python 3.10+](#configuration-de-python)** — requis par les scripts post-render. Également nécessaire
 pour l'exécution des cellules de code si la thèse contient des figures ou tableaux calculés.
 
 > **Utilisateurs Windows sans WSL :** remplacer `.sh` par `.bat` dans les entrées

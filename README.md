@@ -42,7 +42,7 @@ TinyTeX is Quarto's built-in minimal distribution. It auto-downloads any missing
 on first render (internet required for that first run; fully offline afterwards).
 **Already have TeX Live 2023+ or MiKTeX?** It works as-is — no extra configuration needed.
 
-**Step 3 — Python 3.10+** — required by the post-render scripts. Also needed by Quarto
+**Step 3 — [Python 3.10+](#python-setup)** — required by the post-render scripts. Also needed by Quarto
 to execute code cells if your thesis contains computed figures or tables.
 
 > **Windows users without WSL:** replace `.sh` with `.bat` in the `post-render`
