@@ -1,4 +1,4 @@
-# Configuration complète de `_quarto.yml` {.appendix #sec-yaml-config-file short-title="Configuration `yaml`"}
+# Configuration `_quarto.yml` {#sec-yaml-config-file .appendix}
 
 Cette annexe reproduit et commente le fichier `_quarto.yml` dans son intégralité,
 pour référence rapide.
@@ -80,7 +80,69 @@ execute:
   echo: true      # affiche le code par défaut (surchargeable par chunk)
 ```
 
-# Validation PDF/A-1b et dépôt sur theses.fr {.appendix #sec-pdfa short-title="Validation PDF/A-1b"}
+## Profils de langue : `_quarto-fr.yml` et `_quarto-en.yml` {short-title="Profils de langue"}
+
+`_quarto.yml` contient les métadonnées communes à tous les rendus (titre, auteur, jury,
+options LaTeX…). Les options spécifiques à la langue et à la structure du livre —
+notamment **la liste des chapitres** — sont définies dans le fichier profil correspondant,
+qui surcharge `_quarto.yml` au moment du rendu avec `--profile fr` ou `--profile en`.
+
+### Liste des chapitres (première chose à adapter)
+
+C'est la première chose à modifier lors de la prise en main du template.
+La liste complète des fichiers qui constituent le livre se trouve dans
+`_quarto-fr.yml` (ou `_quarto-en.yml`), sous la clé `book.chapters` :
+
+```yaml
+book:
+  chapters:
+    - index.qmd                                    # page d'accueil HTML — ne pas supprimer
+    - content_fr/liminaire/remerciements.qmd
+    - content_fr/liminaire/resume.qmd
+    - content_fr/liminaire/abstract.qmd
+    - content_fr/liminaire/tables.qmd              # TOC + listes PDF — ne pas supprimer
+    - content_fr/liminaire/glossaire-entries.qmd   # supprimer si glossaire: false
+    - content_fr/liminaire/acronymes.qmd           # supprimer si glossaire: false
+    - content_fr/liminaire/glossaire.qmd           # supprimer si pas de termes
+    - content_fr/chapitres/00-introduction.qmd
+    - content_fr/chapitres/01-chapitre1.qmd        # ← ajouter vos chapitres ici
+    - content_fr/chapitres/02-chapitre2.qmd
+    - content_fr/postliminaire/conclusion.qmd
+    - content_fr/postliminaire/bibliographie.qmd
+  appendices:
+    - content_fr/postliminaire/annexes.qmd
+```
+
+Pour ajouter un chapitre : créer un fichier `.qmd` dans `content_fr/chapitres/`
+et l'insérer dans cette liste à l'emplacement souhaité.
+
+::: {.callout-warning}
+## Ne pas supprimer `index.qmd` ni `tables.qmd`
+
+`index.qmd` est le point d'entrée du livre Quarto — le supprimer casse le rendu HTML.
+`tables.qmd` génère la table des matières, la liste des figures et la liste des
+tableaux dans le PDF.
+:::
+
+### Autres options du profil
+
+```yaml
+thesis-lang: fr      # langue de rédaction : fr ou en
+validate: false      # mettre à true avant dépôt sur theses.fr (voir @sec-pdfa)
+
+project:
+  output-dir: _these_fr     # répertoire de sortie
+  post-render:
+    - ./_scripts/postrender.sh fr _these_fr   # Windows : remplacer .sh par .bat
+
+book:
+  output-file: these_fr     # nom de base du PDF généré (these_fr_<auteur>.pdf)
+
+# Optionnel — préfixe affiché dans la barre HTML (n'affecte pas la page de garde PDF) :
+header-prefix: "Thèse de doctorat"
+```
+
+# Validation PDF/A-1b et dépôt sur theses.fr {#sec-pdfa .appendix short-title="Validation PDF/A-1b"}
 
 La plateforme [theses.fr](https://theses.fr) exige un fichier PDF/A-1b (ISO 19005-1).
 Le PDF produit par ce template est conçu pour satisfaire les critères retenus par le

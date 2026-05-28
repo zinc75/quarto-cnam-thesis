@@ -1,4 +1,4 @@
-# Complete `_quarto.yml` configuration {.appendix #sec-yaml-config-file}
+# Complete `_quarto.yml` configuration {#sec-yaml-config-file .appendix}
 
 This appendix reproduces and comments on the `_quarto.yml` file in its entirety,
 for quick reference.
@@ -80,7 +80,73 @@ execute:
   echo: true      # shows code by default (overridable per chunk)
 ```
 
-# PDF/A-1b validation and deposit on theses.fr {.appendix #sec-pdfa}
+## Language profiles: `_quarto-fr.yml` and `_quarto-en.yml` {short-title="Language profiles"}
+
+`_quarto.yml` holds the metadata common to all renders (title, author, jury,
+LaTeX options…). Language-specific options — most importantly **the chapter list** —
+live in the corresponding profile file, which overrides `_quarto.yml` when rendering
+with `--profile fr` or `--profile en`.
+
+### Chapter list (first thing to customise)
+
+This is the first thing to change when taking the template in hand.
+The full list of files that make up the book is defined in `_quarto-en.yml`
+(or `_quarto-fr.yml`), under the `book.chapters` key:
+
+```yaml
+book:
+  chapters:
+    - index.qmd                                    # HTML home page — do not remove
+    - content_en/frontmatter/acknowledgements.qmd
+    - content_en/frontmatter/resume.qmd            # French abstract (Cnam requirement)
+    - content_en/frontmatter/abstract.qmd
+    - content_en/frontmatter/tables.qmd            # TOC + PDF lists — do not remove
+    - content_en/frontmatter/glossaire-entries.qmd # remove if glossaire: false
+    - content_en/frontmatter/acronyms.qmd          # remove if glossaire: false
+    - content_en/frontmatter/glossary.qmd          # remove if no glossary terms
+    - content_en/chapters/00-introduction.qmd
+    - content_en/chapters/01-chapter1.qmd          # <- add your chapters here
+    - content_en/chapters/02-chapter2.qmd
+    - content_en/backmatter/conclusion.qmd
+    - content_en/backmatter/bibliography.qmd
+  appendices:
+    - content_en/backmatter/appendices.qmd
+```
+
+To add a chapter: create a `.qmd` file in `content_en/chapters/` and insert
+it in this list at the desired position.
+
+::: {.callout-warning}
+## Do not remove `index.qmd` or `tables.qmd`
+
+`index.qmd` is the Quarto book entry point — removing it breaks the HTML render.
+`tables.qmd` generates the table of contents, list of figures and list of tables
+in the PDF.
+:::
+
+### Other profile options
+
+```yaml
+thesis-lang: en      # thesis language: fr or en
+validate: false      # set to true before depositing to theses.fr (see @sec-pdfa)
+
+project:
+  output-dir: _thesis-en    # output directory
+  post-render:
+    - ./_scripts/postrender.sh en _thesis-en   # Windows: replace .sh with .bat
+
+book:
+  output-file: these_en     # base name of the generated PDF (these_en_<author>.pdf)
+
+format:
+  cnam-thesis-html:
+    toc-title: "Table of Contents"   # English sidebar TOC title
+
+# Optional — prefix shown in the HTML topbar (no effect on the PDF cover page):
+header-prefix: "PhD Thesis"
+```
+
+# PDF/A-1b validation and deposit on theses.fr {#sec-pdfa .appendix}
 
 The French national thesis repository [theses.fr](https://theses.fr) requires a
 PDF/A-1b file (ISO 19005-1). The PDF produced by this template is designed to meet
