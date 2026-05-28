@@ -219,7 +219,7 @@ if (exists(SRC_TEX)) {
 
 if (!MODE && pdfGenerated) {
   console.log(
-    `→ Before depositing to theses.fr: set 'validate: true' in _quarto-${LANG}.yml and re-render.`,
+    `→ Before depositing to theses.fr: set 'validate: true' in ${PROFILE_YAML} and re-render.`,
   );
 }
 
