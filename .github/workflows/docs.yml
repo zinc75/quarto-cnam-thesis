@@ -73,11 +73,11 @@ jobs:
       - name: Make postrender script executable
         run: chmod +x _scripts/postrender.sh
 
-      - name: Render FR profile
-        run: quarto render --profile fr
+      - name: Render FR documentation profile
+        run: quarto render --profile docs-fr
 
-      - name: Render EN profile
-        run: quarto render --profile en
+      - name: Render EN documentation profile
+        run: quarto render --profile docs-en
 
       - name: Generate landing page
         # Static HTML written directly into _site/ — no Quarto render required.
@@ -184,13 +184,13 @@ jobs:
 
       # ── Assemble _site/ ──────────────────────────────────────────────────────
       # _site/           ← landing page (index.html, self-contained)
-      # _site/fr/        ← _these_fr/   (French Quarto book)
-      # _site/en/        ← _thesis-en/  (English Quarto book)
+      # _site/fr/        ← _docs-fr/   (French documentation book)
+      # _site/en/        ← _docs-en/   (English documentation book)
       - name: Assemble site
         run: |
           mkdir -p _site/fr _site/en
-          cp -r _these_fr/.  _site/fr/
-          cp -r _thesis-en/. _site/en/
+          cp -r _docs-fr/. _site/fr/
+          cp -r _docs-en/. _site/en/
 
       # ── Deploy ──────────────────────────────────────────────────────────────
       - name: Upload Pages artifact

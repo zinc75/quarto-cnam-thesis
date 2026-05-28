@@ -73,14 +73,22 @@ The post-render script renames the output to `these_<lang>_<author>.pdf` and
 
 ## Configuration
 
-Fill in the thesis metadata in `_quarto.yml`:
+Thesis metadata is split across two files.
+
+**`_quarto-fr.yml`** (or `_quarto-en.yml`) — title, author, defence date:
 
 ```yaml
 book:
   title: "Thesis title"
+  subtitle: "Optional subtitle"
   author: "Firstname LASTNAME"
 
-date-soutenance: "1 January 2025"   # use date-soutenance, not date
+date-soutenance: "1 January 2025"   # use date-soutenance, not date (encoding issue)
+```
+
+**`_quarto.yml`** — cover page fields (jury, supervisors, institutional details):
+
+```yaml
 discipline: "60th CNU section — Mechanics, Mechanical Engineering, Civil Engineering"
 specialite: "Acoustics"
 ecole-doctorale: "Abbé Grégoire"    # or "SMI"

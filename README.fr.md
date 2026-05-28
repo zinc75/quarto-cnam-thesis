@@ -73,14 +73,22 @@ Le script post-render renomme la sortie en `these_<lang>_<auteur>.pdf` et
 
 ## Configuration
 
-Renseigner les métadonnées de la thèse dans `_quarto.yml` :
+Les métadonnées de la thèse sont réparties dans deux fichiers.
+
+**`_quarto-fr.yml`** (ou `_quarto-en.yml`) — titre, auteur, date de soutenance :
 
 ```yaml
 book:
   title: "Titre de la thèse"
+  subtitle: "Sous-titre optionnel"
   author: "Prénom NOM"
 
-date-soutenance: "1er janvier 2025"   # utiliser date-soutenance, pas date
+date-soutenance: "1er janvier 2025"   # utiliser date-soutenance, pas date (problème d'encodage)
+```
+
+**`_quarto.yml`** — champs de la page de garde (jury, encadrants, informations institutionnelles) :
+
+```yaml
 discipline: "60e section CNU — Mécanique, génie mécanique, génie civil"
 specialite: "Acoustique"
 ecole-doctorale: "Abbé Grégoire"      # ou "SMI"
