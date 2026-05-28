@@ -1,9 +1,9 @@
-# Complete `_quarto.yml` configuration {#sec-yaml-config-file .appendix}
+# `_quarto.yml` configuration {#sec-yaml-config-file .appendix}
 
 This appendix reproduces and comments on the `_quarto.yml` file in its entirety,
 for quick reference.
 
-## Document metadata for the cover page
+## Document metadata for the cover page {short-title="Metadata"}
 
 ```yaml
 book:
@@ -23,7 +23,7 @@ cotutelle: false
 dedicace: "Optional dedication…"       # remove if absent
 ```
 
-## Jury composition for the cover page
+## Jury composition for the cover page {short-title="Jury composition"}
 
 ```yaml
 jury:
@@ -44,7 +44,7 @@ jury:
     role: "Thesis supervisor"
 ```
 
-## Infrastructure section options
+## Infrastructure section options {short-title="Options"}
 
 ```yaml
 glossaire: true          # true = loads the LaTeX glossaries package
