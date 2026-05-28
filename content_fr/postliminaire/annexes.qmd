@@ -1,9 +1,9 @@
-# Configuration complète de `_quarto.yml` {.appendix #sec-yaml-config-file}
+# Configuration complète de `_quarto.yml` {.appendix #sec-yaml-config-file short-title="Configuration `yaml`"}
 
 Cette annexe reproduit et commente le fichier `_quarto.yml` dans son intégralité,
 pour référence rapide.
 
-## Métadonnées du document pour la page de garde
+## Métadonnées du document pour la page de garde {short-title="Métadonnées"}
 
 ```yaml
 book:
@@ -23,7 +23,7 @@ cotutelle: false
 dedicace: "Dédicace optionnelle…"   # supprimer si absent
 ```
 
-## Composition du jury pour la page de garde
+## Composition du jury pour la page de garde {short-title="Composition jury"}
 
 ```yaml
 jury:
@@ -44,7 +44,7 @@ jury:
     role: "Directeur de thèse"
 ```
 
-## Options de la section Infrastructure
+## Options de la section Infrastructure {short-title="Options"}
 
 ```yaml
 glossaire: true          # true = charge le package LaTeX glossaries
@@ -80,13 +80,13 @@ execute:
   echo: true      # affiche le code par défaut (surchargeable par chunk)
 ```
 
-# Validation PDF/A-1b et dépôt sur theses.fr {.appendix #sec-pdfa}
+# Validation PDF/A-1b et dépôt sur theses.fr {.appendix #sec-pdfa short-title="Validation PDF/A-1b"}
 
 La plateforme [theses.fr](https://theses.fr) exige un fichier PDF/A-1b (ISO 19005-1).
 Le PDF produit par ce template est conçu pour satisfaire les critères retenus par le
 CINES — l'organisme qui gère l'archivage institutionnel des thèses françaises.
 
-## Validateur officiel : facile.cines.fr
+## Validateur officiel : facile.cines.fr {short-title="Validation CINES"}
 
 **[facile.cines.fr](https://facile.cines.fr)** (CINES) est le validateur de référence
 pour le dépôt sur theses.fr. C'est lui — et non des outils tiers — qui détermine si
