@@ -1,7 +1,6 @@
 # Fichiers exclus du `quarto use template` (non copiés dans le projet utilisateur)
 _reference/
 documentation/
-CLAUDE.md
 .github/
 README.md
 README.fr.md
