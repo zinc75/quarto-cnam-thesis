@@ -35,6 +35,7 @@ book:
     - content_fr/postliminaire/bibliographie.qmd        # between conclusion and appendices / entre conclusion et annexes
   appendices:
     - content_fr/postliminaire/annexes.qmd
+    - content_fr/postliminaire/annexes-pdfa.qmd
 
 
 # Optional: override the HTML topbar label prefix (default: "Thèse de doctorat" / "PhD Thesis").

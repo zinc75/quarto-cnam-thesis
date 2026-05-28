@@ -111,6 +111,7 @@ book:
     - content_fr/postliminaire/bibliographie.qmd
   appendices:
     - content_fr/postliminaire/annexes.qmd
+    - content_fr/postliminaire/annexes-pdfa.qmd
 ```
 
 Pour ajouter un chapitre : créer un fichier `.qmd` dans `content_fr/chapitres/`
@@ -142,58 +143,3 @@ book:
 header-prefix: "Thèse de doctorat"
 ```
 
-# Validation PDF/A-1b et dépôt sur theses.fr {#sec-pdfa .appendix short-title="Validation PDF/A-1b"}
-
-La plateforme [theses.fr](https://theses.fr) exige un fichier PDF/A-1b (ISO 19005-1).
-Le PDF produit par ce template est conçu pour satisfaire les critères retenus par le
-CINES — l'organisme qui gère l'archivage institutionnel des thèses françaises.
-
-## Validateur officiel : facile.cines.fr {short-title="Validation CINES"}
-
-**[facile.cines.fr](https://facile.cines.fr)** (CINES) est le validateur de référence
-pour le dépôt sur theses.fr. C'est lui — et non des outils tiers — qui détermine si
-votre PDF sera accepté. Il suffit d'y uploader le PDF pour obtenir un rapport immédiat.
-
-## Validation automatique depuis le script
-
-Le script post-render peut interroger le webservice CINES automatiquement.
-Il suffit de passer `validate: true` dans `_quarto-fr.yml` :
-
-```yaml
-# Dans _quarto-fr.yml — avant dépôt sur theses.fr :
-validate: true
-```
-
-Puis lancer le rendu normalement :
-
-```bash
-quarto render --profile fr --to cnam-thesis-pdf
-```
-
-Le script envoie le PDF au webservice CINES et affiche le résultat :
-
-```
-Validating PDF/A on facile.cines.fr (CINES)...
-[OK]  PDF/A-1b valide -- archivable sur theses.fr.
-```
-
-En cas d'échec :
-
-```
-[!!]  PDF/A-1b non valide.
-      -> Corriger via : https://facile.cines.fr/#correction
-```
-
-::: {.callout-tip}
-## Après la validation
-
-Remettre `validate: false` dans `_quarto-fr.yml` pour les rendus quotidiens —
-l'appel au webservice n'est nécessaire qu'avant le dépôt final.
-:::
-
-## Si la validation échoue
-
-Utiliser le service de correction officiel :
-**[facile.cines.fr/#correction](https://facile.cines.fr/#correction)**.
-Il corrige automatiquement les non-conformités les plus courantes
-sans aucune installation supplémentaire.

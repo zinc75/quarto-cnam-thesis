@@ -158,6 +158,7 @@ book:
     - content_fr/postliminaire/bibliographie.qmd
   appendices:
     - content_fr/postliminaire/annexes.qmd
+    - content_fr/postliminaire/annexes-pdfa.qmd
 ```
 
 Pour créer un chapitre : ajouter un fichier `.qmd` dans `content_fr/chapitres/`

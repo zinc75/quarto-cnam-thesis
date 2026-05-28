@@ -1,0 +1,58 @@
+# PDF/A-1b validation {#sec-pdfa .appendix}
+
+## Final deposit on theses.fr
+
+The French national thesis repository [theses.fr](https://theses.fr) requires a
+PDF/A-1b file (ISO 19005-1). The PDF produced by this template is designed to meet
+the criteria used by CINES — the body responsible for institutional archiving of
+French doctoral theses.
+
+## Official validator: facile.cines.fr {short-title="Official validator"}
+
+**[facile.cines.fr](https://facile.cines.fr)** (CINES) is the reference validator
+for deposit on theses.fr. It — not third-party tools — determines whether your PDF
+will be accepted. Simply upload the PDF to obtain an immediate report.
+
+## Automated check from the post-render script
+
+The post-render script can query the CINES web service automatically.
+Simply set `validate: true` in `_quarto-en.yml`:
+
+```yaml
+# In _quarto-en.yml — before depositing to theses.fr:
+validate: true
+```
+
+Then render as usual:
+
+```bash
+quarto render --profile en --to cnam-thesis-pdf
+```
+
+The script sends the PDF to the CINES web service and displays the result:
+
+```
+Validating PDF/A on facile.cines.fr (CINES)...
+[OK]  PDF/A-1b valide -- archivable sur theses.fr.
+```
+
+If the PDF fails:
+
+```
+[!!]  PDF/A-1b non valide.
+      -> Corriger via : https://facile.cines.fr/#correction
+```
+
+::: {.callout-tip}
+## After validation
+
+Set `validate: false` back in `_quarto-en.yml` for day-to-day builds —
+the web service call is only needed before the final deposit.
+:::
+
+## If validation fails
+
+Use the official correction service:
+**[facile.cines.fr/#correction](https://facile.cines.fr/#correction)**.
+It automatically corrects the most common non-conformities
+with no additional software to install.

@@ -156,6 +156,7 @@ book:
     - content_en/backmatter/bibliography.qmd
   appendices:
     - content_en/backmatter/appendices.qmd
+    - content_en/backmatter/appendices-pdfa.qmd
 ```
 
 To create a chapter: add a `.qmd` file in `content_en/chapters/` and insert
