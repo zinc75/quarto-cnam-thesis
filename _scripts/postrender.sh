@@ -230,10 +230,10 @@ if [ "$MODE" = "validate" ] && [ -f "$DST_PDF" ]; then
       VALID=$(printf '%s' "$RESPONSE" | grep -o '<valid>[^<]*</valid>' | sed 's|<valid>||;s|</valid>||' | tr -d '[:space:]')
       WELLFORMED=$(printf '%s' "$RESPONSE" | grep -o '<wellformed>[^<]*</wellformed>' | sed 's|<wellformed>||;s|</wellformed>||' | tr -d '[:space:]')
       if [ "$VALID" = "true" ]; then
-        echo "✅  PDF/A-1b valide — archivable sur theses.fr."
+        echo "[OK]  PDF/A-1b valide -- archivable sur theses.fr."
       else
-        echo "❌  PDF/A-1b non valide (valid=${VALID}, wellformed=${WELLFORMED})." >&2
-        echo "    → Corriger via : https://facile.cines.fr/#correction" >&2
+        echo "[!!]  PDF/A-1b non valide (valid=${VALID}, wellformed=${WELLFORMED})." >&2
+        echo "      -> Corriger via : https://facile.cines.fr/#correction" >&2
       fi
     fi
   fi

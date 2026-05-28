@@ -113,14 +113,14 @@ The script sends the PDF to the CINES web service and displays the result:
 
 ```
 Validating PDF/A on facile.cines.fr (CINES)...
-✅  PDF/A-1b valide — archivable sur theses.fr.
+[OK]  PDF/A-1b valide -- archivable sur theses.fr.
 ```
 
 If the PDF fails:
 
 ```
-❌  PDF/A-1b non valide.
-    → Corriger via : https://facile.cines.fr/#correction
+[!!]  PDF/A-1b non valide.
+      -> Corriger via : https://facile.cines.fr/#correction
 ```
 
 ::: {.callout-tip}

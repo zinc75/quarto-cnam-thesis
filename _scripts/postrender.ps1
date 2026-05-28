@@ -171,10 +171,10 @@ if ($Mode -eq "validate" -and (Test-Path $dstPdf)) {
             $valid      = if ($response -match '<valid>([^<]*)</valid>')      { $matches[1].Trim() } else { '' }
             $wellformed = if ($response -match '<wellformed>([^<]*)</wellformed>') { $matches[1].Trim() } else { '' }
             if ($valid -eq 'true') {
-                Write-Host "OK  PDF/A-1b valide - archivable sur theses.fr."
+                Write-Host "[OK]  PDF/A-1b valide -- archivable sur theses.fr."
             } else {
-                Write-Warning "PDF/A-1b non valide (valid=$valid, wellformed=$wellformed)."
-                Write-Warning "  -> Corriger via : https://facile.cines.fr/#correction"
+                Write-Warning "[!!]  PDF/A-1b non valide (valid=$valid, wellformed=$wellformed)."
+                Write-Warning "      -> Corriger via : https://facile.cines.fr/#correction"
             }
         }
     }
