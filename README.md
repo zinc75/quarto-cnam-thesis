@@ -42,8 +42,8 @@ TinyTeX is Quarto's built-in minimal distribution. It auto-downloads any missing
 on first render (internet required for that first run; fully offline afterwards).
 **Already have TeX Live 2023+ or MiKTeX?** It works as-is — no extra configuration needed.
 
-**Step 3 — [Python 3.10+](#python-setup)** — required by the post-render scripts. Also needed by Quarto
-to execute code cells if your thesis contains computed figures or tables.
+**Step 3 — [Python or R](#executable-code-setup-python-r)** (optional) — only needed if your thesis
+contains executable code cells (computed figures, tables…). Not required for text-only theses.
 
 > **Windows users without WSL:** replace `.sh` with `.bat` in the `post-render`
 > entries of `_quarto-fr.yml` / `_quarto-en.yml`.
@@ -135,20 +135,23 @@ book:
 ```
 
 
-## Python setup
+## Executable code setup (Python, R…)
 
-### Do you need Python at all?
+### Do you need a scripting language at all?
 
-Python serves two purposes in this template:
+**Only if your thesis contains executable code cells** — computed figures or tables
+generated directly in the document. The post-render script runs on Quarto's bundled
+Deno runtime; no Python or R is needed for a text-only thesis with static images.
 
-1. **Post-render scripts** — always needed (slug generation, file renaming,
-   cover image). Python 3.8+ is sufficient; no extra packages required.
-2. **Executable code chunks** — only needed if your thesis contains computed
-   figures (matplotlib…) or tables (pandas…). A text-only thesis with static
-   images requires nothing beyond point 1.
+Quarto supports several engines — choose the one that fits your discipline:
 
-If your thesis has no Python code cells, a bare Python 3 installation is enough
-and you can skip the rest of this section.
+- **Python** (via Jupyter) — data science, signal processing, numerical computing.
+  See [Quarto – Python computations](https://quarto.org/docs/computations/python.html).
+- **R** (via knitr) — statistics, econometrics, ecology, life sciences.
+  See [Quarto – R computations](https://quarto.org/docs/computations/r.html).
+
+The rest of this section covers **Python** setup (used in the template's example
+chapters). For R, refer to the Quarto documentation linked above.
 
 ### Packages for executable code
 

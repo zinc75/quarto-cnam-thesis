@@ -42,8 +42,8 @@ les packages manquants au premier rendu (connexion internet requise ; entièreme
 ligne ensuite). **Vous avez déjà TeX Live 2023+ ou MiKTeX ?** Ça fonctionne sans
 configuration supplémentaire.
 
-**Étape 3 — [Python 3.10+](#configuration-de-python)** — requis par les scripts post-render. Également nécessaire
-pour l'exécution des cellules de code si la thèse contient des figures ou tableaux calculés.
+**Étape 3 — [Python ou R](#configuration-du-code-exécutable-python-r)** (optionnel) — uniquement si la thèse
+contient des cellules de code exécutable (figures, tableaux calculés…). Non requis pour une thèse en texte pur.
 
 > **Utilisateurs Windows sans WSL :** remplacer `.sh` par `.bat` dans les entrées
 > `post-render` de `_quarto-fr.yml` / `_quarto-en.yml`.
@@ -136,21 +136,24 @@ book:
 ```
 
 
-## Configuration de Python
+## Configuration du code exécutable (Python, R…)
 
-### Python est-il indispensable ?
+### Un langage de script est-il indispensable ?
 
-Python intervient à deux niveaux dans ce template :
+**Uniquement si la thèse contient des cellules de code exécutable** — figures calculées
+ou tableaux générés directement dans le document. Le script post-render tourne sur le
+runtime Deno intégré à Quarto ; aucun Python ni R n'est requis pour une thèse en texte
+pur avec des images statiques.
 
-1. **Scripts post-render** — toujours nécessaires (génération du slug auteur, renommage
-   des fichiers, image de couverture). Python 3.8+ suffit ; aucun package supplémentaire
-   n'est requis.
-2. **Cellules de code exécutables** — uniquement si la thèse contient des figures
-   calculées (matplotlib…) ou des tableaux (pandas…). Une thèse rédigée en texte pur
-   avec des images statiques n'a besoin que du point 1.
+Quarto supporte plusieurs moteurs — choisir celui adapté à la discipline :
 
-Si la thèse ne contient pas de code Python exécutable, une installation Python de base
-est suffisante et la suite de cette section ne vous concerne pas.
+- **Python** (via Jupyter) — sciences des données, traitement du signal, calcul numérique.
+  Voir [Quarto – Python](https://quarto.org/docs/computations/python.html).
+- **R** (via knitr) — statistiques, économétrie, écologie, sciences du vivant.
+  Voir [Quarto – R](https://quarto.org/docs/computations/r.html).
+
+La suite de cette section détaille la configuration de **Python** (utilisé dans les
+chapitres d'exemple du template). Pour R, se référer à la documentation Quarto ci-dessus.
 
 ### Packages pour le code exécutable
 

@@ -76,14 +76,25 @@ ancienne, mettez-la à jour ou lancez `quarto install tinytex` pour passer à Ti
 | **Windows** | `.msi` (64 bits) | `quarto install tinytex` *(recommandé)* ou [MiKTeX](https://miktex.org/) / [TeX Live](https://tug.org/texlive/) |
 | **Linux (Debian/Ubuntu)** | `sudo dpkg -i quarto-*.deb` | `quarto install tinytex` *(recommandé)* ou `sudo apt install texlive-full` |
 
-### Python {.unnumbered}
+### Code exécutable (Python, R…) {.unnumbered}
 
-Python est **optionnel** : il n'est nécessaire que si la thèse contient des cellules
-de code exécutable — figures calculées (matplotlib…) ou tableaux (pandas…). Une thèse
-rédigée en texte pur avec des images statiques n'a besoin que d'un Python de base pour
-les scripts post-render (génération du slug auteur, image de couverture).
+Un langage de script n'est nécessaire **que si la thèse contient des cellules de code
+exécutable** — figures calculées ou tableaux générés directement dans le document. Une
+thèse rédigée en texte pur avec des images statiques **n'a besoin d'aucun langage de
+script** : le script post-render (`postrender.ts`) tourne sur le runtime Deno intégré
+à Quarto.
 
-Si la thèse contient du code exécutable, Quarto utilise **Jupyter** pour l'exécuter.
+Quarto supporte plusieurs moteurs de calcul :
+
+- **Python** (via Jupyter) — utilisé dans les exemples de ce guide.
+  → [Documentation Quarto : Python](https://quarto.org/docs/computations/python.html)
+- **R** (via knitr) — bien adapté aux statistiques, à l'économétrie, à l'écologie et
+  aux disciplines où R est le langage dominant.
+  → [Documentation Quarto : R](https://quarto.org/docs/computations/r.html)
+
+La suite de cette section détaille la configuration de **Python**, qui alimente les
+exemples de ce document. Pour R, se référer à la documentation Quarto ci-dessus.
+
 Les packages requis par les exemples de ce document sont listés dans `requirements.txt`
 à la racine du projet : `numpy`, `matplotlib`, `pandas`, `tabulate`.
 

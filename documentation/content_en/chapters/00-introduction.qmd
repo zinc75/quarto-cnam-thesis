@@ -75,16 +75,26 @@ it or run `quarto install tinytex` to switch to TinyTeX.
 | **Windows** | `.msi` (64-bit) | `quarto install tinytex` *(recommended)* or [MiKTeX](https://miktex.org/) / [TeX Live](https://tug.org/texlive/) |
 | **Linux (Debian/Ubuntu)** | `sudo dpkg -i quarto-*.deb` | `quarto install tinytex` *(recommended)* or `sudo apt install texlive-full` |
 
-### Python {.unnumbered}
+### Executable code (Python, R…) {.unnumbered}
 
-Python is **optional**: it is only needed if the thesis contains executable code cells —
-computed figures (matplotlib…) or tables (pandas…). A thesis written in pure text with
-static images only needs a basic Python installation for the post-render scripts
-(author slug generation, cover image).
+A scripting language is **only needed if the thesis contains executable code cells** —
+computed figures or tables generated directly in the document. A thesis written in pure
+text with static images requires **no scripting language at all**: the post-render script
+(`postrender.ts`) runs on Quarto's bundled Deno runtime.
 
-If the thesis contains executable code, Quarto uses **Jupyter** to run it. The packages
-required by the examples in this document are listed in `requirements.txt` at the project
-root: `numpy`, `matplotlib`, `pandas`, `tabulate`.
+Quarto supports several computation engines:
+
+- **Python** (via Jupyter) — used in the examples of this guide.
+  → [Quarto documentation: Python computations](https://quarto.org/docs/computations/python.html)
+- **R** (via knitr) — well suited for statistics, econometrics, ecology and other
+  disciplines where R is the dominant language.
+  → [Quarto documentation: R computations](https://quarto.org/docs/computations/r.html)
+
+The rest of this section covers **Python** setup, which powers the examples in this
+document. For R, refer to the Quarto documentation linked above.
+
+The packages required by the examples in this document are listed in `requirements.txt`
+at the project root: `numpy`, `matplotlib`, `pandas`, `tabulate`.
 
 **Virtual environment — why it matters.** A virtual environment isolates this project's
 packages from the rest of the system Python installation, avoids version conflicts, and
