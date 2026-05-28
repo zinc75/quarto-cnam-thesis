@@ -9,12 +9,11 @@ thesis-lang: en
 project:
   output-dir: _thesis-en
   post-render:
-    # Standard render (development / review):
+    # Standard render (development / review) / Rendu standard (développement / relecture) :
     - ./_scripts/postrender.sh en _thesis-en  # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
-    # PDF/A-1b submission (theses.fr): add "pdfa" as a third argument, then validate on pdfforge.org.
-    # Requires Ghostscript (brew install ghostscript / apt install ghostscript / winget install ArtifexSoftware.GhostScript).
-    # Soumission PDF/A-1b (theses.fr) : ajouter "pdfa" comme 3e argument, puis valider sur pdfforge.org.
-    # - ./_scripts/postrender.sh en _thesis-en pdfa    # Windows: postrender.bat en _thesis-en pdfa
+    # Before depositing to theses.fr: uncomment the line below to validate the PDF on facile.cines.fr (CINES).
+    # Avant dépôt sur theses.fr : décommenter la ligne ci-dessous pour valider le PDF sur facile.cines.fr (CINES).
+    #- ./_scripts/postrender.sh en _thesis-en validate    # Windows: postrender.bat en _thesis-en validate
 
 book:
   output-file: these_en

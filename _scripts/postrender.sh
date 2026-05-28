@@ -1,18 +1,17 @@
 #!/bin/bash
 # Post-render: clean LaTeX build artifacts and rename PDF and .tex output files.
-# Usage: ./postrender.sh <lang> <output-dir> [pdfa]
-#   pdfa  (optional) — run Ghostscript PDF/A-1b conversion after rendering.
-#                      Use only for the final submission to theses.fr.
-#                      Requires Ghostscript: brew install ghostscript (macOS)
-#                                            apt install ghostscript  (Linux)
+# Usage: ./postrender.sh <lang> <output-dir> [validate]
+#   validate  (optional) — check PDF/A-1b compliance via facile.cines.fr (CINES).
+#             Run before submitting the final thesis to theses.fr.
+#             Requires: curl (pre-installed on macOS 10.15+ and most Linux distros).
 # Called via post-render in _quarto-fr.yml / _quarto-en.yml.
 
 LANG="$1"
 OUTPUT_DIR="$2"
-PDFA_MODE="$3"   # optional: "pdfa" to enable Ghostscript conversion
+MODE="$3"   # optional: "validate" to check PDF/A on facile.cines.fr
 
 if [ -z "$LANG" ] || [ -z "$OUTPUT_DIR" ]; then
-  echo "postrender.sh: usage: postrender.sh <lang> <output-dir> [pdfa]" >&2
+  echo "postrender.sh: usage: postrender.sh <lang> <output-dir> [validate]" >&2
   exit 1
 fi
 
@@ -147,6 +146,13 @@ if [ -f "$SRC_TEX" ]; then
   echo "TeX renamed: $DST_TEX"
 fi
 
+# ── Submission hint (standard render only) ────────────────────────────────────
+# Remind the user to validate on CINES before the final deposit on theses.fr.
+# Rappel de validation CINES avant le dépôt final sur theses.fr.
+if [ -z "$MODE" ] && [ "$PDF_GENERATED" = true ]; then
+  echo "→ Before depositing to theses.fr: add 'validate' as 3rd arg in _quarto-${LANG}.yml, then re-render."
+fi
+
 # ── Generate cover image from PDF page 1 ──────────────────────────────────────
 # Saves page 1 of the compiled PDF as images/cover.png for the HTML cover page.
 # Enregistre la page 1 du PDF compilé en images/cover.png pour la couverture HTML.
@@ -189,44 +195,35 @@ if [ "$PDF_GENERATED" = true ] && [ -f "$DST_PDF" ]; then
   fi
 fi
 
-# ── Optional: Ghostscript PDF/A-1b conversion ─────────────────────────────────
-# Activated by passing "pdfa" as a third argument:
-#   - ./_scripts/postrender.sh fr _these_fr pdfa     (in _quarto-fr.yml)
-# Flattens transparency (§6.4) and fixes font metrics (§6.3.5/§6.3.6).
-# Intended for the final submission to theses.fr — not needed for daily builds.
-# Processing time: ~1–2 min depending on PDF size and number of figures.
-# Activated en passant "pdfa" en troisième argument. Aplatit la transparence
-# et corrige les métriques de polices. Uniquement pour la soumission finale.
-if [ "$PDFA_MODE" = "pdfa" ] && [ "$PDF_GENERATED" = true ] && [ -f "$DST_PDF" ]; then
-  GS_BIN=$(command -v gs 2>/dev/null)
-  if [ -z "$GS_BIN" ]; then
-    echo "postrender.sh: 'gs' (Ghostscript) not found — PDF/A conversion skipped." >&2
-    echo "  macOS : brew install ghostscript" >&2
-    echo "  Linux : apt install ghostscript   or   dnf install ghostscript" >&2
+# ── Optional: CINES PDF/A-1b validation via facile.cines.fr ──────────────────
+# Activated by passing "validate" as a third argument:
+#   ./_scripts/postrender.sh fr _these_fr validate     (in _quarto-fr.yml)
+# Sends the compiled PDF to the CINES official web service and reports whether
+# it is archivable on theses.fr (the platform that uses facile.cines.fr/veraPDF).
+# Requires: curl (pre-installed on macOS 10.15+ and most Linux distributions).
+# Use before final submission to theses.fr — not needed for daily builds.
+# Activé en passant "validate" en troisième argument. Envoie le PDF au webservice
+# CINES et indique s'il est archivable sur theses.fr. Nécessite curl.
+if [ "$MODE" = "validate" ] && [ -f "$DST_PDF" ]; then
+  if ! command -v curl >/dev/null 2>&1; then
+    echo "postrender.sh: 'curl' not found — PDF/A validation skipped." >&2
+    echo "  curl is pre-installed on macOS 10.15+ and most Linux distributions." >&2
+    echo "  Alternatively, upload the PDF manually at https://facile.cines.fr" >&2
   else
-    echo "Running Ghostscript PDF/A-1b conversion…"
-    SIZE_BEFORE=$(wc -c < "$DST_PDF" | tr -d ' ')
-    PDFA_TMP="${DST_PDF}.tmp"
-    "$GS_BIN" \
-      -dPDFA=1 \
-      -dBATCH \
-      -dNOPAUSE \
-      -dNOOUTERSAVE \
-      -dPDFACompatibilityPolicy=2 \
-      -sColorConversionStrategy=UseDeviceIndependentColor \
-      -sDEVICE=pdfwrite \
-      -sOutputFile="$PDFA_TMP" \
-      "$DST_PDF"
-    GS_STATUS=$?
-    if [ $GS_STATUS -eq 0 ] && [ -s "$PDFA_TMP" ]; then
-      mv "$PDFA_TMP" "$DST_PDF"
-      cp -p "$DST_PDF" "$SRC_PDF"   # keep canonical copy in sync
-      SIZE_AFTER=$(wc -c < "$DST_PDF" | tr -d ' ')
-      echo "PDF/A-1b conversion done: $((SIZE_BEFORE / 1024)) KB → $((SIZE_AFTER / 1024)) KB"
-      echo "Validate on facile.cines.fr before submitting to theses.fr."
+    echo "Validating PDF/A on facile.cines.fr (CINES)..."
+    RESPONSE=$(curl --silent --max-time 120 --form "file=@${DST_PDF}" "https://facile.cines.fr/xml")
+    if [ -z "$RESPONSE" ]; then
+      echo "postrender.sh: no response from facile.cines.fr — check network connection." >&2
+      echo "  Alternatively, upload the PDF manually at https://facile.cines.fr" >&2
     else
-      rm -f "$PDFA_TMP"
-      echo "postrender.sh: Ghostscript conversion failed (exit $GS_STATUS) — original PDF preserved." >&2
+      VALID=$(printf '%s' "$RESPONSE" | grep -o '<valid>[^<]*</valid>' | sed 's|<valid>||;s|</valid>||' | tr -d '[:space:]')
+      WELLFORMED=$(printf '%s' "$RESPONSE" | grep -o '<wellformed>[^<]*</wellformed>' | sed 's|<wellformed>||;s|</wellformed>||' | tr -d '[:space:]')
+      if [ "$VALID" = "true" ]; then
+        echo "✅  PDF/A-1b valide — archivable sur theses.fr."
+      else
+        echo "❌  PDF/A-1b non valide (valid=${VALID}, wellformed=${WELLFORMED})." >&2
+        echo "    → Corriger via : https://facile.cines.fr/#correction" >&2
+      fi
     fi
   fi
 fi

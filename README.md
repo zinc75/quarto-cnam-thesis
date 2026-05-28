@@ -13,7 +13,7 @@ Produces a **PDF** that conforms to the official Cnam 2024–2025 template and a
 
 ## Features
 
-- PDF/A-1b compliant output (archival standard required by Cnam)
+- Output validated against the PDF/A-1b criteria of [facile.cines.fr](https://facile.cines.fr) (CINES), the official validator for theses.fr deposits
 - Official Cnam cover page: jury, logos, defence date, supervisors
 - Chapter mini-tables of contents (`minitoc`)
 - Differentiated page numbering: roman (front matter) / arabic (body) / Roman (appendices)
@@ -246,6 +246,28 @@ quarto-cnam-thesis/
   BibTeX (natbib mode) strips directory paths from `\bibliography{}`.
 - Use `date-soutenance:` for the defence date, not `date:` — Quarto parses `date:` as
   a JavaScript Date and produces "Invalid Date" for French date strings.
+
+## Depositing to theses.fr
+
+Before the final deposit, validate your PDF against the CINES criteria — the same
+check run by theses.fr. Add `validate` as a third argument in `_quarto-fr.yml` (or
+`_quarto-en.yml`) and re-render:
+
+```yaml
+# In _quarto-fr.yml:
+project:
+  post-render:
+    - ./_scripts/postrender.sh fr _these_fr validate
+    # Windows: ./_scripts/postrender.bat fr _these_fr validate
+```
+
+The post-render script will send the PDF to [facile.cines.fr](https://facile.cines.fr)
+and print `✅ PDF/A-1b valide` or point you to the CINES correction service
+([facile.cines.fr/#correction](https://facile.cines.fr/#correction)) if a fix is needed.
+Restore the standard line (without `validate`) for day-to-day builds.
+
+> **curl** (pre-installed on macOS 10.15+ and most Linux distros; included in
+> Windows 10 v1803+ as `curl.exe`) is the only requirement.
 
 ## Known limitations (HTML output)
 

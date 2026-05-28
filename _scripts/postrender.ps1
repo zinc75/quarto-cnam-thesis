@@ -1,15 +1,15 @@
 # Post-render: clean LaTeX build artifacts, remove Quarto resource-scan artefacts,
 # rename PDF and .tex output files, fix HTML navigation links, generate cover image.
-# Usage: postrender.ps1 -Lang <lang> -OutputDir <output-dir> [-Mode pdfa]
-#   -Mode pdfa  (optional) — run Ghostscript PDF/A-1b conversion after rendering.
-#               Use only for the final submission to theses.fr.
-#               Requires Ghostscript: winget install ArtifexSoftware.GhostScript
+# Usage: postrender.ps1 -Lang <lang> -OutputDir <output-dir> [-Mode validate]
+#   -Mode validate  (optional) — check PDF/A-1b compliance via facile.cines.fr (CINES).
+#                   Run before submitting the final thesis to theses.fr.
+#                   Requires: curl.exe (pre-installed on Windows 10 v1803+).
 # Windows equivalent of postrender.sh — called via postrender.bat.
 
 param(
     [Parameter(Mandatory)][string]$Lang,
     [Parameter(Mandatory)][string]$OutputDir,
-    [string]$Mode = ""   # optional: "pdfa" to enable Ghostscript PDF/A-1b conversion
+    [string]$Mode = ""   # optional: "validate" to check PDF/A on facile.cines.fr
 )
 
 # ── Remove spurious directories copied by Quarto's resource scanner ──────────
@@ -91,6 +91,13 @@ if (Test-Path $srcTex) {
     Write-Host "TeX renamed: $dstTex"
 }
 
+# ── Submission hint (standard render only) ────────────────────────────────────
+# Remind the user to validate on CINES before the final deposit on theses.fr.
+# Rappel de validation CINES avant le dépôt final sur theses.fr.
+if ([string]::IsNullOrEmpty($Mode) -and $pdfGenerated) {
+    Write-Host "-> Before depositing to theses.fr: add 'validate' as 3rd arg in _quarto-$Lang.yml, then re-render."
+}
+
 # ── Generate cover image from PDF page 1 ──────────────────────────────────────
 # Saves page 1 of the compiled PDF as images/cover.png for the HTML cover page.
 # Requires poppler (pdftoppm) or ImageMagick (magick / convert + Ghostscript).
@@ -124,58 +131,37 @@ if ($pdfGenerated -and (Test-Path $dstPdf)) {
     }
 }
 
-# ── Optional: Ghostscript PDF/A-1b conversion ─────────────────────────────────
-# Activated by passing -Mode pdfa (via postrender.bat with "pdfa" as 3rd arg).
-# Flattens transparency (§6.4) and fixes font metrics (§6.3.5/§6.3.6).
-# Intended for the final submission to theses.fr — not needed for daily builds.
-# Processing time: ~1–2 min depending on PDF size and number of figures.
-if ($Mode -eq "pdfa" -and $pdfGenerated -and (Test-Path $dstPdf)) {
-    # Locate Ghostscript — try common names then TeX Live's bin directory.
-    $GS = $null
-    foreach ($name in @('gswin64c', 'gswin32c', 'gs')) {
-        if (Get-Command $name -ErrorAction SilentlyContinue) { $GS = $name; break }
-    }
-    if (-not $GS) {
-        $pdflatexCmd = Get-Command pdflatex -ErrorAction SilentlyContinue
-        if ($pdflatexCmd) {
-            $texBin = Split-Path $pdflatexCmd.Source
-            foreach ($name in @('gswin64c.exe', 'gswin32c.exe', 'gs.exe')) {
-                $path = Join-Path $texBin $name
-                if (Test-Path $path) { $GS = $path; break }
-            }
-        }
-    }
-
-    if (-not $GS) {
-        Write-Warning "Ghostscript not found — PDF/A conversion skipped."
-        Write-Warning "  Install: winget install ArtifexSoftware.GhostScript"
+# ── Optional: CINES PDF/A-1b validation via facile.cines.fr ──────────────────
+# Activated by passing -Mode validate (via postrender.bat with "validate" as 3rd arg).
+# Sends the compiled PDF to the CINES official web service and reports whether
+# it is archivable on theses.fr (the platform that uses facile.cines.fr/veraPDF).
+# Requires: curl.exe (pre-installed on Windows 10 v1803+ in System32).
+# Use before final submission to theses.fr — not needed for daily builds.
+# Activé en passant -Mode validate. Envoie le PDF au webservice CINES et indique
+# s'il est archivable sur theses.fr. Nécessite curl.exe (Windows 10+).
+if ($Mode -eq "validate" -and (Test-Path $dstPdf)) {
+    # curl.exe (with .exe suffix) bypasses the Invoke-WebRequest alias in PowerShell.
+    # It is part of Windows 10 v1803+ (C:\Windows\System32\curl.exe).
+    $curlExe = Get-Command curl.exe -ErrorAction SilentlyContinue
+    if (-not $curlExe) {
+        Write-Warning "curl.exe not found — PDF/A validation skipped."
+        Write-Warning "  curl.exe is included in Windows 10 v1803+ and Windows 11."
+        Write-Warning "  Alternatively, upload the PDF manually at https://facile.cines.fr"
     } else {
-        Write-Host "Running Ghostscript PDF/A-1b conversion..."
-        $sizeBefore = (Get-Item $dstPdf).Length
-        $pdfaTmp    = "$dstPdf.tmp"
-
-        & $GS `
-            -dPDFA=1 `
-            -dBATCH `
-            -dNOPAUSE `
-            -dNOOUTERSAVE `
-            -dPDFACompatibilityPolicy=2 `
-            -sColorConversionStrategy=UseDeviceIndependentColor `
-            -sDEVICE=pdfwrite `
-            "-sOutputFile=$pdfaTmp" `
-            $dstPdf
-
-        if ($LASTEXITCODE -eq 0 -and (Test-Path $pdfaTmp) -and (Get-Item $pdfaTmp).Length -gt 0) {
-            Move-Item $pdfaTmp $dstPdf -Force
-            Copy-Item  $dstPdf $srcPdf -Force   # keep canonical copy in sync
-            $sizeAfter = (Get-Item $dstPdf).Length
-            $beforeKB  = [math]::Round($sizeBefore / 1KB)
-            $afterKB   = [math]::Round($sizeAfter  / 1KB)
-            Write-Host "PDF/A-1b conversion done: ${beforeKB} KB → ${afterKB} KB"
-            Write-Host "Validate on facile.cines.fr before submitting to theses.fr."
+        Write-Host "Validating PDF/A on facile.cines.fr (CINES)..."
+        $response = & curl.exe --silent --max-time 120 --form "file=@$dstPdf" "https://facile.cines.fr/xml" 2>&1
+        if ([string]::IsNullOrWhiteSpace($response)) {
+            Write-Warning "No response from facile.cines.fr — check network connection."
+            Write-Warning "  Alternatively, upload the PDF manually at https://facile.cines.fr"
         } else {
-            Remove-Item $pdfaTmp -Force -ErrorAction SilentlyContinue
-            Write-Warning "Ghostscript conversion failed (exit $LASTEXITCODE) — original PDF preserved."
+            $valid      = if ($response -match '<valid>([^<]*)</valid>')      { $matches[1].Trim() } else { '' }
+            $wellformed = if ($response -match '<wellformed>([^<]*)</wellformed>') { $matches[1].Trim() } else { '' }
+            if ($valid -eq 'true') {
+                Write-Host "OK  PDF/A-1b valide - archivable sur theses.fr."
+            } else {
+                Write-Warning "PDF/A-1b non valide (valid=$valid, wellformed=$wellformed)."
+                Write-Warning "  -> Corriger via : https://facile.cines.fr/#correction"
+            }
         }
     }
 }
