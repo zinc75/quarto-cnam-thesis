@@ -1,18 +1,19 @@
-# `_quarto.yml` configuration {#sec-yaml-config-file .appendix}
+# YAML configuration {#sec-yaml-config-file .appendix}
 
-This appendix reproduces and comments on the `_quarto.yml` file in its entirety,
-for quick reference.
+This appendix documents the two main configuration files of the template:
+`_quarto.yml` (metadata shared across all renders) and `_quarto-fr.yml` /
+`_quarto-en.yml` (metadata specific to each language profile).
 
-## Document metadata for the cover page {short-title="Metadata"}
+## Metadata in `_quarto.yml` — cover page {short-title="Metadata"}
+
+`_quarto.yml` holds the fields **shared across all profiles**: jury, supervisors,
+institutional information. Title, author, and defence date belong in the language
+profile (see [Language profiles](#sec-yaml-profiles) below).
 
 ```yaml
 book:
-  title: "Thesis title"
-  subtitle: "Optional subtitle"        # remove if absent
-  author: "First LAST"
   downloads: [pdf]                     # PDF button in the HTML sidebar
 
-date-soutenance: "12 June 2026"        # DO NOT use date:
 discipline: "60th CNU section — Mechanics, mechanical engineering, civil engineering"
 specialite: "Acoustics"
 ecole-doctorale: "Sciences des Métiers de l'Ingénieur"
@@ -80,12 +81,11 @@ execute:
   echo: true      # shows code by default (overridable per chunk)
 ```
 
-## Language profiles: `_quarto-fr.yml` and `_quarto-en.yml` {short-title="Language profiles"}
+## Language profiles: `_quarto-fr.yml` and `_quarto-en.yml` {#sec-yaml-profiles short-title="Language profiles"}
 
-`_quarto.yml` holds the metadata common to all renders (title, author, jury,
-LaTeX options…). Language-specific options — most importantly **the chapter list** —
-live in the corresponding profile file, which overrides `_quarto.yml` when rendering
-with `--profile fr` or `--profile en`.
+Language profiles **override** `_quarto.yml` when rendering with `--profile fr` or
+`--profile en`. They define the language-specific metadata — **title, author, defence
+date** — as well as the chapter list and technical render options.
 
 ### Chapter list (first thing to customise)
 
@@ -131,18 +131,20 @@ in the PDF.
 thesis-lang: en      # thesis language: fr or en
 validate: false      # set to true before depositing to theses.fr (see @sec-pdfa)
 
+book:
+  title: "Thesis title"
+  subtitle: "Optional subtitle"        # remove if absent
+  author: "First LAST"
+  output-file: these_en               # base name of the generated PDF (these_en_<author>.pdf)
+
+date-soutenance: "10 October 1794"    # DO NOT use date:
+
 project:
   output-dir: _thesis-en    # output directory
   post-render:
     - ./_scripts/postrender.sh en _thesis-en   # Windows: replace .sh with .bat
 
-book:
-  output-file: these_en     # base name of the generated PDF (these_en_<author>.pdf)
-
 format:
   cnam-thesis-html:
     toc-title: "Table of Contents"   # English sidebar TOC title
-
-# Optional — prefix shown in the HTML topbar (no effect on the PDF cover page):
-header-prefix: "PhD Thesis"
 ```
