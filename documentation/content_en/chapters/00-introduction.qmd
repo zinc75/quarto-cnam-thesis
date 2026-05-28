@@ -42,8 +42,16 @@ This template requires **Quarto 1.4** or later. The compilation engine is pdflat
 XeLaTeX and LuaLaTeX are not supported due to constraints of the `pdfx` package used
 for PDF/A-1b compliance.
 
-**No LaTeX yet?** Use TinyTeX, Quarto's built-in minimal distribution. It installs
-in seconds and automatically downloads any missing package on first render:
+::: {.callout-tip}
+## Step 1 — Install Quarto
+
+<https://quarto.org/docs/get-started/> — `.pkg`, `.msi` or `.deb` installer
+depending on the platform; step-by-step editor guide for VS Code, RStudio and more.
+:::
+
+**Step 2 — Install LaTeX.** If you do not already have LaTeX, use TinyTeX, Quarto's
+built-in minimal distribution. It installs in seconds and automatically downloads any
+missing package on first render:
 
 ```bash
 quarto install tinytex
@@ -60,13 +68,6 @@ All subsequent renders run entirely offline.
 **Already have LaTeX?** Any up-to-date **TeX Live 2023+** or **MiKTeX** installation
 works with no additional configuration. If your distribution is older, either update
 it or run `quarto install tinytex` to switch to TinyTeX.
-
-::: {.callout-tip}
-## Installing Quarto
-
-<https://quarto.org/docs/get-started/> — `.pkg`, `.msi` or `.deb` installer
-depending on the platform; step-by-step editor guide for VS Code, RStudio and more.
-:::
 
 | System | Quarto | LaTeX |
 |:--------|:-------|:------|
