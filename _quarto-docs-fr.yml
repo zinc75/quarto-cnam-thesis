@@ -11,7 +11,7 @@ validate: false
 project:
   output-dir: _docs-fr
   post-render:
-    - ./_scripts/postrender.sh fr _docs-fr    # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
+    - ./_scripts/postrender.ts fr _docs-fr
 
 book:
   title: "Guide d'utilisation du template Quarto Cnam pour les thèses"

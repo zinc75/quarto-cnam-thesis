@@ -10,7 +10,7 @@ validate: false
 project:
   output-dir: _docs-en
   post-render:
-    - ./_scripts/postrender.sh en _docs-en  # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
+    - ./_scripts/postrender.ts en _docs-en
 
 book:
   output-file: these_en
