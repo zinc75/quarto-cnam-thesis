@@ -93,20 +93,17 @@ French doctoral theses.
 for deposit on theses.fr. It — not third-party tools — determines whether your PDF
 will be accepted. Simply upload the PDF to obtain an immediate report.
 
-## `validate` option: automated check from the post-render script
+## Automated check from the post-render script
 
 The post-render script can query the CINES web service automatically.
-In `_quarto-en.yml`, uncomment the `validate` line:
+Simply set `validate: true` in `_quarto-en.yml`:
 
 ```yaml
 # In _quarto-en.yml — before depositing to theses.fr:
-project:
-  post-render:
-    - ./_scripts/postrender.sh en _thesis-en validate
-    # Windows: ./_scripts/postrender.bat en _thesis-en validate
+validate: true
 ```
 
-Then render:
+Then render as usual:
 
 ```bash
 quarto render --profile en --to cnam-thesis-pdf
@@ -129,8 +126,8 @@ If the PDF fails:
 ::: {.callout-tip}
 ## After validation
 
-Restore the standard line (without `validate`) in `_quarto-en.yml` for day-to-day
-builds — the web service call is only needed before the final deposit.
+Set `validate: false` back in `_quarto-en.yml` for day-to-day builds —
+the web service call is only needed before the final deposit.
 :::
 
 ## If validation fails

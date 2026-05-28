@@ -92,20 +92,17 @@ CINES — l'organisme qui gère l'archivage institutionnel des thèses français
 pour le dépôt sur theses.fr. C'est lui — et non des outils tiers — qui détermine si
 votre PDF sera accepté. Il suffit d'y uploader le PDF pour obtenir un rapport immédiat.
 
-## Option `validate` : vérification automatique depuis le script
+## Validation automatique depuis le script
 
 Le script post-render peut interroger le webservice CINES automatiquement.
-Dans `_quarto-fr.yml`, décommenter la ligne `validate` :
+Il suffit de passer `validate: true` dans `_quarto-fr.yml` :
 
 ```yaml
 # Dans _quarto-fr.yml — avant dépôt sur theses.fr :
-project:
-  post-render:
-    - ./_scripts/postrender.sh fr _these_fr validate
-    # Windows : ./_scripts/postrender.bat fr _these_fr validate
+validate: true
 ```
 
-Puis lancer le rendu :
+Puis lancer le rendu normalement :
 
 ```bash
 quarto render --profile fr --to cnam-thesis-pdf
@@ -128,8 +125,8 @@ En cas d'échec :
 ::: {.callout-tip}
 ## Après la validation
 
-Remettre la ligne standard (sans `validate`) dans `_quarto-fr.yml` pour les rendus
-quotidiens — l'appel au webservice n'est nécessaire qu'avant le dépôt final.
+Remettre `validate: false` dans `_quarto-fr.yml` pour les rendus quotidiens —
+l'appel au webservice n'est nécessaire qu'avant le dépôt final.
 :::
 
 ## Si la validation échoue

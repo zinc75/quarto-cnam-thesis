@@ -5,15 +5,12 @@
 # ==============================================================================
 
 thesis-lang: fr
+validate: false    # set to true before depositing to theses.fr / mettre à true avant dépôt sur theses.fr
 
 project:
   output-dir: _these_fr
   post-render:
-    # Standard render (development / review) / Rendu standard (développement / relecture) :
     - ./_scripts/postrender.sh fr _these_fr    # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
-    # Before depositing to theses.fr: uncomment the line below to validate the PDF on facile.cines.fr (CINES).
-    # Avant dépôt sur theses.fr : décommenter la ligne ci-dessous pour valider le PDF sur facile.cines.fr (CINES).
-    #- ./_scripts/postrender.sh fr _these_fr validate    # Windows: postrender.bat fr _these_fr validate
 
 book:
   title: "Guide d'utilisation du template Quarto Cnam pour les thèses"

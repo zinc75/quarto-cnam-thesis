@@ -12,6 +12,20 @@ param(
     [string]$Mode = ""   # optional: "validate" to check PDF/A on facile.cines.fr
 )
 
+# Read validate: true/false from the profile YAML (_quarto-<lang>.yml).
+# This avoids editing the post-render command line — just flip the flag in the YAML.
+# Lire validate: true/false dans le profil YAML pour éviter de modifier la commande.
+if ([string]::IsNullOrEmpty($Mode)) {
+    $profileYml = "_quarto-$Lang.yml"
+    if (Test-Path $profileYml) {
+        $validateLine = (Select-String -Path $profileYml -Pattern '^\s*validate:' | Select-Object -First 1).Line
+        if ($validateLine) {
+            $yamlValidate = ($validateLine -replace '.*validate:\s*', '' -replace '#.*', '').Trim()
+            if ($yamlValidate -eq 'true') { $Mode = 'validate' }
+        }
+    }
+}
+
 # ── Remove spurious directories copied by Quarto's resource scanner ──────────
 # Quarto copies all root-level directories to the output dir when mirroring the
 # project structure for HTML books. _reference/ (archival sources) and the other

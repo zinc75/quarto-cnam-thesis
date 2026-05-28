@@ -250,21 +250,22 @@ quarto-cnam-thesis/
 ## Depositing to theses.fr
 
 Before the final deposit, validate your PDF against the CINES criteria — the same
-check run by theses.fr. Add `validate` as a third argument in `_quarto-fr.yml` (or
-`_quarto-en.yml`) and re-render:
+check run by theses.fr. Set `validate: true` in `_quarto-fr.yml` (or `_quarto-en.yml`)
+and render as usual:
 
 ```yaml
 # In _quarto-fr.yml:
-project:
-  post-render:
-    - ./_scripts/postrender.sh fr _these_fr validate
-    # Windows: ./_scripts/postrender.bat fr _these_fr validate
+validate: true
+```
+
+```bash
+quarto render --profile fr --to cnam-thesis-pdf
 ```
 
 The post-render script will send the PDF to [facile.cines.fr](https://facile.cines.fr)
 and print `✅ PDF/A-1b valide` or point you to the CINES correction service
 ([facile.cines.fr/#correction](https://facile.cines.fr/#correction)) if a fix is needed.
-Restore the standard line (without `validate`) for day-to-day builds.
+Set `validate: false` again for day-to-day builds.
 
 > **curl** (pre-installed on macOS 10.15+ and most Linux distros; included in
 > Windows 10 v1803+ as `curl.exe`) is the only requirement.

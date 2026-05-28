@@ -8,11 +8,22 @@
 
 LANG="$1"
 OUTPUT_DIR="$2"
-MODE="$3"   # optional: "validate" to check PDF/A on facile.cines.fr
+MODE="${3:-}"   # optional: "validate" to check PDF/A on facile.cines.fr
 
 if [ -z "$LANG" ] || [ -z "$OUTPUT_DIR" ]; then
   echo "postrender.sh: usage: postrender.sh <lang> <output-dir> [validate]" >&2
   exit 1
+fi
+
+# Read validate: true/false from the profile YAML (_quarto-<lang>.yml).
+# This avoids editing the post-render command line — just flip the flag in the YAML.
+# Lire validate: true/false dans le profil YAML pour éviter de modifier la commande.
+if [ -z "$MODE" ] && [ -f "_quarto-${LANG}.yml" ]; then
+  YAML_VALIDATE=$(grep -m1 '^\s*validate:' "_quarto-${LANG}.yml" 2>/dev/null \
+    | sed 's/.*validate:[[:space:]]*//' \
+    | sed 's/#.*//' \
+    | tr -d '[:space:]')
+  [ "$YAML_VALIDATE" = "true" ] && MODE="validate"
 fi
 
 # ── Remove spurious directories copied by Quarto's resource scanner ──────────
