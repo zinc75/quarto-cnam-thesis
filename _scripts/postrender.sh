@@ -15,11 +15,20 @@ if [ -z "$LANG" ] || [ -z "$OUTPUT_DIR" ]; then
   exit 1
 fi
 
-# Read validate: true/false from the profile YAML (_quarto-<lang>.yml).
+# Determine which profile YAML to use for author + validate.
+# Docs profiles (_docs-*) use _quarto-docs-<lang>.yml; thesis profiles use _quarto-<lang>.yml.
+# Déterminer le profil YAML : _quarto-docs-<lang>.yml pour les docs, _quarto-<lang>.yml sinon.
+if [[ "$OUTPUT_DIR" == _docs-* ]]; then
+  PROFILE_YAML="_quarto-docs-${LANG}.yml"
+else
+  PROFILE_YAML="_quarto-${LANG}.yml"
+fi
+
+# Read validate: true/false from the profile YAML.
 # This avoids editing the post-render command line — just flip the flag in the YAML.
 # Lire validate: true/false dans le profil YAML pour éviter de modifier la commande.
-if [ -z "$MODE" ] && [ -f "_quarto-${LANG}.yml" ]; then
-  YAML_VALIDATE=$(grep -m1 '^\s*validate:' "_quarto-${LANG}.yml" 2>/dev/null \
+if [ -z "$MODE" ] && [ -f "$PROFILE_YAML" ]; then
+  YAML_VALIDATE=$(grep -m1 '^\s*validate:' "$PROFILE_YAML" 2>/dev/null \
     | sed 's/.*validate:[[:space:]]*//' \
     | sed 's/#.*//' \
     | tr -d '[:space:]')
@@ -53,10 +62,19 @@ rm -f \
 
 # ── Rename these_<lang>.pdf/.tex → these_<lang>_<author>.pdf/.tex ─────────────
 
-AUTHOR=$(grep -m1 'author:' _quarto.yml \
+# Read author from profile YAML first (book.author override), fall back to _quarto.yml.
+# Lire l'auteur depuis le profil YAML en priorité (override book.author), sinon _quarto.yml.
+AUTHOR=$(grep -m1 '^\s*author:' "$PROFILE_YAML" 2>/dev/null \
   | sed 's/.*author:[[:space:]]*//' \
   | tr -d '"' \
-  | tr -d "'")
+  | tr -d "'" \
+  | tr -d '[:space:]')
+if [ -z "$AUTHOR" ]; then
+  AUTHOR=$(grep -m1 'author:' _quarto.yml \
+    | sed 's/.*author:[[:space:]]*//' \
+    | tr -d '"' \
+    | tr -d "'")
+fi
 
 if [ -z "$AUTHOR" ]; then
   exit 0

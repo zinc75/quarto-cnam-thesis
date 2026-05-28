@@ -1,0 +1,23 @@
+# Titre du deuxième chapitre {#sec-chap2}
+
+<!-- Starter — remplacer par le contenu de votre deuxième chapitre.
+     Dupliquer ce fichier pour les chapitres suivants et l'ajouter dans _quarto-fr.yml.
+     Documentation : https://zinc75.github.io/quarto-cnam-thesis/fr/ -->
+
+{{< lipsum 1 >}} [@Allaire2022]
+
+## Première section {#sec-chap2-sec1}
+
+{{< lipsum 1 >}}
+
+### Première sous-section
+
+{{< lipsum 1 >}}
+
+### Deuxième sous-section
+
+{{< lipsum 1 >}}
+
+## Deuxième section {#sec-chap2-sec2}
+
+{{< lipsum 1 >}}

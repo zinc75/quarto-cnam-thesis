@@ -1,0 +1,8 @@
+# Acknowledgements {.unnumbered .toc-black}
+
+<!-- Starter — replace with your acknowledgements.
+     Documentation: https://zinc75.github.io/quarto-cnam-thesis/en/ -->
+
+[Your acknowledgements.]
+
+{{< lipsum 2 >}}

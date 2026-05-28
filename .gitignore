@@ -5,8 +5,9 @@ _thesis-en/
 _docs-fr/
 _docs-en/
 
-# Quarto intermediate render artifacts in source tree (*_files/ dirs)
+# Quarto intermediate render artifacts in source tree (*_files/ dirs and standalone HTMLs)
 **/*_files/
+content_*/**/*.html
 
 # Original TeX template
 _reference/

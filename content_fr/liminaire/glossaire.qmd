@@ -1,0 +1,32 @@
+# Glossaire {.unnumbered .toc-black}
+
+```{=latex}
+% Displays main glossary terms (type=main, declared with the 'terme' shortcode).
+% Affiche les termes du glossaire principal (type=main, déclarés avec le shortcode terme).
+% The chapter heading above serves as the section title; the automatic title from
+% \printnoidxglossary is suppressed locally to avoid duplication.
+% Titre de chapitre ci-dessus en-tête ; titre automatique de \printnoidxglossary supprimé.
+%
+% \glsaddall: includes entries not cited via \gls{} in the text.
+% \glsaddall : inclut les entrées non référencées via \gls{} dans le texte.
+\ifdefined\printnoidxglossary
+  {%
+    \glsaddall%
+    \renewcommand{\glossarysection}[2][]{}%
+    \printnoidxglossary[type=main]%
+  }
+\else
+  \begin{center}
+    \small\itshape
+    Activer \texttt{glossaire: true} dans \texttt{\_quarto.yml}\\
+    et définir vos termes dans\\
+    \texttt{content\_fr/liminaire/glossaire-entries.qmd}.
+  \end{center}
+\fi
+```
+
+<!-- HTML: table generated from gloss_lookup (populated by glossaire-entries.qmd).
+     HTML : tableau généré depuis gloss_lookup (alimenté par glossaire-entries.qmd). -->
+::: {.content-visible when-format="html"}
+{{< gloss-html main >}}
+:::

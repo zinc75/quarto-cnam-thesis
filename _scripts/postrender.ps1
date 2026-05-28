@@ -12,17 +12,19 @@ param(
     [string]$Mode = ""   # optional: "validate" to check PDF/A on facile.cines.fr
 )
 
-# Read validate: true/false from the profile YAML (_quarto-<lang>.yml).
+# Determine which profile YAML to use for author + validate.
+# Docs profiles (_docs-*) use _quarto-docs-<lang>.yml; thesis profiles use _quarto-<lang>.yml.
+# Déterminer le profil YAML : _quarto-docs-<lang>.yml pour les docs, _quarto-<lang>.yml sinon.
+$profileYml = if ($OutputDir -like "_docs-*") { "_quarto-docs-$Lang.yml" } else { "_quarto-$Lang.yml" }
+
+# Read validate: true/false from the profile YAML.
 # This avoids editing the post-render command line — just flip the flag in the YAML.
 # Lire validate: true/false dans le profil YAML pour éviter de modifier la commande.
-if ([string]::IsNullOrEmpty($Mode)) {
-    $profileYml = "_quarto-$Lang.yml"
-    if (Test-Path $profileYml) {
-        $validateLine = (Select-String -Path $profileYml -Pattern '^\s*validate:' | Select-Object -First 1).Line
-        if ($validateLine) {
-            $yamlValidate = ($validateLine -replace '.*validate:\s*', '' -replace '#.*', '').Trim()
-            if ($yamlValidate -eq 'true') { $Mode = 'validate' }
-        }
+if ([string]::IsNullOrEmpty($Mode) -and (Test-Path $profileYml)) {
+    $validateLine = (Select-String -Path $profileYml -Pattern '^\s*validate:' | Select-Object -First 1).Line
+    if ($validateLine) {
+        $yamlValidate = ($validateLine -replace '.*validate:\s*', '' -replace '#.*', '').Trim()
+        if ($yamlValidate -eq 'true') { $Mode = 'validate' }
     }
 }
 
@@ -48,8 +50,15 @@ Remove-Item -Path "_gloss-acr.html"         -Force -ErrorAction SilentlyContinue
 Remove-Item -Path "_gloss-main.html"        -Force -ErrorAction SilentlyContinue
 
 # ── Rename these_<lang>.pdf/.tex → these_<lang>_<author>.pdf/.tex ────────────
-$line   = (Select-String -Path "_quarto.yml" -Pattern "author:" | Select-Object -First 1).Line
-$author = $line -replace '.*author:\s*', '' -replace '"', '' -replace "'", ''
+# Read author from profile YAML first (book.author override), fall back to _quarto.yml.
+# Lire l'auteur depuis le profil YAML en priorité (override book.author), sinon _quarto.yml.
+$authorLine = if (Test-Path $profileYml) {
+    (Select-String -Path $profileYml -Pattern '^\s*author:' | Select-Object -First 1).Line
+} else { $null }
+if (-not $authorLine) {
+    $authorLine = (Select-String -Path "_quarto.yml" -Pattern "author:" | Select-Object -First 1).Line
+}
+$author = ($authorLine -replace '.*author:\s*', '' -replace '"', '' -replace "'", '').Trim()
 
 if ([string]::IsNullOrWhiteSpace($author)) { exit 0 }
 

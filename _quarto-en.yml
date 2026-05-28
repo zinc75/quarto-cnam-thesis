@@ -14,28 +14,26 @@ project:
 
 book:
   output-file: these_en
-  title: "User guide for the Quarto Cnam thesis template"
-  subtitle: "A self-documenting thesis document"
+  title: "Thesis title"
+  subtitle: "Optional subtitle"
+  author: "First name Last name"
   chapters:
-    - index.qmd                                         # entry point, do not remove / point d'entrée, ne pas supprimer
-    - documentation/content_en/frontmatter/acknowledgements.qmd
-    - documentation/content_en/frontmatter/resume.qmd                 # French abstract (Cnam requirement) / résumé français (exigence Cnam)
-    - documentation/content_en/frontmatter/abstract.qmd
-    - documentation/content_en/frontmatter/tables.qmd                 # TOC + lists, do not remove / table des matières + listes, ne pas supprimer
-    - documentation/content_en/frontmatter/glossaire-entries.qmd      # remove if glossaire: false / supprimer si glossaire: false
-    - documentation/content_en/frontmatter/acronyms.qmd               # remove if glossaire: false / supprimer si glossaire: false
-    - documentation/content_en/frontmatter/glossary.qmd               # remove if no glossary terms / supprimer si pas de termes
-    - documentation/content_en/chapters/00-introduction.qmd
-    - documentation/content_en/chapters/01-structure.qmd
-    - documentation/content_en/chapters/02-figures.qmd
-    - documentation/content_en/chapters/03-equations-tables.qmd
-    - documentation/content_en/chapters/04-callouts-code.qmd
-    - documentation/content_en/chapters/05-references-annotations.qmd
-    - documentation/content_en/backmatter/conclusion.qmd
-    - documentation/content_en/backmatter/bibliography.qmd            # between conclusion and appendices / entre conclusion et annexes
+    - index.qmd                                        # entry point, do not remove / point d'entrée, ne pas supprimer
+    - content_en/frontmatter/acknowledgements.qmd
+    - content_en/frontmatter/resume.qmd                # French abstract (Cnam requirement) / résumé français (exigence Cnam)
+    - content_en/frontmatter/abstract.qmd
+    - content_en/frontmatter/tables.qmd                # TOC + lists, do not remove / table des matières + listes, ne pas supprimer
+    - content_en/frontmatter/glossaire-entries.qmd     # remove if glossaire: false / supprimer si glossaire: false
+    - content_en/frontmatter/acronyms.qmd              # remove if glossaire: false / supprimer si glossaire: false
+    - content_en/frontmatter/glossary.qmd              # remove if no glossary terms / supprimer si pas de termes
+    - content_en/chapters/00-introduction.qmd
+    - content_en/chapters/01-chapter1.qmd              # ← add your chapters here / ajouter vos chapitres ici
+    - content_en/chapters/02-chapter2.qmd
+    - content_en/backmatter/conclusion.qmd
+    - content_en/backmatter/bibliography.qmd           # between conclusion and appendices / entre conclusion et annexes
   appendices:
-    - documentation/content_en/backmatter/appendices.qmd
-    - documentation/content_en/backmatter/appendices-pdfa.qmd
+    - content_en/backmatter/appendices.qmd
+    - content_en/backmatter/appendices-pdfa.qmd
 
 dedicace: "To Donald Knuth, who transformed typography into a computational art form, and to all the graduate students who have wasted a day because of a missing \\LaTeX{} brace."
 
@@ -44,9 +42,3 @@ format:
     toc-title: "Table of Contents"
 
 
-# Optional: override the HTML topbar label prefix (default: "Thèse de doctorat" / "PhD Thesis").
-# Only affects the topbar — no impact on the PDF cover page or any other field.
-# Useful for a documentation or GitHub Pages branch where "Thèse de doctorat" is misleading.
-# Optionnel : remplace le préfixe de la barre HTML (n'affecte que la barre, pas la page de garde PDF).
-# Utile pour une branche documentation ou GitHub Pages.
-header-prefix: "Quarto cnam-thesis template documentation"

@@ -1,0 +1,15 @@
+# Titre de l'annexe {#sec-annexe-a .appendix}
+
+<!-- Starter — remplacer par le contenu de votre première annexe.
+     Dupliquer ce fichier ou ajouter des sections pour les annexes suivantes.
+     Documentation : https://zinc75.github.io/quarto-cnam-thesis/fr/ -->
+
+[Contenu de l'annexe.]
+
+{{< lipsum 1 >}}
+
+## Section de l'annexe
+
+[Détails complémentaires, données supplémentaires, preuves, etc.]
+
+{{< lipsum 1 >}}

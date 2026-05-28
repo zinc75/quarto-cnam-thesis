@@ -1,0 +1,25 @@
+<!-- HTML-only heading: hides this page from the sidebar and prevents it from
+     consuming a chapter number. In PDF this file has no heading (correct).
+     Cap HTML uniquement : masque la page de la barre latérale et ne consomme
+     pas de numéro de chapitre. En PDF ce fichier n'a pas d'en-tête. -->
+::: {.content-visible when-format="html"}
+# Tables et listes {.unnumbered .unlisted .no-latex}
+:::
+
+<!-- PDF only: TOC + LOT + LOF via LaTeX commands.
+     HTML: Quarto generates a sidebar TOC automatically; no LOF/LOT page needed.
+     PDF uniquement : table des matières + listes via commandes LaTeX.
+     HTML : Quarto génère un sommaire dans la barre latérale automatiquement. -->
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\clearpage
+\tableofcontents
+\clearpage
+\listoftables
+\addcontentsline{toc}{frontchap}{\listtablename}
+\clearpage
+\listoffigures
+\addcontentsline{toc}{frontchap}{\listfigurename}
+```
+:::

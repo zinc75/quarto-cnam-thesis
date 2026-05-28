@@ -1,0 +1,26 @@
+# General Introduction {.unnumbered .toc-black}
+
+<!-- Starter — replace with your general introduction.
+     Documentation: https://zinc75.github.io/quarto-cnam-thesis/en/ -->
+
+[General introduction to the thesis. Context, objectives, and outline.]
+
+{{< lipsum 1 >}} [@Allaire2022]
+
+## Context and motivation
+
+[Describe the scientific and industrial context of your research.]
+
+{{< lipsum 1 >}}
+
+### Research questions
+
+[State your research questions and objectives.]
+
+{{< lipsum 1 >}}
+
+## Outline of the document
+
+[Briefly describe the content of each chapter.]
+
+{{< lipsum 1 >}}

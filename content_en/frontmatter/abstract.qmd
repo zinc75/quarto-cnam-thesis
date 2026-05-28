@@ -1,0 +1,10 @@
+# Abstract {.unnumbered .toc-black}
+
+<!-- Starter — replace with your abstract in English.
+     Documentation: https://zinc75.github.io/quarto-cnam-thesis/en/ -->
+
+**Keywords:** [keyword1, keyword2, keyword3]
+
+[Your abstract in English.]
+
+{{< lipsum 2 >}}

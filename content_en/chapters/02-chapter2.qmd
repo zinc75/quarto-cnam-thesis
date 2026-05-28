@@ -1,0 +1,23 @@
+# Title of the second chapter {#sec-chap2}
+
+<!-- Starter — replace with the content of your second chapter.
+     Duplicate this file for subsequent chapters and add it to _quarto-en.yml.
+     Documentation: https://zinc75.github.io/quarto-cnam-thesis/en/ -->
+
+{{< lipsum 1 >}} [@Allaire2022]
+
+## First section {#sec-chap2-sec1}
+
+{{< lipsum 1 >}}
+
+### First subsection
+
+{{< lipsum 1 >}}
+
+### Second subsection
+
+{{< lipsum 1 >}}
+
+## Second section {#sec-chap2-sec2}
+
+{{< lipsum 1 >}}

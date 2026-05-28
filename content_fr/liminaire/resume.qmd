@@ -1,0 +1,10 @@
+# Résumé {.unnumbered .toc-black}
+
+<!-- Starter — résumé en français (obligatoire quelle que soit la langue de la thèse).
+     Documentation : https://zinc75.github.io/quarto-cnam-thesis/fr/ -->
+
+**Mots-clés :** [mot1, mot2, mot3]
+
+[Votre résumé en français.]
+
+{{< lipsum 2 >}}

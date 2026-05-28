@@ -1,0 +1,15 @@
+# Title of the appendix {#sec-appendix-a .appendix}
+
+<!-- Starter — replace with the content of your first appendix.
+     Duplicate this file or add sections for subsequent appendices.
+     Documentation: https://zinc75.github.io/quarto-cnam-thesis/en/ -->
+
+[Content of the appendix.]
+
+{{< lipsum 1 >}}
+
+## Section of the appendix
+
+[Additional details, supplementary data, proofs, etc.]
+
+{{< lipsum 1 >}}

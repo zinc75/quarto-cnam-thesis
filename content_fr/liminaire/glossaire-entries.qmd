@@ -1,0 +1,23 @@
+<!-- HTML-only heading: hides this page from the sidebar (shortcode declarations
+     produce no visible output in HTML). In PDF no heading is needed.
+     Cap HTML uniquement : masque la page (les shortcodes ne produisent rien en HTML). -->
+::: {.content-visible when-format="html"}
+# Entrées du glossaire {.unnumbered .unlisted .no-latex}
+:::
+
+<!-- ============================================================
+     Entrées du glossaire et des acronymes
+     ============================================================
+     Ajouter ici vos acronymes et termes techniques.
+
+     Syntaxe :
+       Acronyme : {{</* acr label SIGLE "Développé complet" */>}}
+       Terme    : {{</* terme label "mot" "Définition du terme" */>}}
+
+     Documentation complète :
+     https://zinc75.github.io/quarto-cnam-thesis/fr/
+     ============================================================ -->
+
+{{< acr cnam Cnam "Conservatoire national des arts et métiers" >}}
+
+{{< terme example "Exemple" "Définition d'exemple — remplacer par vos termes" >}}

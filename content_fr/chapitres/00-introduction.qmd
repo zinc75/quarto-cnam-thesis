@@ -1,0 +1,27 @@
+# Introduction générale {.unnumbered .toc-black}
+
+<!-- Starter — remplacer par votre introduction générale.
+     Documentation : https://zinc75.github.io/quarto-cnam-thesis/fr/ -->
+
+[Introduction générale de la thèse. Présentation du contexte, des objectifs
+et de l'organisation du document.]
+
+{{< lipsum 1 >}} [@Allaire2022]
+
+## Contexte et motivation
+
+[Décrivez le contexte scientifique et industriel de votre recherche.]
+
+{{< lipsum 1 >}}
+
+### Problématique
+
+[Exposez la problématique et les questions de recherche.]
+
+{{< lipsum 1 >}}
+
+## Organisation du document
+
+[Décrivez brièvement le contenu de chaque chapitre.]
+
+{{< lipsum 1 >}}

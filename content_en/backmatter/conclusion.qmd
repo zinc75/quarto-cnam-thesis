@@ -1,0 +1,20 @@
+# General Conclusion {.unnumbered .toc-black}
+
+<!-- Starter — replace with your general conclusion.
+     Documentation: https://zinc75.github.io/quarto-cnam-thesis/en/ -->
+
+[Summary of the work and contributions of the thesis.]
+
+{{< lipsum 1 >}}
+
+## Summary of contributions
+
+[Summary of the main results and scientific contributions.]
+
+{{< lipsum 1 >}}
+
+## Perspectives
+
+[Future research directions and open questions.]
+
+{{< lipsum 1 >}}

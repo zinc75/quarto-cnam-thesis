@@ -1,0 +1,8 @@
+# Remerciements {.unnumbered .toc-black}
+
+<!-- Starter — remplacer par vos remerciements.
+     Documentation : https://zinc75.github.io/quarto-cnam-thesis/fr/ -->
+
+[Vos remerciements.]
+
+{{< lipsum 2 >}}
