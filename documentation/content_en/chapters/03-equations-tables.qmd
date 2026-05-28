@@ -202,7 +202,7 @@ natively).
 
 | Environment | Quarto syntax | Numbering | `@eq-` |
 |:---|:---|:---|:---:|
-| `aligned` | `$$\begin{aligned}…\end{aligned}$$` | one number for the **block** | $\checkmark$ |
+| `aligned` | `$$\begin{aligned} … \end{aligned}$$` | one number for the **block** | $\checkmark$ |
 | `align`   | `{=latex}` + `$$…$$` (dual)         | one number **per line**       | $\times$     |
 | `align*`  | `{=latex}` + `$$…$$` (dual)         | none                          | —            |
 

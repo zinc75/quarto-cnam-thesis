@@ -203,7 +203,7 @@ La solution est systématiquement le pattern `{.content-visible}` dual : bloc
 
 | Environnement | Syntaxe Quarto | Numérotation | `@eq-` |
 |:---|:---|:---|:---:|
-| `aligned` | `$$\begin{aligned}…\end{aligned}$$` | un numéro pour le **bloc** | $\checkmark$ |
+| `aligned` | `$$\begin{aligned} … \end{aligned}$$` | un numéro pour le **bloc** | $\checkmark$ |
 | `align`   | `{=latex}` + `$$…$$` (dual)         | un numéro **par ligne**    | $\times$     |
 | `align*`  | `{=latex}` + `$$…$$` (dual)         | aucune                     | —            |
 
