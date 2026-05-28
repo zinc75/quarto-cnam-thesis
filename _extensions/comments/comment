@@ -3,7 +3,7 @@ local function core()
   if source:sub(1, 1) == "@" then
     source = source:sub(2)
   end
-  local directory = source:match("(.*/)")
+  local directory = source:match("(.*[/\\])")
   directory = directory or ""
   return dofile(directory .. "comment_core.lua")
 end
