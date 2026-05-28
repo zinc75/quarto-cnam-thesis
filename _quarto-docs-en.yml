@@ -1,16 +1,16 @@
 # ==============================================================================
-# ENGLISH PROFILE / PROFIL ANGLAIS — quarto render --profile en
-# Overrides _quarto.yml: language, chapter list, output directory /
-# Surcharge _quarto.yml : langue, liste des chapitres, répertoire de sortie.
+# ENGLISH DOCUMENTATION PROFILE — quarto render --profile docs-en
+# GitHub Pages / documentation build — outputs to _docs-en/ /
+# Build documentation GitHub Pages — sortie dans _docs-en/.
 # ==============================================================================
 
 thesis-lang: en
-validate: false    # set to true before depositing to theses.fr / mettre à true avant dépôt sur theses.fr
+validate: false
 
 project:
-  output-dir: _thesis-en
+  output-dir: _docs-en
   post-render:
-    - ./_scripts/postrender.sh en _thesis-en  # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
+    - ./_scripts/postrender.sh en _docs-en  # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
 
 book:
   output-file: these_en

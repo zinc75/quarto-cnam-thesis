@@ -35,6 +35,8 @@ fi
 rm -rf "${OUTPUT_DIR}/_reference"
 rm -rf "${OUTPUT_DIR}/_these_fr"
 rm -rf "${OUTPUT_DIR}/_thesis-en"
+rm -rf "${OUTPUT_DIR}/_docs-fr"
+rm -rf "${OUTPUT_DIR}/_docs-en"
 
 # ── Clean LaTeX build artifacts ───────────────────────────────────────────────
 

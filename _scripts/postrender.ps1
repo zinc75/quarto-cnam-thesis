@@ -33,6 +33,8 @@ if ([string]::IsNullOrEmpty($Mode)) {
 Remove-Item -Path "$OutputDir\_reference" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path "$OutputDir\_these_fr"  -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path "$OutputDir\_thesis-en" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$OutputDir\_docs-fr"   -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$OutputDir\_docs-en"   -Recurse -Force -ErrorAction SilentlyContinue
 
 # ── Clean LaTeX build artifacts ───────────────────────────────────────────────
 $exts = @("aux","log","maf","toc","lof","lot","blg","bbl","idx","ilg","ind","out","xmpdata")

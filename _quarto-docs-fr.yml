@@ -1,16 +1,16 @@
 # ==============================================================================
-# FRENCH PROFILE / PROFIL FRANÇAIS — quarto render --profile fr
-# Overrides _quarto.yml: language, chapter list, output directory /
-# Surcharge _quarto.yml : langue, liste des chapitres, répertoire de sortie.
+# FRENCH DOCUMENTATION PROFILE — quarto render --profile docs-fr
+# GitHub Pages / documentation build — outputs to _docs-fr/ /
+# Build documentation GitHub Pages — sortie dans _docs-fr/.
 # ==============================================================================
 
 thesis-lang: fr
-validate: false    # set to true before depositing to theses.fr / mettre à true avant dépôt sur theses.fr
+validate: false
 
 project:
-  output-dir: _these_fr
+  output-dir: _docs-fr
   post-render:
-    - ./_scripts/postrender.sh fr _these_fr    # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
+    - ./_scripts/postrender.sh fr _docs-fr    # Windows (no WSL): replace .sh with .bat / remplacer .sh par .bat
 
 book:
   title: "Guide d'utilisation du template Quarto Cnam pour les thèses"
