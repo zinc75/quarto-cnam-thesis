@@ -42,3 +42,4 @@ format:
     toc-title: "Table of Contents"
 
 
+date-soutenance: "10 Octobre 1794"        # do NOT use `date:` (encoding issue) / NE PAS utiliser `date:`
