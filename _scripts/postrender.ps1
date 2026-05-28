@@ -109,7 +109,7 @@ if (Test-Path $srcTex) {
 # Remind the user to validate on CINES before the final deposit on theses.fr.
 # Rappel de validation CINES avant le dépôt final sur theses.fr.
 if ([string]::IsNullOrEmpty($Mode) -and $pdfGenerated) {
-    Write-Host "-> Before depositing to theses.fr: add 'validate' as 3rd arg in _quarto-$Lang.yml, then re-render."
+    Write-Host "-> Before depositing to theses.fr: set 'validate: true' in _quarto-$Lang.yml and re-render."
 }
 
 # ── Generate cover image from PDF page 1 ──────────────────────────────────────

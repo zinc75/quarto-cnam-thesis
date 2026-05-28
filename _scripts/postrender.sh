@@ -161,7 +161,7 @@ fi
 # Remind the user to validate on CINES before the final deposit on theses.fr.
 # Rappel de validation CINES avant le dépôt final sur theses.fr.
 if [ -z "$MODE" ] && [ "$PDF_GENERATED" = true ]; then
-  echo "→ Before depositing to theses.fr: add 'validate' as 3rd arg in _quarto-${LANG}.yml, then re-render."
+  echo "→ Before depositing to theses.fr: set 'validate: true' in _quarto-${LANG}.yml and re-render."
 fi
 
 # ── Generate cover image from PDF page 1 ──────────────────────────────────────
