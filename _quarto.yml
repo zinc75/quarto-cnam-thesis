@@ -141,7 +141,7 @@ extensions:
     authors:
       eb:
         name: "Eric Bavu"
-      ab:
+      ag:
         name: "Abbé Grégoire"
       # Add more proofreading contributors below (doctoral student, supervisors, jury members…).
       # Colors are auto-assigned from the Bootstrap 5 palette; override with color_html (hex)
