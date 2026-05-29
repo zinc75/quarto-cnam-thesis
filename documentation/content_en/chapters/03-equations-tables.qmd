@@ -102,6 +102,7 @@ $$ {#eq-maxwell}
 
 ::: {.render-demo}
 **Output:**
+
 $$
 \begin{aligned}
   \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\

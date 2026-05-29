@@ -151,7 +151,9 @@ Markdown has no native syntax for underlining. Quarto uses the span notation wit
 ````
 
 ::: {.render-demo}
-**Output:** [underlined text]{.underline}.
+**Output:** 
+
+[underlined text]{.underline}.
 :::
 
 In PDF, Pandoc generates `\underline{…}`; in HTML, a `<span>` with

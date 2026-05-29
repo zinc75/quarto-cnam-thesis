@@ -103,6 +103,7 @@ $$ {#eq-maxwell}
 
 ::: {.render-demo}
 **Rendu :** 
+
 $$
 \begin{aligned}
   \nabla \cdot \mathbf{E}  &= \frac{\rho}{\varepsilon_0} \\

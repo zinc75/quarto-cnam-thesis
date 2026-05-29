@@ -152,7 +152,9 @@ notation span avec la classe `.underline` :
 ````
 
 ::: {.render-demo}
-**Rendu :** [texte souligné]{.underline}.
+**Rendu :** 
+
+[texte souligné]{.underline}.
 :::
 
 En PDF, Pandoc génère `\underline{…}` ; en HTML, un `<span>` avec
