@@ -481,32 +481,20 @@ end
 
 local function build_latex(comment_type, comment_text, author, inline, config)
   local latex_color = resolve_latex_color(comment_type, author)
-  local options = {}
-  if inline then
-    table.insert(options, "inline")
-  end
-  if latex_color and latex_color ~= "" then
-    -- For plain color names (auto-assigned via \definecolor), dilute the
-    -- background so the note stays light; user-defined tints (e.g. "blue!20")
-    -- are used as-is since they already carry the desired opacity.
-    local bg_color = latex_color:find("!", 1, true)
-      and latex_color
-      or  (latex_color .. "!20!white")
-    table.insert(options, "color=" .. bg_color)
-  end
-  local option_string = ""
-  table.insert(options, "size=\\footnotesize")
-  if #options > 0 then
-    option_string = "[" .. table.concat(options, ",") .. "]"
-  end
+
+  -- Compute diluted background colour for both paths.
+  -- Plain color names (auto-assigned via \definecolor) are diluted to !20!white
+  -- so the note stays light; user tints (e.g. "blue!20") are used as-is.
+  local bg_color = (latex_color and latex_color ~= "")
+    and (latex_color:find("!", 1, true) and latex_color or (latex_color .. "!20!white"))
+    or "yellow!20!white"
+  local icon_color = (latex_color and latex_color:match("^([^!]+)")) or latex_color or "black"
 
   local pieces = {}
 
-  -- Icon: use full (or base) color for contrast against the diluted background
-  local icon_color = latex_color:match("^([^!]+)") or latex_color
+  -- Icon in full (base) color for contrast against the diluted background.
   local fa_cmd = LATEX_FA_ICONS[comment_type] or LATEX_FA_ICONS.comment
-  local emoji_cmd = "\\textcolor{" .. icon_color .. "}{" .. fa_cmd .. "}"
-  table.insert(pieces, emoji_cmd .. " ")
+  table.insert(pieces, "\\textcolor{" .. icon_color .. "}{" .. fa_cmd .. "} ")
 
   local show_author = config.show_author and author and author.name and author.name ~= ""
   if show_author then
@@ -515,11 +503,21 @@ local function build_latex(comment_type, comment_text, author, inline, config)
   table.insert(pieces, escape_latex_with_math(comment_text))
   local content = table.concat(pieces)
 
-  local todo = string.format("\\todo%s{%s}", option_string, content)
   if inline then
-    return pandoc.RawInline("tex", todo)
+    -- \todo[inline] always spans the full text width; use \colorbox instead
+    -- so the annotation is only as wide as its content.
+    local box = string.format(
+      "\\colorbox{%s}{\\footnotesize{}%s}",
+      bg_color, content
+    )
+    return pandoc.RawInline("tex", box)
   else
-    return pandoc.RawBlock("tex", todo)
+    local options = {
+      "color=" .. bg_color,
+      "size=\\footnotesize",
+    }
+    local option_string = "[" .. table.concat(options, ",") .. "]"
+    return pandoc.RawBlock("tex", string.format("\\todo%s{%s}", option_string, content))
   end
 end
 
