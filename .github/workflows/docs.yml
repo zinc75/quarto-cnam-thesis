@@ -84,7 +84,9 @@ jobs:
         # HTML statique écrit directement dans _site/ — quarto render sans profil évité.
         run: |
           mkdir -p _site
-          cat > _site/index.html << 'LANDING_EOF'
+          VERSION="${{ github.ref_name }}"
+          BUILD_DATE=$(date -u +"%Y-%m-%d")
+          cat > _site/index.html << LANDING_EOF
           <!doctype html>
           <html lang="fr">
           <head>
@@ -118,13 +120,17 @@ jobs:
               <p>Template Quarto pour les thèses du Cnam &middot; Quarto template for Cnam theses</p>
             </header>
             <main class="container py-5">
-              <p class="lead text-center mb-5">
+              <p class="lead text-center mb-3">
                 Template Quarto permettant aux doctorants du Conservatoire national des arts et
                 métiers de produire, depuis une seule source Markdown, un <strong>PDF/A-1b</strong>
                 conforme à la maquette institutionnelle et un <strong>HTML navigable</strong> pour
                 le partage et l'accessibilité.<br>
                 <em class="text-muted">A Quarto template for Cnam PhD students, producing an
                 archivable PDF/A-1b and a navigable HTML output from the same Markdown source.</em>
+              </p>
+              <p class="text-center mb-5">
+                <span class="badge rounded-pill" style="background:var(--cnam-red)">$VERSION</span>
+                <span class="text-muted small ms-2">$BUILD_DATE</span>
               </p>
               <div class="row g-4 mb-5">
                 <div class="col-12 col-md-6">
