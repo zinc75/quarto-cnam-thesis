@@ -81,8 +81,6 @@ jury:
 #                  ne pas modifier sauf besoin avancé
 # ==============================================================================
 
-validate-yaml: false   # Required: allows custom metadata keys (e.g. comments:) not in Quarto's schema / Autorise les clés de métadonnées personnalisées (ex. comments:) hors du schéma Quarto
-
 project:
   type: book
   # output-dir is defined in each language profile (_quarto-fr.yml / _quarto-en.yml).
@@ -135,24 +133,26 @@ code-line-numbers: true
 # Add as many authors as needed; each needs a unique key, a name, and colours.
 # Ajouter autant d'auteurs que nécessaire ; chaque auteur a une clé, un nom et des couleurs.
 # ------------------------------------------------------------------------------
-comments:
-  enabled: false          # false → hides all comments in the output / masque tous les commentaires
-  show_author: true      # false → hides author labels / masque les étiquettes auteur
-  authors:
-    auteur:
-      name: "Eric Bavu"
-      color_html: "#005EA5"       # hex colour for HTML / couleur HTML (bleu)
-      color_latex: "blue!20"      # xcolor spec for LaTeX / spec xcolor pour LaTeX
-    dir:
-      name: "Abbé Grégoire"
-      color_html: "#D55E00"       # hex colour for HTML / couleur HTML (orange)
-      color_latex: "orange!30"    # xcolor spec for LaTeX / spec xcolor pour LaTeX
-    # Add more authors below — duplicate the block above with a new key /
-    # Ajouter d'autres auteurs ci-dessous — dupliquer le bloc ci-dessus avec une nouvelle clé :
-    # co:
-    #   name: "Co-supervisor"
-    #   color_html: "#0072B2"
-    #   color_latex: "blue!20"
+extensions:
+  quarto-comments:
+    enabled: false          # false → hides all comments in the output / masque tous les commentaires
+    show_author: true       # false → hides author labels / masque les étiquettes auteur
+    show_list: false        # true → inserts \listoftodos before body (PDF) / insère \listoftodos avant le corps (PDF)
+    authors:
+      eb:
+        name: "Eric Bavu"
+      ab:
+        name: "Abbé Grégoire"
+      # Add more proofreading contributors below (doctoral student, supervisors, jury members…).
+      # Colors are auto-assigned from the Bootstrap 5 palette; override with color_html (hex)
+      # and/or color_latex (xcolor spec) if needed. /
+      # Ajouter d'autres relecteurs ci-dessous (doctorant, directeurs, membres du jury…).
+      # Couleurs assignées automatiquement depuis la palette Bootstrap 5 ; surcharger avec
+      # color_html (hex) et/ou color_latex (spec xcolor) si besoin :
+      # nc:
+      #   name: "Nicolas Conté"
+      #   color_html: "#198754"    # custom green / vert personnalisé
+      #   color_latex: "green!30"
 
 
 jupyter: python3   # standard kernel — follows the user's active python3
