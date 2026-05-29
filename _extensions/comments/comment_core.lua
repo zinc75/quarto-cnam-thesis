@@ -171,6 +171,9 @@ local function get_config(meta)
   local config = {
     enabled = true,
     show_author = true,
+    -- show_list is intentionally disabled: \listoftodos is incompatible with
+    -- the LaTeX 'book' document class used by cnam-thesis (duplicate \chapter*
+    -- heading conflict). The option is silently ignored even if set in YAML.
     show_list = false,
     authors = {},
   }
@@ -195,12 +198,7 @@ local function get_config(meta)
     end
   end
 
-  if config_meta.show_list ~= nil then
-    local show_list = meta_to_bool(config_meta.show_list)
-    if show_list ~= nil then
-      config.show_list = show_list
-    end
-  end
+  -- show_list: not read from YAML — disabled unconditionally (book class incompatibility)
 
   if config_meta.authors then
     local authors_meta = config_meta.authors
@@ -482,7 +480,7 @@ end
 local function build_latex(comment_type, comment_text, author, inline, config)
   local latex_color = resolve_latex_color(comment_type, author)
 
-  -- Compute diluted background colour for both paths.
+  -- Compute diluted background colour.
   -- Plain color names (auto-assigned via \definecolor) are diluted to !20!white
   -- so the note stays light; user tints (e.g. "blue!20") are used as-is.
   local bg_color = (latex_color and latex_color ~= "")
@@ -503,21 +501,20 @@ local function build_latex(comment_type, comment_text, author, inline, config)
   table.insert(pieces, escape_latex_with_math(comment_text))
   local content = table.concat(pieces)
 
+  local options = { "color=" .. bg_color, "size=\\footnotesize" }
   if inline then
-    -- \todo[inline] always spans the full text width; use \colorbox instead
-    -- so the annotation is only as wide as its content.
-    local box = string.format(
-      "\\colorbox{%s}{\\footnotesize{}%s}",
-      bg_color, content
-    )
-    return pandoc.RawInline("tex", box)
+    -- \todo[inline] always spans the full text width — this is a todonotes
+    -- design constraint. A truly content-width inline box (\colorbox) cannot
+    -- wrap across lines, making it unsuitable for annotations longer than a
+    -- few words. \todo[inline] is therefore the safer choice for PDF.
+    table.insert(options, 1, "inline")
+  end
+  local option_string = "[" .. table.concat(options, ",") .. "]"
+  local todo = string.format("\\todo%s{%s}", option_string, content)
+  if inline then
+    return pandoc.RawInline("tex", todo)
   else
-    local options = {
-      "color=" .. bg_color,
-      "size=\\footnotesize",
-    }
-    local option_string = "[" .. table.concat(options, ",") .. "]"
-    return pandoc.RawBlock("tex", string.format("\\todo%s{%s}", option_string, content))
+    return pandoc.RawBlock("tex", todo)
   end
 end
 
