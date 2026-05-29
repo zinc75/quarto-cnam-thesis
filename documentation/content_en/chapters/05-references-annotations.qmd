@@ -18,7 +18,9 @@ Quarto [@Allaire2022] unifies these tools in a modern publishing environment.
 ````
 
 ::: {.render-demo}
-**Output:** Computer typesetting was revolutionised by Knuth
+**Output:** 
+
+Computer typesetting was revolutionised by Knuth
 [@Knuth1984], whose \TeX{} system was made accessible by Lamport with \LaTeX{}
 [@Lamport1994]. Quarto [@Allaire2022] unifies these tools in a modern publishing
 environment.
@@ -32,7 +34,9 @@ Python visualisation tools [@Hunter2007] and typographic reference works
 ````
 
 ::: {.render-demo}
-**Output:** Python visualisation tools [@Hunter2007] and typographic reference works
+**Output:** 
+
+Python visualisation tools [@Hunter2007] and typographic reference works
 [@Bringhurst2004; @Mittelbach2023] complement the author's toolkit.
 :::
 
@@ -96,7 +100,9 @@ The {{< acrf toc >}} is generated automatically by Quarto.
 ````
 
 ::: {.render-demo}
-**Output:** The {{< acrs cnam >}} ({{< acrl cnam >}}) was founded in 1794. The
+**Output:** 
+
+The {{< acrs cnam >}} ({{< acrl cnam >}}) was founded in 1794. The
 {{< acrf qmd >}} format is Quarto's native format.
 :::
 
@@ -121,7 +127,6 @@ the `extensions.quarto-comments:` key in `_quarto.yml`:
 extensions:
   quarto-comments:
     enabled: true
-    show_author: true
     authors:
       eb:
         name: "Eric Bavu"
@@ -134,6 +139,9 @@ extensions:
       #   color_latex: "green!30"
 ````
 
+{{< pagebreak >}}
+
+
 ### The four comment types
 
 ````markdown
@@ -143,13 +151,31 @@ extensions:
 {{</* question "Is this result reproducible on another dataset?" author="ag" inline=true */>}}
 ````
 
-Rendered in context — here is a sentence with a margin annotation
+**Rendered in context:**
+
+Here is a sentence with a comment from the thesis supervisor (who added it directly
+in the `.qmd` file, because that is how it works!).
+
 {{< comment "This is a 'comment' type annotation by the supervisor." author="ag" >}}
-and a task to complete:
 
-{{< todo "Replace this example with a real experimental result before the defence." author="eb" >}}
+These annotations are only visible when `enabled: true` is set under
+`extensions.quarto-comments` in `_quarto.yml` — which is the case for this documentation.
 
-A bibliographic note {{< note "See Knuth 1984, chapter 12." author="ag" inline=true >}} inline.
+{{< todo "Remember to set this option to `false` before submitting to the reviewers!" author="eb" >}}
+
+An inline note can be added without pushing the surrounding text to the margin:
+a bibliographic reference {{< note "See Knuth 1984, chapter 12." author="ag" inline=true >}} stays in the text flow.
+
+::: {.callout-note}
+## `inline=true` occupies the full line in PDF
+
+In HTML, `inline=true` annotations appear as a compact coloured span, exactly
+as wide as their content. In PDF, the `todonotes` package renders `\todo[inline]`
+as a full-width coloured block — this is a design constraint of the package that
+cannot be worked around without losing the ability to wrap long annotations across
+lines. Use `inline=true` for short notes that must stay in the text flow; for
+longer annotations, omit `inline` to place the note in the margin instead.
+:::
 
 ::: {.callout-important}
 ## Disable comments before final submission
@@ -158,6 +184,27 @@ Before submitting the thesis to the doctoral school and depositing it on theses.
 set `extensions.quarto-comments.enabled: false` in `_quarto.yml`. Annotations must not appear in the
 official archived version.
 :::
+
+## Web annotations with Hypothesis (opt-in)
+
+For remote proofreading, the HTML output can be enhanced with web annotations via
+[Hypothesis](https://hypothes.is). Supervisors and reviewers select text in the browser
+and add comments without touching the source files. Annotations are stored on Hypothesis
+servers and tied to the page URL — they persist across renders as long as the URL stays
+stable (GitHub Pages deployment recommended).
+
+To enable, uncomment the following block in `_quarto.yml`:
+
+```yaml
+format:
+  cnam-thesis-html:
+    comments:
+      hypothesis:
+        theme: clean   # clean = discreet ; classic = sidebar always visible
+```
+
+Then create a private group on [hypothes.is](https://hypothes.is) and share the invite
+link with your reviewers. Hypothesis is disabled by default in all profiles.
 
 ## Special front matter pages {#sec-frontmatter}
 
