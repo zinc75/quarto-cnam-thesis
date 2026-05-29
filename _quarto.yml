@@ -135,9 +135,7 @@ code-line-numbers: true
 # ------------------------------------------------------------------------------
 extensions:
   quarto-comments:
-    enabled: false          # false → hides all comments in the output / masque tous les commentaires
-    show_author: true       # false → hides author labels / masque les étiquettes auteur
-    show_list: false        # true → inserts \listoftodos before body (PDF) / insère \listoftodos avant le corps (PDF)
+    enabled: false          # true → shows annotations in output / affiche les annotations dans le rendu
     authors:
       eb:
         name: "Eric Bavu"
@@ -163,6 +161,19 @@ execute:
 
 filters:
   - quartable    # enhanced tables (colspan, rowspan, partial lines) / tables enrichies
+
+# Hypothesis web annotations (opt-in) — to enable, uncomment the block below and add it
+# under format.cnam-thesis-html. Annotations are stored on hypothes.is servers and tied to
+# the page URL; works best on a stable deployment (GitHub Pages). Create a private group on
+# hypothes.is and share the invite link with your reviewers. /
+# Annotations Hypothesis (opt-in) — pour activer, décommenter le bloc ci-dessous et
+# l'ajouter sous format.cnam-thesis-html. Créer un groupe privé sur hypothes.is.
+#
+# format:
+#   cnam-thesis-html:
+#     comments:
+#       hypothesis:
+#         theme: clean   # clean = discreet ; classic = sidebar always visible
 
 format:
   cnam-thesis-pdf:

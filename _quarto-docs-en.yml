@@ -51,3 +51,9 @@ format:
 # Utile pour une branche documentation ou GitHub Pages.
 header-prefix: "Quarto cnam-thesis template documentation"
 btn-resume: "documentation/content_en/frontmatter/resume.html"  # "Start reading" button link in index.qmd
+
+# Show collaborative comments in the documentation output /
+# Afficher les commentaires collaboratifs dans la sortie documentation
+extensions:
+  quarto-comments:
+    enabled: true
