@@ -56,24 +56,42 @@ chapter-openright: true  # false = for digital version without right-hand page
 index: false             # true = generates an index via \index{term}
 ```
 
-## Collaborative comments
+## Collaborative comments (`quarto-comments`)
 
 ```yaml
 extensions:
   quarto-comments:
-    enabled: true          # false before final deposit on theses.fr
-    show_author: true
+    enabled: true    # false before final deposit on theses.fr
     authors:
-      eb:
-        name: "First LAST"
+      doc:
+        name: "First LAST"       # doctoral student
       dir:
         name: "Supervisor"
       # Colors auto-assigned from Bootstrap 5 palette; override if needed:
-      # nc:
+      # codir:
       #   name: "Co-supervisor"
       #   color_html: "#198754"
       #   color_latex: "green!30"
 ```
+
+See @sec-comments for shortcode syntax and PDF/HTML rendering details.
+
+## Web annotations with Hypothesis (opt-in)
+
+To allow reviewers to annotate the HTML version directly in their browser,
+uncomment this block in `_quarto.yml`:
+
+```yaml
+format:
+  cnam-thesis-html:
+    comments:
+      hypothesis:
+        theme: clean   # clean = discreet ; classic = sidebar always visible
+```
+
+Create a private group on [hypothes.is](https://hypothes.is) and share the invite link.
+Annotations are tied to the page URL — works best on a stable deployment (GitHub Pages).
+See @sec-comments for more details.
 
 ## Python execution
 
@@ -88,6 +106,9 @@ execute:
 Language profiles **override** `_quarto.yml` when rendering with `--profile fr` or
 `--profile en`. They define the language-specific metadata — **title, author, defence
 date** — as well as the chapter list and technical render options.
+
+{{< pagebreak >}}
+
 
 ### Chapter list (first thing to customise)
 
@@ -144,7 +165,7 @@ date-soutenance: "10 October 1794"    # DO NOT use date:
 project:
   output-dir: _thesis-en    # output directory
   post-render:
-    - ./_scripts/postrender.sh en _thesis-en   # Windows: replace .sh with .bat
+    - ./_scripts/postrender.ts en _thesis-en
 
 format:
   cnam-thesis-html:

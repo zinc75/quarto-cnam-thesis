@@ -56,24 +56,42 @@ chapter-openright: true  # false = pour version numérique sans page de droite
 index: false             # true = génère un index via \index{terme}
 ```
 
-## Commentaires collaboratifs
+## Commentaires collaboratifs (`quarto-comments`)
 
 ```yaml
 extensions:
   quarto-comments:
-    enabled: true          # false avant le dépôt final sur theses.fr
-    show_author: true
+    enabled: true    # false avant le dépôt final sur theses.fr
     authors:
-      eb:
-        name: "Prénom NOM"
+      doc:
+        name: "Prénom NOM"       # doctorant·e
       dir:
-        name: "Directeur"
-      # Couleurs auto-assignées ; surcharger si besoin :
-      # nc:
-      #   name: "Co-directeur"
+        name: "Directeur·rice"
+      # Couleurs auto-assignées depuis la palette Bootstrap 5 ; surcharger si besoin :
+      # codir:
+      #   name: "Co-directeur·rice"
       #   color_html: "#198754"
       #   color_latex: "green!30"
 ```
+
+Voir @sec-comments pour la syntaxe des shortcodes et le comportement PDF/HTML.
+
+## Annotations web Hypothesis (opt-in)
+
+Pour permettre aux relecteurs d'annoter directement la version HTML dans leur
+navigateur, décommenter ce bloc dans `_quarto.yml` :
+
+```yaml
+format:
+  cnam-thesis-html:
+    comments:
+      hypothesis:
+        theme: clean   # clean = discret ; classic = barre latérale toujours visible
+```
+
+Créer un groupe privé sur [hypothes.is](https://hypothes.is) et partager le lien
+d'invitation. Les annotations sont liées à l'URL — fonctionne mieux sur un déploiement
+stable (GitHub Pages). Voir @sec-comments pour plus de détails.
 
 ## Exécution Python
 
@@ -128,6 +146,8 @@ et l'insérer dans cette liste à l'emplacement souhaité.
 tableaux dans le PDF.
 :::
 
+{{< pagebreak >}}
+
 ### Autres options du profil
 
 ```yaml
@@ -145,6 +165,6 @@ date-soutenance: "10 Octobre 1794"  # NE PAS utiliser date:
 project:
   output-dir: _these_fr     # répertoire de sortie
   post-render:
-    - ./_scripts/postrender.sh fr _these_fr   # Windows : remplacer .sh par .bat
+    - ./_scripts/postrender.ts fr _these_fr
 ```
 
