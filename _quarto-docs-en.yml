@@ -51,6 +51,7 @@ format:
 # Utile pour une branche documentation ou GitHub Pages.
 header-prefix: "Quarto cnam-thesis template documentation"
 btn-resume: "documentation/content_en/frontmatter/resume.html"  # "Start reading" button link in index.qmd
+date-soutenance: "10 Octobre 1794"        # do NOT use `date:` (encoding issue) / NE PAS utiliser `date:`
 
 # Show collaborative comments in the documentation output /
 # Afficher les commentaires collaboratifs dans la sortie documentation
