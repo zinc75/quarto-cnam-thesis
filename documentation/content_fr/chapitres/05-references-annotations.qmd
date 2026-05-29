@@ -115,45 +115,47 @@ texte, et `{{< acrs label >}}` ensuite.
 ### Configuration dans `_quarto.yml`
 
 L'extension `quarto-comments` (dossier `_extensions/comments/`) est configurée
-via la clé `comments:` dans `_quarto.yml` :
+via la clé `extensions.quarto-comments:` dans `_quarto.yml` :
 
 ````yaml
-comments:
-  enabled: true
-  show_author: true
-  authors:
-    auteur:
-      name: "Eric Bavu"
-      color_html: "#005EA5"
-      color_latex: "blue!20"
-    dir:
-      name: "Abbé Grégoire"
-      color_html: "#D55E00"
-      color_latex: "orange!30"
+extensions:
+  quarto-comments:
+    enabled: true
+    show_author: true
+    authors:
+      eb:
+        name: "Eric Bavu"
+      ag:
+        name: "Abbé Grégoire"
+      # Couleurs auto depuis la palette Bootstrap 5 ; surcharger si besoin :
+      # nc:
+      #   name: "Nicolas Conté"
+      #   color_html: "#198754"
+      #   color_latex: "green!30"
 ````
 
 ### Les quatre types de commentaires
 
 ````markdown
-{{</* comment "Reformuler cette phrase, elle est trop longue." author="dir" */>}}
-{{</* todo "Ajouter une figure illustrant ce point." author="auteur" */>}}
-{{</* note "Voir aussi Bringhurst 2004, §2.4." author="dir" */>}}
-{{</* question "Ce résultat est-il reproductible sur un autre jeu de données ?" author="dir" inline=true */>}}
+{{</* comment "Reformuler cette phrase, elle est trop longue." author="ag" */>}}
+{{</* todo "Ajouter une figure illustrant ce point." author="eb" */>}}
+{{</* note "Voir aussi Bringhurst 2004, §2.4." author="ag" */>}}
+{{</* question "Ce résultat est-il reproductible sur un autre jeu de données ?" author="ag" inline=true */>}}
 ````
 
 Rendu en situation — voici une phrase avec une annotation en marge
-{{< comment "Ceci est un commentaire de type 'comment' par le directeur." author="dir" >}}
+{{< comment "Ceci est un commentaire de type 'comment' par le directeur." author="ag" >}}
 et une tâche à accomplir :
 
-{{< todo "Remplacer cet exemple par un vrai résultat expérimental avant la soutenance." author="auteur" >}}
+{{< todo "Remplacer cet exemple par un vrai résultat expérimental avant la soutenance." author="eb" >}}
 
-Une note bibliographique {{< note "Voir Knuth 1984, chapitre 12." author="dir" inline=true >}} en ligne.
+Une note bibliographique {{< note "Voir Knuth 1984, chapitre 12." author="ag" inline=true >}} en ligne.
 
 ::: {.callout-important}
 ## Désactiver les commentaires avant le dépôt final
 
 Avant de soumettre la thèse à l'école doctorale et de la déposer sur theses.fr,
-passez `comments: enabled: false` dans `_quarto.yml`. Les annotations ne doivent
+passez `extensions.quarto-comments.enabled: false` dans `_quarto.yml`. Les annotations ne doivent
 pas figurer dans la version officielle archivée.
 :::
 

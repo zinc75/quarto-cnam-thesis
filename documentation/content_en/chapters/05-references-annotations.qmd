@@ -115,45 +115,47 @@ thereafter.
 ### Configuration in `_quarto.yml`
 
 The `quarto-comments` extension (folder `_extensions/comments/`) is configured via
-the `comments:` key in `_quarto.yml`:
+the `extensions.quarto-comments:` key in `_quarto.yml`:
 
 ````yaml
-comments:
-  enabled: true
-  show_author: true
-  authors:
-    author:
-      name: "Eric Bavu"
-      color_html: "#005EA5"
-      color_latex: "blue!20"
-    supervisor:
-      name: "Abbé Grégoire"
-      color_html: "#D55E00"
-      color_latex: "orange!30"
+extensions:
+  quarto-comments:
+    enabled: true
+    show_author: true
+    authors:
+      eb:
+        name: "Eric Bavu"
+      ag:
+        name: "Abbé Grégoire"
+      # Colors auto-assigned from Bootstrap 5 palette; override if needed:
+      # nc:
+      #   name: "Nicolas Conté"
+      #   color_html: "#198754"
+      #   color_latex: "green!30"
 ````
 
 ### The four comment types
 
 ````markdown
-{{</* comment "Rephrase this sentence, it is too long." author="supervisor" */>}}
-{{</* todo "Add a figure illustrating this point." author="author" */>}}
-{{</* note "See also Bringhurst 2004, §2.4." author="supervisor" */>}}
-{{</* question "Is this result reproducible on another dataset?" author="supervisor" inline=true */>}}
+{{</* comment "Rephrase this sentence, it is too long." author="ag" */>}}
+{{</* todo "Add a figure illustrating this point." author="eb" */>}}
+{{</* note "See also Bringhurst 2004, §2.4." author="ag" */>}}
+{{</* question "Is this result reproducible on another dataset?" author="ag" inline=true */>}}
 ````
 
 Rendered in context — here is a sentence with a margin annotation
-{{< comment "This is a 'comment' type annotation by the supervisor." author="dir" >}}
+{{< comment "This is a 'comment' type annotation by the supervisor." author="ag" >}}
 and a task to complete:
 
-{{< todo "Replace this example with a real experimental result before the defence." author="auteur" >}}
+{{< todo "Replace this example with a real experimental result before the defence." author="eb" >}}
 
-A bibliographic note {{< note "See Knuth 1984, chapter 12." author="dir" inline=true >}} inline.
+A bibliographic note {{< note "See Knuth 1984, chapter 12." author="ag" inline=true >}} inline.
 
 ::: {.callout-important}
 ## Disable comments before final submission
 
 Before submitting the thesis to the doctoral school and depositing it on theses.fr,
-set `comments: enabled: false` in `_quarto.yml`. Annotations must not appear in the
+set `extensions.quarto-comments.enabled: false` in `_quarto.yml`. Annotations must not appear in the
 official archived version.
 :::
 

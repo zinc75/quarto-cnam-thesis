@@ -59,18 +59,20 @@ index: false             # true = generates an index via \index{term}
 ## Collaborative comments
 
 ```yaml
-comments:
-  enabled: true          # false before final deposit on theses.fr
-  show_author: true
-  authors:
-    author:
-      name: "First LAST"
-      color_html: "#005EA5"
-      color_latex: "blue!20"
-    supervisor:
-      name: "Supervisor"
-      color_html: "#D55E00"
-      color_latex: "orange!30"
+extensions:
+  quarto-comments:
+    enabled: true          # false before final deposit on theses.fr
+    show_author: true
+    authors:
+      eb:
+        name: "First LAST"
+      dir:
+        name: "Supervisor"
+      # Colors auto-assigned from Bootstrap 5 palette; override if needed:
+      # nc:
+      #   name: "Co-supervisor"
+      #   color_html: "#198754"
+      #   color_latex: "green!30"
 ```
 
 ## Python execution

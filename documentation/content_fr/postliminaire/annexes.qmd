@@ -59,18 +59,20 @@ index: false             # true = génère un index via \index{terme}
 ## Commentaires collaboratifs
 
 ```yaml
-comments:
-  enabled: true          # false avant le dépôt final sur theses.fr
-  show_author: true
-  authors:
-    auteur:
-      name: "Prénom NOM"
-      color_html: "#005EA5"
-      color_latex: "blue!20"
-    dir:
-      name: "Directeur"
-      color_html: "#D55E00"
-      color_latex: "orange!30"
+extensions:
+  quarto-comments:
+    enabled: true          # false avant le dépôt final sur theses.fr
+    show_author: true
+    authors:
+      eb:
+        name: "Prénom NOM"
+      dir:
+        name: "Directeur"
+      # Couleurs auto-assignées ; surcharger si besoin :
+      # nc:
+      #   name: "Co-directeur"
+      #   color_html: "#198754"
+      #   color_latex: "green!30"
 ```
 
 ## Exécution Python
