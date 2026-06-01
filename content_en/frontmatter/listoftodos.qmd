@@ -1,0 +1,7 @@
+<!-- HTML-only heading: hides this page from the sidebar (same pattern as tables.qmd).
+     PDF: \listoftodos is inserted by the shortcode when show_list: true. -->
+::: {.content-visible when-format="html"}
+# Proofreading comments {.unnumbered .unlisted .no-latex}
+:::
+
+{{< listoftodos >}}

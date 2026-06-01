@@ -1,0 +1,9 @@
+<!-- HTML-only heading: hides this page from the sidebar (same pattern as tables.qmd).
+     PDF: \listoftodos is inserted by the shortcode when show_list: true.
+     Cap HTML uniquement : masque la page de la barre latérale (même traitement que tables.qmd).
+     PDF : \listoftodos inséré par le shortcode si show_list: true. -->
+::: {.content-visible when-format="html"}
+# Commentaires de relecture {.unnumbered .unlisted .no-latex}
+:::
+
+{{< listoftodos >}}
