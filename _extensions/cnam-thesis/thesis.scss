@@ -959,20 +959,14 @@ blockquote {
 // (ce qui casserait le rendu PDF).
 .sidebar-item:has(a[href*="tables.html"]),
 .sidebar-item:has(a[href*="glossaire-entries.html"]),
+.sidebar-item:has(a[href*="listoftodos.html"]),
 .sidebar-item:has(a[href*="bibliographie.html"]),
 .sidebar-item:has(a[href*="bibliography.html"]) {
   display: none !important;
 }
 
-// Same pages must also be hidden from the prev/next chapter navigation at the
-// bottom of each page — sidebar CSS does not affect those links.
-// Les mêmes pages doivent être masquées dans la navigation bas de page (précédent/suivant).
-.nav-page:has(a[href*="tables.html"]),
-.nav-page:has(a[href*="glossaire-entries.html"]),
-.nav-page:has(a[href*="bibliographie.html"]),
-.nav-page:has(a[href*="bibliography.html"]) {
-  display: none !important;
-}
+// Prev/next navigation links pointing to hidden pages are rewired by
+// postrender.ts (Pass 3) so no CSS hiding is needed here.
 
 
 // ── Line-numbered code blocks (CSS-counter approach) ─────────────────────────
