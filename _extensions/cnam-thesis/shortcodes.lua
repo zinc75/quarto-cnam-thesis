@@ -410,15 +410,60 @@ local function pdf_link(args, kwargs, meta)
   return pandoc.RawInline("html", html)
 end
 
+-- ── listoftodos ───────────────────────────────────────────────────────────────
+-- {{< listoftodos >}}
+-- PDF only: inserts \clearpage\listoftodos when extensions.quarto-comments.enabled
+-- is true (or absent/unset — defaults to enabled). Returns nothing in HTML.
+-- Placed at the end of tables.qmd, after \listoffigures.
+local function listoftodos(args, kwargs, meta)
+  -- Only meaningful in PDF
+  if not quarto.doc.is_format("pdf") then return pandoc.Null() end
+
+  local config_meta = meta and meta.extensions
+    and meta.extensions["quarto-comments"]
+
+  -- No quarto-comments config at all → nothing to do
+  if not config_meta then return pandoc.Null() end
+
+  -- Helper: read a boolean MetaValue
+  local function read_bool(v, default)
+    if v == nil then return default end
+    if type(v) == "boolean" then return v end
+    if type(v) == "table" then
+      return pandoc.utils.stringify(v) == "true"
+    end
+    return default
+  end
+
+  -- Both enabled AND show_list must be true
+  local enabled   = read_bool(config_meta.enabled,   true)
+  local show_list = read_bool(config_meta.show_list,  false)
+
+  if not enabled or not show_list then return pandoc.Null() end
+
+  -- Ensure todonotes is loaded even if no comment shortcodes appear in the document
+  pcall(function() quarto.doc.use_latex_package("todonotes") end)
+
+  -- Language-aware TOC title (mirrors thesis-lang in the profile)
+  local lang = meta and meta["thesis-lang"]
+    and pandoc.utils.stringify(meta["thesis-lang"]) or "fr"
+  local toc_title = lang == "fr" and "Commentaires de relecture" or "Proofreading comments"
+
+  return pandoc.RawBlock("tex",
+    "\\clearpage\\listoftodos[" .. toc_title .. "]\n" ..
+    "\\addcontentsline{toc}{frontchap}{" .. toc_title .. "}")
+end
+
 return {
-  ["acr"]        = acr,
-  ["terme"]      = terme,
-  ["gls"]        = gls,
-  ["acrs"]       = acrs,
-  ["acrl"]       = acrl,
-  ["acrf"]       = acrf,
-  ["jury-html"]  = jury_html,
-  ["cnam-logos"] = cnam_logos,
-  ["gloss-html"] = gloss_html,
-  ["pdf-link"]   = pdf_link,
+  ["acr"]          = acr,
+  ["terme"]        = terme,
+  ["gls"]          = gls,
+  ["acrs"]         = acrs,
+  ["acrl"]         = acrl,
+  ["acrf"]         = acrf,
+  ["jury-html"]    = jury_html,
+  ["cnam-logos"]   = cnam_logos,
+  ["gloss-html"]   = gloss_html,
+  ["pdf-link"]     = pdf_link,
+  ["listoftodos"]  = listoftodos,
 }
