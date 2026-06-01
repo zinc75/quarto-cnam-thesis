@@ -136,6 +136,8 @@ code-line-numbers: true
 extensions:
   quarto-comments:
     enabled: false          # true → shows annotations in output / affiche les annotations dans le rendu
+    show_list: false        # true → adds \listoftodos in PDF (only if enabled: true) /
+                            #        ajoute \listoftodos dans le PDF (si enabled: true)
     authors:
       eb:
         name: "Eric Bavu"

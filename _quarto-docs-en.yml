@@ -25,6 +25,7 @@ book:
     - documentation/content_en/frontmatter/glossaire-entries.qmd      # remove if glossaire: false / supprimer si glossaire: false
     - documentation/content_en/frontmatter/acronyms.qmd               # remove if glossaire: false / supprimer si glossaire: false
     - documentation/content_en/frontmatter/glossary.qmd               # remove if no glossary terms / supprimer si pas de termes
+    - documentation/content_en/frontmatter/listoftodos.qmd            # do not remove — inert when show_list: false in extensions.quarto-comments
     - documentation/content_en/chapters/00-introduction.qmd
     - documentation/content_en/chapters/01-structure.qmd
     - documentation/content_en/chapters/02-figures.qmd
@@ -58,3 +59,4 @@ date-soutenance: "10 Octobre 1794"        # do NOT use `date:` (encoding issue) 
 extensions:
   quarto-comments:
     enabled: true
+    show_list: true
