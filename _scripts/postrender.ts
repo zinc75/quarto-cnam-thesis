@@ -85,6 +85,7 @@ function removeArtifacts(): void {
     ".blg", ".bbl",
     ".idx", ".ilg", ".ind",
     ".out", ".xmpdata",
+    ".tdo",  // todonotes: regenerated each run; stale file causes xcolor errors across profiles
   ]);
 
   for (const entry of Deno.readDirSync(".")) {
@@ -209,6 +210,96 @@ for (const f of findFiles(OUTPUT_DIR, ".html")) {
   Deno.writeTextFileSync(f, content);
 }
 console.log(`HTML links updated → these_${LANG}_${AUTHOR_SLUG}.pdf`);
+
+// ── Pass 3: Fix prev/next navigation through hidden pages ──────────────────
+// Pages hidden from the HTML sidebar (tables.html, glossaire-entries.html,
+// listoftodos.html, bibliographie.html, bibliography.html) must also be
+// skipped in the bottom prev/next navigation. When page A's "next" points to
+// hidden page H, we rewrite it to point directly to H's own "next" (and
+// similarly for "previous"), so the reader never sees a missing button.
+
+const NAV_SKIP = new Set([
+  "tables.html", "glossaire-entries.html",
+  "listoftodos.html", "bibliographie.html", "bibliography.html",
+]);
+
+function fileBasename(p: string): string { return p.replace(/^.*[/\\]/, ""); }
+function fileDir(p: string): string      { return p.replace(/[/\\][^/\\]+$/, ""); }
+
+function resolvePath(from: string, rel: string): string {
+  const parts = fileDir(from).split("/");
+  for (const seg of rel.split("/")) {
+    if (seg === "..") parts.pop();
+    else if (seg !== ".") parts.push(seg);
+  }
+  return parts.join("/");
+}
+
+function makeRelative(from: string, to: string): string {
+  const fromDir = fileDir(from).split("/").filter(Boolean);
+  const toParts = to.split("/").filter(Boolean);
+  let i = 0;
+  while (i < fromDir.length && i < toParts.length && fromDir[i] === toParts[i]) i++;
+  return [...Array(fromDir.length - i).fill(".."), ...toParts.slice(i)].join("/");
+}
+
+// Matches the full nav-page div for prev or next
+const NAV_NEXT_RE = /(<div class="nav-page nav-page-next">)([\s\S]*?)(<\/div>)/;
+const NAV_PREV_RE = /(<div class="nav-page nav-page-previous">)([\s\S]*?)(<\/div>)/;
+// Extracts the href from inside a nav-page div
+const NAV_HREF_IN = /href="([^"]+\.html)"/;
+
+// Load all HTML into memory (nav pass reads many files)
+const navHtml = new Map<string, string>();
+for (const f of findFiles(OUTPUT_DIR, ".html")) {
+  navHtml.set(f, Deno.readTextFileSync(f));
+}
+
+function getNavDiv(file: string, dir: "next" | "prev"): { div: string; href: string } | null {
+  const c = navHtml.get(file);
+  if (!c) return null;
+  const m = c.match(dir === "next" ? NAV_NEXT_RE : NAV_PREV_RE);
+  if (!m) return null;
+  const h = m[0].match(NAV_HREF_IN);
+  if (!h) return null;
+  return { div: m[0], href: h[1] };
+}
+
+// Follow the nav chain until a non-skip page is reached; return its div + abs path
+function resolveNav(file: string, dir: "next" | "prev", depth = 0): { abs: string; div: string } | null {
+  if (depth > 10) return null;
+  const nav = getNavDiv(file, dir);
+  if (!nav) return null;
+  const abs = resolvePath(file, nav.href);
+  if (!NAV_SKIP.has(fileBasename(nav.href))) return { abs, div: nav.div };
+  return resolveNav(abs, dir, depth + 1);
+}
+
+let navFixed = 0;
+for (const f of [...navHtml.keys()]) {
+  let content = navHtml.get(f)!;
+  let modified = false;
+
+  for (const dir of ["next", "prev"] as const) {
+    const nav = getNavDiv(f, dir);
+    if (!nav || !NAV_SKIP.has(fileBasename(nav.href))) continue;
+    const skipAbs = resolvePath(f, nav.href);
+    const target = resolveNav(skipAbs, dir);
+    if (!target) continue;
+    const newHref = makeRelative(f, target.abs);
+    // Use the target div (correct title) but re-relativize its href
+    const newDiv = target.div.replace(NAV_HREF_IN, `href="${newHref}"`);
+    const re = dir === "next" ? NAV_NEXT_RE : NAV_PREV_RE;
+    const updated = content.replace(re, newDiv);
+    if (updated !== content) { content = updated; modified = true; navFixed++; }
+  }
+
+  if (modified) {
+    Deno.writeTextFileSync(f, content);
+    navHtml.set(f, content);
+  }
+}
+if (navFixed > 0) console.log(`Navigation: ${navFixed} skip-page link(s) rewired`);
 
 if (exists(SRC_TEX)) {
   Deno.renameSync(SRC_TEX, DST_TEX);
