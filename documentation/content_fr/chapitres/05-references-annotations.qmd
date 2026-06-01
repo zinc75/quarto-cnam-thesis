@@ -212,6 +212,9 @@ d'invitation aux relecteurs. Hypothesis est désactivé par défaut dans tous le
 Les pages `resume.qmd` et `abstract.qmd` utilisent des classes CSS qui ajoutent
 une bordure gauche en HTML :
 
+{{< comment "Reformuler cette phrase, elle est trop longue." author="ag" >}}
+
+
 ````markdown
 ::: {.resume-block}
 Texte du résumé en français.
