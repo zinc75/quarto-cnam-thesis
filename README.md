@@ -307,3 +307,4 @@ Contributions are welcome.
 The MIT license covers the template itself (code, styles, scripts and the example
 documentation). The thesis content you write with it is yours — the template
 claims nothing over it.
+

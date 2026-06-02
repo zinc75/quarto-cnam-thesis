@@ -312,3 +312,4 @@ Les contributions sont les bienvenues.
 La licence MIT couvre le template lui-même (code, styles, scripts et la
 documentation d'exemple). Le contenu de thèse que vous rédigez avec lui vous
 appartient — le template ne revendique rien dessus.
+

@@ -1,4 +1,4 @@
-# Fichiers exclus du `quarto use template` (non copiés dans le projet utilisateur)
+# Files excluded from `quarto use template`
 _reference/
 documentation/
 _freeze/
