@@ -178,8 +178,10 @@ $$
 
 :::
 
-Chaque `\\` reçoit son propre numéro séquentiel. Pour supprimer le numéro d'une
-ligne, ajouter `\notag` avant le `\\`. Pour référencer une ligne individuelle,
+Chaque équation avec fin de ligne (`\\`) reçoit son propre numéro séquentiel. Pour supprimer le numéro d'une
+ligne, ajouter `\notag` avant le `\\`. P
+
+our référencer une ligne individuelle,
 utiliser `\label{mon-label}` dans le bloc `{=latex}` et `\eqref{mon-label}` dans
 le texte (PDF uniquement — KaTeX ne génère pas de labels adressables).
 
@@ -234,9 +236,12 @@ dans un bloc `{=latex}` (KaTeX ne supporte pas `subequations`) :
 :::
 ````
 
-`\label{eq-navier}` référence le groupe ; `\label{eq-navier-momentum}` et
+Dans cet exemple, `\label{eq-navier}` référence le groupe.
+
+Quant à lui, `\label{eq-navier-momentum}` et
 `\label{eq-navier-incomp}` référencent les lignes — accessibles avec `\eqref{}`.
-Ajouter un bloc `{.content-visible when-format="html"}` frère avec
+
+Dans ce cas très précis, il est nécessaire d'ajouter un bloc `{.content-visible when-format="html"}` frère avec
 `$$\begin{align}…\end{align}$$` pour le rendu HTML.
 :::
 
@@ -326,6 +331,9 @@ consultez <https://github.com/zinc75/quarto-quartable/> et <https://zinc75.githu
 
 : Récapitulatif des fonctionnalités par famille. {#tbl-recap}
 ````
+
+{{< pagebreak >}}
+
 
 ::: {.render-demo}
 **Rendu :** 

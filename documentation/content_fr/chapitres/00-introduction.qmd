@@ -70,80 +70,16 @@ Les rendus suivants fonctionnent entièrement hors ligne.
 jour fonctionne sans configuration supplémentaire. Si votre distribution est
 ancienne, mettez-la à jour ou lancez `quarto install tinytex` pour passer à TinyTeX.
 
+{{< pagebreak >}}
+
 | Système | Quarto | LaTeX |
 |:--------|:-------|:------|
 | **macOS** | `.pkg` ou `brew install quarto` | `quarto install tinytex` *(recommandé)* ou [TeX Live / MacTeX](https://tug.org/mactex/) |
 | **Windows** | `.msi` (64 bits) | `quarto install tinytex` *(recommandé)* ou [MiKTeX](https://miktex.org/) / [TeX Live](https://tug.org/texlive/) |
 | **Linux (Debian/Ubuntu)** | `sudo dpkg -i quarto-*.deb` | `quarto install tinytex` *(recommandé)* ou `sudo apt install texlive-full` |
 
-### Code exécutable (Python, R…) {.unnumbered}
 
-Un langage de script n'est nécessaire **que si la thèse contient des cellules de code
-exécutable** — figures calculées ou tableaux générés directement dans le document. Une
-thèse rédigée en texte pur avec des images statiques **n'a besoin d'aucun langage de
-script** : le script post-render (`postrender.ts`) tourne sur le runtime Deno intégré
-à Quarto.
-
-Quarto supporte plusieurs moteurs de calcul :
-
-- **Python** (via Jupyter) — utilisé dans les exemples de ce guide.
-  → [Documentation Quarto : Python](https://quarto.org/docs/computations/python.html)
-- **R** (via knitr) — bien adapté aux statistiques, à l'économétrie, à l'écologie et
-  aux disciplines où R est le langage dominant.
-  → [Documentation Quarto : R](https://quarto.org/docs/computations/r.html)
-
-La suite de cette section détaille la configuration de **Python**, qui alimente les
-exemples de ce document. Pour R, se référer à la documentation Quarto ci-dessus.
-
-Les packages requis par les exemples de ce document sont listés dans `requirements.txt`
-à la racine du projet : `numpy`, `matplotlib`, `pandas`, `tabulate`.
-
-**Environnement virtuel — pourquoi c'est important.** Un environnement virtuel isole
-les packages de ce projet du reste de l'installation Python du système, évite les
-conflits de versions et facilite la reproductibilité. Il est fortement déconseillé
-d'installer les packages directement dans Python système.
-
-#### `uv` — recommandé {.unnumbered}
-
-[`uv`](https://docs.astral.sh/uv/) installe Python, crée l'environnement virtuel et
-gère les packages en une seule commande, sans Python préalable sur le système. Quarto
-détecte automatiquement le dossier `.venv/` créé — aucune activation manuelle n'est
-nécessaire avant `quarto render`.
-
-```bash
-# Étape 1 — installer uv (une seule fois, sur le système)
-# macOS / Linux :
-curl -LsSf https://astral.sh/uv/install.sh | sh
-# Windows (PowerShell) :
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-
-# Étape 2 — dans le répertoire de la thèse :
-uv python install 3.12          # télécharge et installe Python 3.12
-uv venv                         # crée .venv/ dans le répertoire courant
-uv pip install -r requirements.txt  # installe tous les packages + Jupyter
-```
-
-#### `venv` + `pip` — alternative {.unnumbered}
-
-Si Python 3.10+ est déjà installé sur le système :
-
-```bash
-python -m venv .venv
-source .venv/bin/activate        # macOS / Linux
-# .venv\Scripts\activate         # Windows (cmd)
-# .venv\Scripts\Activate.ps1     # Windows (PowerShell)
-pip install jupyter -r requirements.txt
-```
-
-::: {.callout-note}
-## Conda, pyenv…
-
-Les utilisateurs conda peuvent créer un environnement dédié :
-`conda create -n mathese python=3.12 && conda activate mathese && pip install jupyter -r requirements.txt`.
-Les utilisateurs pyenv installent la version cible avec pyenv, puis utilisent `venv` comme ci-dessus.
-:::
-
-### Installer le template {.unnumbered}
+## Installer le template {.unnumbered}
 
 ::: {.callout-tip}
 ## Installer le template
@@ -210,6 +146,77 @@ quarto render --profile en   # → _thesis-en/these_en_<auteur>.pdf + HTML
 `quarto render` sans profil échoue : la liste des chapitres est définie dans les
 profils `_quarto-fr.yml` et `_quarto-en.yml`, pas dans `_quarto.yml`.
 :::
+
+
+### Code exécutable (Python, R…) {.unnumbered}
+
+Un langage de script n'est nécessaire **que si la thèse contient des cellules de code
+exécutable** — figures calculées ou tableaux générés directement dans le document. Une
+thèse rédigée en texte pur avec des images statiques **n'a besoin d'aucun langage de
+script** : le script post-render (`postrender.ts`) tourne sur le runtime Deno intégré
+à Quarto.
+
+Quarto supporte plusieurs moteurs de calcul :
+
+- **Python** (via Jupyter) — utilisé dans les exemples de ce guide.
+  → [Documentation Quarto : Python](https://quarto.org/docs/computations/python.html)
+- **R** (via knitr) — bien adapté aux statistiques, à l'économétrie, à l'écologie et
+  aux disciplines où R est le langage dominant.
+  → [Documentation Quarto : R](https://quarto.org/docs/computations/r.html)
+
+La suite de cette section détaille la configuration de **Python**, qui alimente les
+exemples de ce document. Pour R, se référer à la documentation Quarto ci-dessus.
+
+Les packages requis par les exemples de ce document sont listés dans `requirements.txt`
+à la racine du projet : `numpy`, `matplotlib`, `pandas`, `tabulate`.
+
+**Environnement virtuel — pourquoi c'est important.** 
+
+Un environnement virtuel isole
+les packages de ce projet du reste de l'installation Python du système, évite les
+conflits de versions et facilite la reproductibilité. Il est fortement déconseillé
+d'installer les packages directement dans Python système.
+
+#### `uv` — recommandé {.unnumbered}
+
+[`uv`](https://docs.astral.sh/uv/) installe Python, crée l'environnement virtuel et
+gère les packages en une seule commande, sans Python préalable sur le système. Quarto
+détecte automatiquement le dossier `.venv/` créé — aucune activation manuelle n'est
+nécessaire avant `quarto render`.
+
+```bash
+# Étape 1 — installer uv (une seule fois, sur le système)
+# macOS / Linux :
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# Windows (PowerShell) :
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Étape 2 — dans le répertoire de la thèse :
+uv python install 3.12          # télécharge et installe Python 3.12
+uv venv                         # crée .venv/ dans le répertoire courant
+uv pip install -r requirements.txt  # installe tous les packages + Jupyter
+```
+
+#### `venv` + `pip` — alternative {.unnumbered}
+
+Si Python 3.10+ est déjà installé sur le système :
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # macOS / Linux
+# .venv\Scripts\activate         # Windows (cmd)
+# .venv\Scripts\Activate.ps1     # Windows (PowerShell)
+pip install jupyter -r requirements.txt
+```
+
+::: {.callout-note}
+## Conda, pyenv…
+
+Les utilisateurs conda peuvent créer un environnement dédié :
+`conda create -n mathese python=3.12 && conda activate mathese && pip install jupyter -r requirements.txt`.
+Les utilisateurs pyenv installent la version cible avec pyenv, puis utilisent `venv` comme ci-dessus.
+:::
+
 
 ## Prévisualisation en temps réel {.unnumbered}
 

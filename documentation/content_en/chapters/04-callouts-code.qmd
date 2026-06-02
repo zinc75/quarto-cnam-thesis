@@ -152,6 +152,8 @@ in full (collapsing is an HTML-only feature).
 :::
 ````
 
+{{< pagebreak >}}
+
 ::: {.render-demo}
 **Output:**
 
@@ -199,6 +201,8 @@ or configuration examples):
 pip install matplotlib numpy pandas
 ```
 ````
+
+
 
 ::: {.render-demo}
 **Output:**

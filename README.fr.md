@@ -23,7 +23,7 @@ Produit un **PDF** conforme à la maquette officielle Cnam 2024–2025 et une
 - Page d'accueil HTML avec image de couverture auto-générée (extraite de la page 1 du PDF), tableau du jury et métadonnées de la thèse
 - Bouton de téléchargement du PDF dans la barre latérale HTML, pointant vers le PDF compilé
 - Pages glossaire et acronymes rendues en PDF et en HTML
-- Commentaires collaboratifs en marge via l'extension [`quarto-comments`](https://github.com/zinc75/quarto-comments)
+- Commentaires collaboratifs en marge via l'extension [`quarto-comments`](https://github.com/zinc75/quarto-comments), avec élargissement optionnel `wide_margins` appliqué **uniquement aux chapitres contenant réellement des commentaires**
 
 ## Prérequis
 

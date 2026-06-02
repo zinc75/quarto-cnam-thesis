@@ -61,7 +61,10 @@ index: false             # true = génère un index via \index{terme}
 ```yaml
 extensions:
   quarto-comments:
-    enabled: true    # false avant le dépôt final sur theses.fr
+    enabled: true          # false avant le dépôt final sur theses.fr
+    show_list: true        # liste des commentaires de relecture en fin de doc (PDF)
+    wide_margins: true     # élargit les pages + bande grise (chapitres commentés)
+    extra_margin: "4.5cm"  # largeur de la bande d'annotation
     authors:
       doc:
         name: "Prénom NOM"       # doctorant·e
@@ -74,7 +77,9 @@ extensions:
       #   color_latex: "green!30"
 ```
 
-Voir @sec-comments pour la syntaxe des shortcodes et le comportement PDF/HTML.
+Avec `wide_margins: true`, seuls les **chapitres contenant réellement des commentaires**
+sont élargis (bande grise extérieure) ; les autres restent en A4. Voir @sec-comments pour
+la syntaxe des shortcodes, le comportement PDF/HTML et les détails de l'élargissement.
 
 ## Annotations web Hypothesis (opt-in)
 

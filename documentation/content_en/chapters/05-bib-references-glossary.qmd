@@ -1,7 +1,7 @@
-# References, glossary, and annotations {short-title="References"}
+# References and glossary {short-title="References"}
 
 This chapter presents the bibliographic citation system (IEEE style via
-`IEEEtran-francais.bst`), the glossary and acronym system, collaborative comments,
+`IEEEtran-francais.bst`), the glossary and acronym system,
 and special front matter pages.
 
 ## Bibliographic citations {#sec-citations}
@@ -16,6 +16,9 @@ Computer typesetting was revolutionised by Knuth [@Knuth1984],
 whose \TeX{} system was made accessible by Lamport with \LaTeX{} [@Lamport1994].
 Quarto [@Allaire2022] unifies these tools in a modern publishing environment.
 ````
+
+{{< pagebreak >}}
+
 
 ::: {.render-demo}
 **Output:** 
@@ -116,104 +119,6 @@ handled by the shortcode — it always produces the short form. For consistency,
 thereafter.
 :::
 
-## Collaborative comments (`quarto-comments`) {#sec-comments}
-
-### Configuration in `_quarto.yml`
-
-The `quarto-comments` extension (folder `_extensions/comments/`) is configured in
-`_quarto.yml`, via the `quarto-comments:` key placed under the `extensions:` block {{< todo "You will need to walk me through your various YAML files at our next progress meeting." author="ag" >}}:
-
-````yaml
-extensions:
-  quarto-comments:
-    enabled: true
-    authors:
-      eb:
-        name: "Eric Bavu"
-      ag:
-        name: "Abbé Grégoire"
-      # Colors auto-assigned from Bootstrap 5 palette; override if needed:
-      # nc:
-      #   name: "Nicolas Conté"
-      #   color_html: "#198754"
-      #   color_latex: "green!30"
-````
-
-{{< pagebreak >}}
-
-
-### The four comment types
-
-````markdown
-{{</* comment "Rephrase this sentence, it is too long." author="ag" */>}}
-{{</* todo "Add a figure illustrating this point." author="eb" */>}}
-{{</* note "See also Bringhurst 2004, §2.4." author="ag" */>}}
-{{</* question "Is this result reproducible on another dataset?" author="ag" inline=true */>}}
-````
-
-**Rendered in context:**
-
-Here is a sentence with a comment from the thesis supervisor (who added it directly in the {{< comment "This is a comment, to show that I too — Abbé Grégoire — am perfectly capable of editing a Quarto Markdown file myself!" author="ag" >}} `.qmd` file, because he is not shy about it!).
-
-These comments are visible **only** if the `quarto-comments` option is set to `enabled: true` {{< todo "Remember to set this option to `false` before submitting to the reviewers!" author="eb" >}} in the `yaml` file — which is the case for this documentation.
-
-
-It is also possible to add "long" inline comments {{< note "See Knuth 1984, chapter 12 — it would really be worth adding a discussion of this work here to show off all your knowledge of the existing literature, young apprentice." author="ag" inline=true >}} without taking up any space in the document margin. Useful to flesh out the text and add whole paragraphs. Note that, visually, the "inline" comment automatically breaks onto its own line and separates from the text in the PDF version, even when inserted mid-sentence.
-
-::: {.callout-note}
-## `inline=true` occupies the full line in PDF
-
-In HTML, `inline=true` annotations appear as a compact coloured span, exactly
-as wide as their content. In PDF, the `todonotes` package renders `\todo[inline]`
-as a full-width coloured block — this is a design constraint of the package that
-cannot be worked around without losing the ability to wrap long annotations across
-lines.
-:::
-
-::: {.callout-tip}
-## Recommended: enable `wide_margins` for proofreading
-
-For margin notes (without `inline`), it is **recommended to enable**
-`extensions.quarto-comments.wide_margins: true` in your proofreading profile. The paper
-is then widened outward by a dedicated strip (width adjustable via `extra_margin`) where
-annotations display comfortably, with a grey background that alternates by page parity
-(outer side, binding preserved).
-
-When `wide_margins: false` (the default), the paper stays at standard A4 size: notes are
-placed in the 2 cm outer margin. They therefore stay **narrow** (~1.5 cm) and long text
-wraps over several lines. The **content** layout (text block) is strictly identical whether
-`wide_margins` is `true` or `false`, and whether comments are enabled or not — only the
-margin annotation zone changes.
-:::
-
-::: {.callout-important}
-## Disable comments before final submission
-
-Before submitting the thesis to the doctoral school and depositing it on theses.fr,
-set `extensions.quarto-comments.enabled: false` in `_quarto.yml`. Annotations must not appear in the
-official archived version.
-:::
-
-## Web annotations with Hypothesis (opt-in)
-
-For remote proofreading, the HTML output can be enhanced with web annotations via
-[Hypothesis](https://hypothes.is). Supervisors and reviewers select text in the browser
-and add comments without touching the source files. Annotations are stored on Hypothesis
-servers and tied to the page URL — they persist across renders as long as the URL stays
-stable (GitHub Pages deployment recommended).
-
-To enable, uncomment the following block in `_quarto.yml`:
-
-```yaml
-format:
-  cnam-thesis-html:
-    comments:
-      hypothesis:
-        theme: clean   # clean = discreet ; classic = sidebar always visible
-```
-
-Then create a private group on [hypothes.is](https://hypothes.is) and share the invite
-link with your reviewers. Hypothesis is disabled by default in all profiles.
 
 ## Special front matter pages {#sec-frontmatter}
 

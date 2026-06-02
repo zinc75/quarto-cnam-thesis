@@ -1,8 +1,7 @@
-# Références, glossaire et annotations {short-title="Références"}
+# Références, glossaire {short-title="Références"}
 
 Ce chapitre présente le système de citations bibliographiques (style IEEE via
-`IEEEtran-francais.bst`), le système de glossaire et d'acronymes, les commentaires
-collaboratifs, et les pages liminaires spéciales.
+`IEEEtran-francais.bst`), le système de glossaire et d'acronymes, et les pages liminaires spéciales.
 
 ## Citations bibliographiques {#sec-citations}
 
@@ -16,6 +15,9 @@ La composition typographique informatique a été révolutionnée par Knuth [@Kn
 dont le système \TeX{} a été rendu accessible par Lamport avec \LaTeX{} [@Lamport1994].
 Quarto [@Allaire2022] unifie ces outils dans un environnement de publication moderne.
 ````
+
+{{< pagebreak >}}
+
 
 ::: {.render-demo}
 **Rendu :** 
@@ -99,6 +101,7 @@ Le format {{</* acrf qmd */>}} est le format natif de Quarto.
 La numérotation {{< acrf toc >}} est générée automatiquement par Quarto.
 ````
 
+
 ::: {.render-demo}
 **Rendu :** 
 
@@ -116,104 +119,6 @@ Pour la cohérence, préférez `{{</* acrf label */>}}` à la première occurren
 texte, et `{{</* acrs label */>}}` ensuite.
 :::
 
-## Commentaires collaboratifs (`quarto-comments`) {#sec-comments}
-
-### Configuration dans `_quarto.yml`
-
-L'extension `quarto-comments` (dossier `_extensions/comments/`) se configure dans
-`_quarto.yml`, via la clé `quarto-comments:` placée sous le bloc `extensions:` {{< todo "Il sera nécessaire de m'exposer vos différents fichiers yaml au cours de notre prochaine réunion d'avancement." author="ag" >}} :
-
-````yaml
-extensions:
-  quarto-comments:
-    enabled: true
-    authors:
-      eb:
-        name: "Eric Bavu"
-      ag:
-        name: "Abbé Grégoire"
-      # Couleurs auto depuis la palette Bootstrap 5 ; surcharger si besoin :
-      # nc:
-      #   name: "Nicolas Conté"
-      #   color_html: "#198754"
-      #   color_latex: "green!30"
-````
-
-{{< pagebreak >}}
-
-
-### Les quatre types de commentaires
-
-````markdown
-{{</* comment "Reformuler cette phrase, elle est trop longue." author="ag" */>}}
-{{</* todo "Ajouter une figure illustrant ce point." author="eb" */>}}
-{{</* note "Voir aussi Bringhurst 2004, §2.4." author="ag" */>}}
-{{</* question "Ce résultat est-il reproductible sur un autre jeu de données ?" author="ag" inline=true */>}}
-````
-
-**Rendu en situation** :
-
-Voici une phrase avec un commentaire du directeur de thèse (qui a ajouté directement celui-ci dans le fichier {{< comment "Ceci est un commentaire pour montrer que moi aussi, Abbé Grégoire, suis capable d'éditer facilement un Markdown Quarto ! " author="ag" >}} `.qmd` parce qu'il n'est pas frileux !).
-
-Ces commentaires ne sont visibles **que** si l'option `quarto-comments` est à `enabled : true` {{< todo "Penser à passer l'option à `false` avant soumission aux rapporteurs! " author="eb" >}} dans le fichier `yaml`, ce qui est le cas pour cette documentation.
-
-
-Il est aussi possible d'ajouter des commentaires "longs" en ligne {{< note "Voir Knuth 1984, chapitre 12, ce serait vraiment bien de rajouter une discussion sur cet ouvrage ici pour montrer tout votre savoir sur la littérature existante, jeune apprenti." author="ag" inline=true >}} sans que cela occupe de la place dans la marge du document. Utile pour compléter du texte et rajouter des paragraphes entiers. Attention, visuellement le commentaire "inline" passe automatiquement à la ligne et se sépare du texte dans la version PDF, même s'il est inséré en milieu de phrase.
-
-::: {.callout-note}
-## `inline=true` occupe toute la ligne en PDF
-
-En HTML, les annotations `inline=true` apparaissent comme un span coloré compact,
-exactement à la largeur de leur contenu. En PDF, le package `todonotes` rend
-`\todo[inline]` sous la forme d'un bloc coloré pleine largeur — c'est une contrainte
-de conception du package, sans contournement possible sans perdre la capacité de
-couper les annotations longues sur plusieurs lignes.
-:::
-
-::: {.callout-tip}
-## Recommandé : activer `wide_margins` pour la relecture
-
-Pour les notes en marge (sans `inline`), il est **recommandé d'activer**
-`extensions.quarto-comments.wide_margins: true` dans le profil de relecture. Le papier
-est alors élargi vers l'extérieur d'une bande dédiée (largeur réglable via `extra_margin`)
-où les annotations s'affichent confortablement, avec un fond grisé qui alterne selon la
-parité des pages (côté extérieur, reliure préservée).
-
-Quand `wide_margins: false` (valeur par défaut), le papier reste au format A4 standard :
-les notes se placent alors dans la marge extérieure de 2 cm. Elles restent donc **étroites**
-(~1,5 cm) et les textes longs s'enroulent sur plusieurs lignes. La mise en page du **contenu**
-(bloc de texte) est rigoureusement identique que `wide_margins` soit `true` ou `false`, et
-que les commentaires soient activés ou non — seule la zone d'annotation en marge change.
-:::
-
-::: {.callout-important}
-## Désactiver les commentaires avant le dépôt final
-
-Avant de soumettre la thèse à l'école doctorale et de la déposer sur theses.fr,
-passez `extensions.quarto-comments.enabled: false` dans `_quarto.yml`. Les annotations ne doivent
-pas figurer dans la version officielle archivée.
-:::
-
-## Annotations web avec Hypothesis (opt-in)
-
-Pour une relecture à distance, la version HTML peut être enrichie d'annotations
-web via [Hypothesis](https://hypothes.is). Le directeur ou les relecteurs sélectionnent
-du texte dans le navigateur et ajoutent des commentaires sans toucher aux fichiers source.
-Les annotations sont stockées sur les serveurs Hypothesis et liées à l'URL de la page —
-elles persistent d'un rendu à l'autre tant que l'URL reste stable (déploiement GitHub Pages).
-
-Pour activer, décommenter le bloc suivant dans `_quarto.yml` :
-
-```yaml
-format:
-  cnam-thesis-html:
-    comments:
-      hypothesis:
-        theme: clean   # clean = discret ; classic = barre latérale toujours visible
-```
-
-Créer ensuite un groupe privé sur [hypothes.is](https://hypothes.is) et partager le lien
-d'invitation aux relecteurs. Hypothesis est désactivé par défaut dans tous les profils.
 
 ## Pages liminaires spéciales {#sec-liminaires}
 

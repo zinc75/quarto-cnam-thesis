@@ -70,6 +70,9 @@ plt.tight_layout()
 ```
 ````
 
+{{< pagebreak >}}
+
+
 ::: {.render-demo}
 **Output:**
 
@@ -195,6 +198,9 @@ accompanied by replacement content visible in HTML:
 Example TikZ figure inserted as raw LaTeX.
 :::
 ````
+
+{{< pagebreak >}}
+
 
 ::: {.render-demo}
 **Output:**

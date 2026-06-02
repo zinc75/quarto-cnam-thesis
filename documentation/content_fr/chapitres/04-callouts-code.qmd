@@ -152,6 +152,9 @@ toujours en entier (le repliement est une fonctionnalité HTML uniquement).
 :::
 ````
 
+{{< pagebreak >}}
+
+
 ::: {.render-demo}
 **Rendu :** 
 

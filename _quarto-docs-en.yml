@@ -31,7 +31,8 @@ book:
     - documentation/content_en/chapters/02-figures.qmd
     - documentation/content_en/chapters/03-equations-tables.qmd
     - documentation/content_en/chapters/04-callouts-code.qmd
-    - documentation/content_en/chapters/05-references-annotations.qmd
+    - documentation/content_en/chapters/05-bib-references-glossary.qmd
+    - documentation/content_en/chapters/06-annotations-comments.qmd
     - documentation/content_en/backmatter/conclusion.qmd
     - documentation/content_en/backmatter/bibliography.qmd            # between conclusion and appendices / entre conclusion et annexes
   appendices:

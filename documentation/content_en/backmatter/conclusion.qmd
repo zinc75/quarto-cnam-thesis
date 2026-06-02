@@ -31,10 +31,12 @@ self-sufficient as documentation.
 | ^ | `{.callout-important}` | 4 |
 | ^ | `{.callout-caution}` | 4 |
 | ===  | | |
-| [References]{rs=4} | `[@key]` / `[@key1; @key2]` | 5 |
+| [References and acronyms]{rs=2} | `[@key]` / `[@key1; @key2]` | 5 |
 | ^ | `{{</* acr */>}}`, `{{</* terme */>}}`, `{{</* acrs */>}}` | 5 |
-| ^ | `{{</* comment */>}}`, `{{</* todo */>}}`, `{{</* note */>}}` | 5 |
-| ^ | `.resume-block`, `.abstract-block` | 5 |
+| ===  | | |
+| Frontmatter pages |`.resume-block`, `.abstract-block` | 5 |
+| ===  | | |
+| Proofreading comments | `{{</* comment */>}}`, `{{</* todo */>}}`, `{{</* note */>}}`, `{{</* question */>}}` | 6 |
 
 : Summary of all documented features. {#tbl-conclusion}
 

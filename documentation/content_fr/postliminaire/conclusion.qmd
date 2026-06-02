@@ -31,10 +31,12 @@ rendre le template autonome comme documentation.
 | ^ | `{.callout-important}` | 4 |
 | ^ | `{.callout-caution}` | 4 |
 | ===  | | |
-| [Références]{rs=4} | `[@clé]` / `[@clé1; @clé2]` | 5 |
+| [Références, acronymes]{rs=2} | `[@clé]` / `[@clé1; @clé2]` | 5 |
 | ^ | `{{</* acr */>}}`, `{{</* terme */>}}`, `{{</* acrs */>}}` | 5 |
-| ^ | `{{</* comment */>}}`, `{{</* todo */>}}`, `{{</* note */>}}` | 5 |
-| ^ | `.resume-block`, `.abstract-block` | 5 |
+| ===  | | |
+| Pages liminaires |`.resume-block`, `.abstract-block` | 5 |
+| ===  | | |
+| Commentaires de relecture|`{{</* comment */>}}`, `{{</* todo */>}}`, `{{</* note */>}}`, `{{</* question */>}}` | 6 |
 
 : Récapitulatif de toutes les fonctionnalités documentées. {#tbl-conclusion}
 

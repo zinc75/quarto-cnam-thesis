@@ -72,6 +72,9 @@ plt.tight_layout()
 ```
 ````
 
+{{< pagebreak >}}
+
+
 ::: {.render-demo}
 **Rendu :**
 
@@ -197,6 +200,9 @@ d'un contenu de remplacement visible en HTML :
 Exemple de figure TikZ insérée en LaTeX brut.
 :::
 ````
+
+{{< pagebreak >}}
+
 
 ::: {.render-demo}
 **Rendu :**
