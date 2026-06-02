@@ -181,6 +181,14 @@ local pass1 = {
       meta["header-includes"] = hi
     end
 
+    -- Map extensions["quarto-comments"] → meta.comments so that template.tex
+    -- can access it as $if(comments.enabled)$, $if(comments.wide_margins)$, etc.
+    -- (Pandoc template syntax cannot index a map with a hyphenated key directly.)
+    if FORMAT == "latex" then
+      local qc = meta.extensions and meta.extensions["quarto-comments"]
+      if qc then meta.comments = qc end
+    end
+
     return meta
   end
 }

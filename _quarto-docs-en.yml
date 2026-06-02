@@ -60,3 +60,6 @@ extensions:
   quarto-comments:
     enabled: true
     show_list: true
+    wide_margins: true
+    extra_margin: "4.5cm"
+

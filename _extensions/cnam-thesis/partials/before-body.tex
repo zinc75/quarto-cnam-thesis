@@ -1,15 +1,35 @@
 % \dominitoc MUST precede any \chapter
 \dominitoc
+
+% wide_margins glue — keep the cover page at the standard paper size.
+% The quarto-comments extension widens \pdfpagewidth and \paperwidth at
+% \AtBeginDocument (i.e. BEFORE this cover). We undo that widening here so the
+% title page ships at A4, then re-apply it in template.tex AFTER \restoregeometry.
+% Both registers are restored together below so TikZ's `current page` (which reads
+% \paperwidth) and the physical page (\pdfpagewidth) stay consistent. /
+% Glue wide_margins — garder la page de garde au format standard.
+% L'extension élargit \pdfpagewidth et \paperwidth dans \AtBeginDocument (donc AVANT
+% cette page de garde). On annule l'élargissement ici pour que la couverture reste en
+% A4, puis on le ré-applique dans template.tex APRÈS \restoregeometry.
+\ifdefined\qtcExtraMargin
+  \addtolength{\pdfpagewidth}{-\qtcExtraMargin}%
+  \addtolength{\paperwidth}{-\qtcExtraMargin}%
+\fi
+
 % Lowercase roman numbering for front matter (when pagestyle-sections: true)
 $if(pagestyle-sections)$
 \frontmatter
 $endif$
 \thispagestyle{empty}
 
-% Cover page margins — symmetric left/right for balanced on-screen rendering
-% (the official Cnam template used left=5mm / right=18mm for a printed document
-% with binding; for digital distribution, symmetry is preferred)
-% Resulting \textwidth = 210 - 13 - 13 = 184 mm; tcolorbox at 165 mm fits fine
+% Cover page: temporary geometry, overrides the twoside layout for this page only.
+% \newgeometry cannot change paper size, so it does not affect \pdfpagewidth.
+% \restoregeometry after the cover brings back the twoside geometry (inner=2.5cm /
+% outer=2cm); the body layout block in template.tex then finalises the TeX registers.
+% Resulting \textwidth = 210 − 13 − 13 = 184 mm; tcolorbox at 165 mm fits fine. /
+% Page de garde : géométrie temporaire qui surcharge le twoside pour cette page.
+% \restoregeometry rétablit la géométrie twoside ; le bloc corps de template.tex
+% finalise ensuite les registres TeX.
 \newgeometry{
   left=13mm,
   top=15mm,

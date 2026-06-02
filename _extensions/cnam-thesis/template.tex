@@ -39,21 +39,17 @@ $endif$
 \usepackage{theorem}
 \usepackage{units}
 
-% Page layout — geometry before any redefinition
-% When comments are enabled, the right margin is widened for todonotes. /
-% Quand les commentaires sont activés, la marge droite est élargie pour les todonotes.
-% asymmetric: disables twoside margin mirroring so the right margin stays wide on ALL
-% pages (odd and even). todonotes uses \marginnote which always places notes on the
-% right regardless of twoside — without asymmetric, even pages have right=2.5cm
-% (binding side) and notes overflow. Headers/footers are unaffected by asymmetric. /
-% asymmetric : désactive le miroir twoside pour les marges, la marge droite reste
-% large sur toutes les pages. \marginnote va toujours à droite ; sans asymmetric les
-% pages paires ont droite=2.5cm (reliure) et les notes débordent.
-$if(comments.enabled)$
-\usepackage[top=2cm, bottom=2cm, left=2.5cm, right=4.5cm, headheight=15pt]{geometry}
-$else$
-\usepackage[top=2cm, bottom=2cm, left=2.5cm, right=2cm, headheight=15pt]{geometry}
-$endif$
+% Page layout — geometry before any redefinition.
+% inner=2.5cm (binding) / outer=2cm — twoside book class mirrors these per page parity.
+% When wide_margins is active, the quarto-comments extension widens the outer margin at
+% \AtBeginDocument by adding qtcExtraMargin to pdfpagewidth, paperwidth and evensidemargin;
+% the cnam-thesis body block re-applies these values after \restoregeometry so the cover
+% page stays at the standard paper size. /
+% inner=2.5cm (reliure) / outer=2cm — la classe book twoside miroire ces valeurs selon la
+% parité. Quand wide_margins est actif, l'extension élargit la marge extérieure à
+% \AtBeginDocument ; le bloc corps de cnam-thesis ré-applique ces valeurs après
+% \restoregeometry afin que la page de garde reste en A4 standard.
+\usepackage[top=2cm, bottom=2cm, inner=2.5cm, outer=2cm, headheight=15pt]{geometry}
 \usepackage{fancyhdr}
 \usepackage{setspace}
 \usepackage{indentfirst}
@@ -129,10 +125,12 @@ $endif$
 \usepackage[normalem]{ulem}       % \dashuline for dashed URL underline; normalem preserves \emph
 
 % Collaborative margin comments (zinc75/quarto-comments extension).
-% Loaded only when comments: enabled: true. /
-% Chargé uniquement si comments: enabled: true.
 % \marginparwidth must be set BEFORE loading todonotes. /
 % \marginparwidth doit être défini AVANT le chargement de todonotes.
+% When wide_margins is active the extension resets marginparwidth at \AtBeginDocument;
+% the body layout block re-applies the correct value after \restoregeometry. /
+% Quand wide_margins est actif l'extension remet marginparwidth à l'heure dans
+% \AtBeginDocument ; le bloc de mise en page du corps ré-applique la valeur correcte.
 $if(comments.enabled)$
 \setlength{\marginparwidth}{3.5cm}
 \usepackage{todonotes}
@@ -435,10 +433,18 @@ $endif$
 
 $before-body.tex()$
 
-% Main layout dimensions — applied after the cover page.
-% Top/bottom margins balanced to ~2cm of white space on each side:
-%   top   : 1in + \voffset + \topmargin = 72pt - 15pt = 57pt ≈ 2.0cm
-%   bottom: A4(845pt) - 57pt - 30pt - 25pt - 650pt - 25pt = 58pt ≈ 2.0cm
+% Main layout dimensions — applied after the cover page (\restoregeometry).
+% Vertical: top/bottom balanced to ~2cm white space on each side:
+%   top   : 1in + \voffset + \topmargin = 72pt − 15pt = 57pt ≈ 2.0cm
+%   bottom: A4(845pt) − 57pt − 30pt − 25pt − 650pt − 25pt = 58pt ≈ 2.0cm
+% Horizontal: true twoside book layout — inner=2.5cm (binding), outer=2cm.
+%   Formula: register = desired_margin − 1in   (with \hoffset = 0).
+%   \hoffset MUST stay 0: a non-zero \hoffset shifts eso-pic's shipout background
+%   picture (used by the wide_margins grey zone) by that amount, so the TikZ
+%   `current page` overlay no longer aligns with the physical sheet edge. /
+% Horizontal : vrai twoside — intérieure=2.5cm (reliure), extérieure=2cm.
+%   \hoffset DOIT rester à 0 : un \hoffset non nul décale l'image de fond eso-pic
+%   (zone grise wide_margins), désalignant l'overlay `current page` du bord réel.
 \setlength{\baselineskip}{1.5\baselineskip}
 \setlength{\voffset}{0pt}
 \setlength{\topmargin}{-38pt}
@@ -446,37 +452,59 @@ $before-body.tex()$
 \setlength{\headsep}{25pt}
 \setlength{\textheight}{697pt}
 \setlength{\footskip}{25pt}
-\setlength{\hoffset}{-15pt}
-\setlength{\oddsidemargin}{0pt}
-\setlength{\evensidemargin}{0pt}
-\setlength{\textwidth}{420pt}
+\setlength{\hoffset}{0pt}
+\setlength{\oddsidemargin}{\dimexpr 2.5cm - 1in\relax}   % odd  left = inner/binding 2.5 cm
+\setlength{\evensidemargin}{\dimexpr 2.0cm - 1in\relax}  % even left = outer 2.0 cm
 \setlength{\marginparsep}{10pt}
 \setlength{\marginparwidth}{40pt}
 \parskip=4pt
-% \setlength{\textwidth}{420pt} above only changes the LaTeX register,
-% NOT \hsize (the actual TeX parameter controlling paragraph width, managed
-% by geometry). Resync \textwidth to \hsize so that fancyhdr sees
-% \headwidth = \textwidth and applies no lateral offset.
-% Without this line, fancyhdr computes offset = (\hsize - 420pt)/2 and
-% double-counts it on even twoside pages → header runs off the page.
+% Resync \textwidth to \hsize so fancyhdr computes \headwidth correctly.
+% geometry manages \hsize from the original paper; this sync prevents fancyhdr
+% from double-counting the lateral offset on even twoside pages. /
+% Resynchronise \textwidth sur \hsize pour que fancyhdr calcule \headwidth correctement.
 \setlength{\textwidth}{\hsize}
 
-% Resync lateral margins overridden by the hardcoded Cnam block above. /
-% Resynchronise les marges latérales écrasées par le bloc Cnam ci-dessus.
-% The block hardcodes \oddsidemargin=0pt and \evensidemargin=0pt, which works
-% accidentally for the default narrow-margin layout (both ≈ 2 cm) but breaks
-% twoside margin placement when comments widen the outer margin. /
-% Le bloc fixe oddsidemargin=0 et evensidemargin=0, ce qui fonctionne par
-% coïncidence pour les marges étroites mais casse le twoside avec marge élargie.
-% Formula: margin_register = desired_margin − 1in + |hoffset|
-%          (with \hoffset = −15pt hardcoded above, so +15pt here) /
-% Formule : registre = marge_souhaitée − 1in + |hoffset|
+% Wide-margins and comments lateral re-sync (applied after the block above). /
+% Resynchronisation des marges latérales pour les commentaires et wide_margins.
 $if(comments.enabled)$
-\setlength{\oddsidemargin}{\dimexpr 2.5cm - 1in + 15pt\relax}   % odd  left  = 2.5 cm (inner/binding)
-\setlength{\evensidemargin}{\dimexpr 4.5cm - 1in + 15pt\relax}  % even left  = 4.5 cm (outer, notes margin)
-% Also restore \marginparwidth overridden by the hardcoded \setlength{\marginparwidth}{40pt} above. /
-% Restaure aussi \marginparwidth écrasé par \setlength{\marginparwidth}{40pt} ci-dessus.
-\setlength{\marginparwidth}{3.5cm}
+% When wide_margins is active, the quarto-comments extension defined qtcExtraMargin /
+% qtcInnerPad at \AtBeginDocument. before-body.tex undid the page widening for the
+% cover; we RE-APPLY it here (now that \restoregeometry has run) on BOTH the physical
+% page (\pdfpagewidth) and the TikZ reference (\paperwidth) so the grey annotation zone
+% drawn from `current page.east/west` lands at the true paper edge — not the old A4 edge.
+% twoside: odd pages annotate right (outer), even pages left (outer); the book class
+% mirrors the text block by parity and the extension mirrors the grey zone to match. /
+% Si wide_margins est actif, l'extension a défini qtcExtraMargin / qtcInnerPad dans
+% \AtBeginDocument. before-body.tex a annulé l'élargissement pour la page de garde ;
+% on le RÉ-APPLIQUE ici (après \restoregeometry) sur \pdfpagewidth ET \paperwidth pour
+% que la zone grise dessinée depuis `current page` tombe au vrai bord du papier.
+\ifdefined\qtcExtraMargin
+  \addtolength{\pdfpagewidth}{\qtcExtraMargin}%
+  % Sync \paperwidth exactly to the physical sheet (\pdfpagewidth) rather than
+  % adding qtcExtraMargin independently: \restoregeometry leaves a small residual
+  % offset between the two registers, which would make pgf's `current page` (read
+  % from \paperwidth) fall ~16pt short of the real sheet edge. /
+  % Synchronise \paperwidth sur \pdfpagewidth : \restoregeometry laisse un léger
+  % décalage entre les deux registres, ce qui ferait que `current page` (lu depuis
+  % \paperwidth) s'arrête ~16pt avant le vrai bord de la feuille.
+  \setlength{\paperwidth}{\pdfpagewidth}%
+  % Outer margin widened by qtcExtraMargin on the annotation side. /
+  % Marge extérieure élargie de qtcExtraMargin du côté annotations.
+  \setlength{\evensidemargin}{\dimexpr 2.0cm - 1in + \qtcExtraMargin\relax}%
+  % marginpar placed inside the grey zone with qtcInnerPad breathing room each side.
+  % sep = original outer margin (2cm) + inner pad; width = zone − 2×pad. /
+  % marginpar placé dans la zone grise avec qtcInnerPad de marge de chaque côté.
+  \setlength{\marginparsep}{\dimexpr 2.0cm + \qtcInnerPad\relax}%
+  \setlength{\marginparwidth}{\dimexpr\qtcExtraMargin - 2\qtcInnerPad\relax}%
+\else
+  % wide_margins off: paper stays A4, notes live in the 2cm outer margin.
+  % Size the note box to fit: marginparsep + marginparwidth + ~4pt pad <= 2cm,
+  % otherwise a 3.5cm note overflows the sheet edge (right on odd, left on even). /
+  % wide_margins désactivé : le papier reste A4, les notes tiennent dans la marge
+  % extérieure de 2cm. On dimensionne la boîte pour qu'elle ne déborde pas.
+  \setlength{\marginparsep}{8pt}%
+  \setlength{\marginparwidth}{\dimexpr 2cm - 8pt - 4pt\relax}%
+\fi
 $endif$
 
 \pagestyle{fancy}
