@@ -302,4 +302,8 @@ Contributions are welcome.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) © 2026 Éric Bavu.
+
+The MIT license covers the template itself (code, styles, scripts and the example
+documentation). The thesis content you write with it is yours — the template
+claims nothing over it.
