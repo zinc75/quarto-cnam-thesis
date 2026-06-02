@@ -2,18 +2,17 @@
 \dominitoc
 
 % wide_margins glue — keep the cover page at the standard paper size.
-% The quarto-comments extension widens \pdfpagewidth and \paperwidth at
-% \AtBeginDocument (i.e. BEFORE this cover). We undo that widening here so the
-% title page ships at A4, then re-apply it in template.tex AFTER \restoregeometry.
-% Both registers are restored together below so TikZ's `current page` (which reads
-% \paperwidth) and the physical page (\pdfpagewidth) stay consistent. /
-% Glue wide_margins — garder la page de garde au format standard.
-% L'extension élargit \pdfpagewidth et \paperwidth dans \AtBeginDocument (donc AVANT
-% cette page de garde). On annule l'élargissement ici pour que la couverture reste en
-% A4, puis on le ré-applique dans template.tex APRÈS \restoregeometry.
-\ifdefined\qtcExtraMargin
-  \addtolength{\pdfpagewidth}{-\qtcExtraMargin}%
-  \addtolength{\paperwidth}{-\qtcExtraMargin}%
+% The quarto-comments extension applies \qtcWideOn at \AtBeginDocument (i.e. BEFORE
+% this cover), widening the page. \qtcWideOff restores the original A4 registers and
+% disables the grey zone, so the title page ships at A4. The per-chapter scoping in
+% the body (template.tex baseline + cnam-thesis.lua filter) re-enables widening only
+% where comments occur. /
+% Glue wide_margins — garder la page de garde en A4. L'extension applique \qtcWideOn
+% à \AtBeginDocument (donc AVANT cette page de garde) ; \qtcWideOff restaure l'A4 et
+% désactive la zone grise pour la couverture. Le scoping par chapitre (corps) ré-active
+% l'élargissement uniquement là où il y a des commentaires.
+\ifdefined\qtcWideOff
+  \qtcWideOff
 \fi
 
 % Lowercase roman numbering for front matter (when pagestyle-sections: true)

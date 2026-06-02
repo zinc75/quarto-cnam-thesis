@@ -464,44 +464,26 @@ $before-body.tex()$
 % Resynchronise \textwidth sur \hsize pour que fancyhdr calcule \headwidth correctement.
 \setlength{\textwidth}{\hsize}
 
-% Wide-margins and comments lateral re-sync (applied after the block above). /
-% Resynchronisation des marges latérales pour les commentaires et wide_margins.
+% Comments lateral layout (applied after the cover block above). /
+% Mise en page latérale des commentaires (appliquée après le bloc page de garde).
 $if(comments.enabled)$
-% When wide_margins is active, the quarto-comments extension defined qtcExtraMargin /
-% qtcInnerPad at \AtBeginDocument. before-body.tex undid the page widening for the
-% cover; we RE-APPLY it here (now that \restoregeometry has run) on BOTH the physical
-% page (\pdfpagewidth) and the TikZ reference (\paperwidth) so the grey annotation zone
-% drawn from `current page.east/west` lands at the true paper edge — not the old A4 edge.
-% twoside: odd pages annotate right (outer), even pages left (outer); the book class
-% mirrors the text block by parity and the extension mirrors the grey zone to match. /
-% Si wide_margins est actif, l'extension a défini qtcExtraMargin / qtcInnerPad dans
-% \AtBeginDocument. before-body.tex a annulé l'élargissement pour la page de garde ;
-% on le RÉ-APPLIQUE ici (après \restoregeometry) sur \pdfpagewidth ET \paperwidth pour
-% que la zone grise dessinée depuis `current page` tombe au vrai bord du papier.
-\ifdefined\qtcExtraMargin
-  \addtolength{\pdfpagewidth}{\qtcExtraMargin}%
-  % Sync \paperwidth exactly to the physical sheet (\pdfpagewidth) rather than
-  % adding qtcExtraMargin independently: \restoregeometry leaves a small residual
-  % offset between the two registers, which would make pgf's `current page` (read
-  % from \paperwidth) fall ~16pt short of the real sheet edge. /
-  % Synchronise \paperwidth sur \pdfpagewidth : \restoregeometry laisse un léger
-  % décalage entre les deux registres, ce qui ferait que `current page` (lu depuis
-  % \paperwidth) s'arrête ~16pt avant le vrai bord de la feuille.
-  \setlength{\paperwidth}{\pdfpagewidth}%
-  % Outer margin widened by qtcExtraMargin on the annotation side. /
-  % Marge extérieure élargie de qtcExtraMargin du côté annotations.
-  \setlength{\evensidemargin}{\dimexpr 2.0cm - 1in + \qtcExtraMargin\relax}%
-  % marginpar placed inside the grey zone with qtcInnerPad breathing room each side.
-  % sep = original outer margin (2cm) + inner pad; width = zone − 2×pad. /
-  % marginpar placé dans la zone grise avec qtcInnerPad de marge de chaque côté.
-  \setlength{\marginparsep}{\dimexpr 2.0cm + \qtcInnerPad\relax}%
-  \setlength{\marginparwidth}{\dimexpr\qtcExtraMargin - 2\qtcInnerPad\relax}%
+% \qtcWideOff exists only when wide_margins is on. Its presence selects per-chapter
+% scoping (phase 3): we set the baseline to OFF here so the front matter and any
+% chapter without comments stay A4 with no grey zone. The cnam-thesis.lua filter then
+% injects \qtcWideOn after the heading of chapters that contain comments (and
+% \qtcWideOff after the others). \qtcWideOn sets \pdfpagewidth AND \paperwidth to the
+% same widened value, so pgf's `current page` grey zone lands at the true sheet edge. /
+% \qtcWideOff n'existe que si wide_margins est actif → on pose la base à OFF ici (front
+% matter et chapitres sans commentaire en A4, sans zone grise), puis cnam-thesis.lua
+% injecte \qtcWideOn après le titre des chapitres commentés.
+\ifdefined\qtcWideOff
+  \qtcWideOff
 \else
-  % wide_margins off: paper stays A4, notes live in the 2cm outer margin.
+  % wide_margins off entirely: paper stays A4, notes live in the 2cm outer margin.
   % Size the note box to fit: marginparsep + marginparwidth + ~4pt pad <= 2cm,
   % otherwise a 3.5cm note overflows the sheet edge (right on odd, left on even). /
-  % wide_margins désactivé : le papier reste A4, les notes tiennent dans la marge
-  % extérieure de 2cm. On dimensionne la boîte pour qu'elle ne déborde pas.
+  % wide_margins totalement désactivé : papier A4, notes dans la marge de 2cm.
+  % On dimensionne la boîte pour qu'elle ne déborde pas.
   \setlength{\marginparsep}{8pt}%
   \setlength{\marginparwidth}{\dimexpr 2cm - 8pt - 4pt\relax}%
 \fi

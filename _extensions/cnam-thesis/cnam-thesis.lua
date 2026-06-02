@@ -88,6 +88,67 @@ local minitoc_newpage    = false
 local chapter_openright  = true   -- default: openright (double-sided printing)
 local pagestyle_sections = false  -- differentiated page numbering per section
 
+-- Phase 3 — per-chapter wide_margins scoping (set by pass1, used by pass_wide).
+-- wide_scoping: true only when comments + wide_margins are on AND output is LaTeX.
+-- comment_chapter_titles: set of normalised chapter titles (from the source files
+-- listed in book.chapters/appendices) that contain a real comment shortcode. /
+-- Phase 3 — élargissement limité aux chapitres avec commentaires.
+local wide_scoping = false
+local comment_chapter_titles = {}
+
+-- Normalise a title for matching (collapse whitespace, trim).
+local function norm_title(s)
+  return (s:gsub("%s+", " "):gsub("^ ", ""):gsub(" $", ""))
+end
+
+-- Scan one source .qmd file: return its first level-1 title (with trailing {…}
+-- attributes stripped) and whether it contains a real comment shortcode
+-- ({{< comment|todo|note|question …>}}). Fenced code blocks are skipped (escaped
+-- examples live there) and escaped shortcodes ({{</* …*/>}}, "/" right after "{{<")
+-- never match the "{{<%s+" pattern. Returns nil if the file cannot be opened. /
+-- Scanne un .qmd : titre de niveau 1 + présence d'un vrai shortcode de commentaire.
+local function scan_source_file(path)
+  local f = io.open(path, "r")
+  if not f then return nil, false end
+  local title, has, in_fence = nil, false, false
+  for line in f:lines() do
+    if line:match("^%s*```") or line:match("^%s*~~~") then
+      in_fence = not in_fence
+    elseif not in_fence then
+      if not title then
+        local t = line:match("^#%s+(.+)$")
+        if t then title = (t:gsub("%s*%b{}%s*$", "")) end
+      end
+      if not has and (line:find("{{<%s+comment") or line:find("{{<%s+todo")
+        or line:find("{{<%s+note") or line:find("{{<%s+question")) then
+        has = true
+      end
+    end
+  end
+  f:close()
+  return title, has
+end
+
+-- Collect source paths from a book metalist (chapters / appendices), resolving
+-- them against the project directory when the relative path is not found. /
+-- Collecte les chemins source d'une liste book (chapitres / annexes).
+local function scan_book_list(metalist)
+  if not metalist then return end
+  local projdir = os.getenv("QUARTO_PROJECT_DIR")
+  for _, el in ipairs(metalist) do
+    local p = pandoc.utils.stringify(el)
+    if p ~= "" then
+      local title, has = scan_source_file(p)
+      if title == nil and projdir then
+        title, has = scan_source_file(projdir .. "/" .. p)
+      end
+      if title and has then
+        comment_chapter_titles[norm_title(title)] = true
+      end
+    end
+  end
+end
+
 -- State for the front matter → main matter transition (pagestyle-sections).
 -- Triggered on the first chapter WITHOUT .toc-black (including Introduction).
 local mainmatter_started = false
@@ -186,10 +247,56 @@ local pass1 = {
     -- (Pandoc template syntax cannot index a map with a hyphenated key directly.)
     if FORMAT == "latex" then
       local qc = meta.extensions and meta.extensions["quarto-comments"]
-      if qc then meta.comments = qc end
+      if qc then
+        meta.comments = qc
+        -- Phase-3 scoping: only when comments + wide_margins are on. Pre-scan the
+        -- source files (book.chapters/appendices) to know which chapters carry a
+        -- comment, since the shortcodes are opaque custom nodes in the AST. /
+        -- Scoping phase 3 : pré-scan des fichiers sources pour repérer les chapitres
+        -- commentés (les shortcodes sont des custom nodes opaques dans l'AST).
+        local enabled = read_bool(qc.enabled, true)
+        local wide    = read_bool(qc.wide_margins, false)
+        wide_scoping  = enabled and wide
+        if wide_scoping and meta.book then
+          scan_book_list(meta.book.chapters)
+          scan_book_list(meta.book.appendices)
+        end
+      end
     end
 
     return meta
+  end
+}
+
+-- Pass (phase 3): per-chapter wide_margins scoping. Runs BEFORE pass2 so every
+-- chapter is still a clean level-1 Header (pass2 later turns short-title chapters
+-- into raw \chapter). Segments the top-level blocks by level-1 Header and inserts
+-- \qtcWideOn right after the heading of chapters whose title is in
+-- comment_chapter_titles, \qtcWideOff otherwise. \qtcWideOn/\qtcWideOff (defined by
+-- the quarto-comments extension when wide_margins is on) toggle the page widening
+-- (read at \shipout) and gate the grey zone via \ifqtcWide; \chapter issues
+-- \clearpage so each toggle lands on a page boundary. /
+-- Passe phase 3 : segmente par Header niveau 1 (avant pass2) et injecte
+-- \qtcWideOn/\qtcWideOff selon que le titre du chapitre est dans la liste des
+-- chapitres commentés (pré-calculée depuis les fichiers sources par pass1).
+local pass_wide = {
+  Pandoc = function(doc)
+    if not wide_scoping then return nil end
+    local blocks = doc.blocks
+    local n = #blocks
+    local out = pandoc.List()
+    local i = 1
+    while i <= n do
+      local b = blocks[i]
+      out:insert(b)
+      if b.t == "Header" and b.level == 1 then
+        local on = comment_chapter_titles[norm_title(pandoc.utils.stringify(b))] == true
+        out:insert(pandoc.RawBlock("latex", on and "\\qtcWideOn" or "\\qtcWideOff"))
+      end
+      i = i + 1
+    end
+    doc.blocks = out
+    return doc
   end
 }
 
@@ -447,4 +554,4 @@ local pass3 = {
   end
 }
 
-return { pass1, pass2, pass3 }
+return { pass1, pass_wide, pass2, pass3 }
