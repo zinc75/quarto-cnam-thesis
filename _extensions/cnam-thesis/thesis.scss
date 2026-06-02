@@ -851,6 +851,24 @@ div.sourceCode pre {
 // Déplacé dans main.content par repositionPageNav() pour hériter de la largeur
 // de la colonne de contenu plutôt que de couvrir les trois colonnes flex.
 
+// repositionPageNav() appends this nav into main.content, a CSS grid (.page-columns).
+// Quarto's own rule `.page-columns .page-navigation` (specificity 0,0,2,0) sets
+//   grid-column: body-content-start/body-content-end; grid-row: content-bottom/page-bottom
+// but the named ROW lines content-bottom/page-bottom exist only in Quarto's OUTER grid,
+// NOT inside main.page-columns. There that grid-row is invalid → the nav is auto-placed,
+// and as soon as the page has .column-margin items (hoisted margin comments) it lands in
+// an early gap, between the title and the first section. We override with a higher-
+// specificity selector (0,0,2,1): keep the body-content column (content width) and force
+// the nav onto a very late implicit row so it always sits at the bottom (empty implicit
+// rows collapse to 0). /
+// Les lignes de rangée nommées de Quarto n'existent pas dans main.page-columns → grid-row
+// invalide → nav remontée dès qu'il y a des .column-margin. On surcharge avec une règle
+// plus spécifique : colonne body + rangée très basse (rangées vides = 0 px).
+.page-columns nav.page-navigation {
+  grid-column: body-content-start / body-content-end;
+  grid-row: 9999;
+}
+
 nav.page-navigation {
   display: flex;
   justify-content: space-between;
