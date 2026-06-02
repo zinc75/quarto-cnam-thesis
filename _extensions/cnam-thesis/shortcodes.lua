@@ -449,9 +449,38 @@ local function listoftodos(args, kwargs, meta)
     and pandoc.utils.stringify(meta["thesis-lang"]) or "fr"
   local toc_title = lang == "fr" and "Commentaires de relecture" or "Proofreading comments"
 
+  -- Styled list box — mirrors the upstream quarto-comments styling that is
+  -- normally injected via include_text("before-body", ...). That injection is
+  -- silently dropped in cnam-thesis because the before-body.tex partial does not
+  -- expose the Pandoc $before-body$ variable, so we reproduce the same grey,
+  -- dashed-border tcolorbox here (template glue), reusing the extension's
+  -- frame_color / frame_line config keys (same defaults as upstream).
+  -- Title + TOC entry use cnam's "frontchap" style (front-matter chapter); only
+  -- the list content (\@starttoc{tdo}) is wrapped in the box. /
+  -- Boîte stylée — reproduit le stylage upstream (injecté via before-body, perdu
+  -- chez cnam) : tcolorbox gris, bordure pointillée, en réutilisant frame_color /
+  -- frame_line. tcolorbox + skins,breakable sont déjà chargés par template.tex.
+  local function read_str(v, default)
+    if v == nil then return default end
+    return pandoc.utils.stringify(v)
+  end
+  -- Border in Cnam red (redHESAM, defined in template.tex) to match the theme;
+  -- background stays the light grey from frame_color. /
+  -- Bordure en rouge Cnam (redHESAM) pour s'accorder au thème ; fond gris clair.
+  local fc = read_str(config_meta.frame_color, "gray!10")
+  local fl = read_str(config_meta.frame_line,  "redHESAM")
+
   return pandoc.RawBlock("tex",
-    "\\clearpage\\listoftodos[" .. toc_title .. "]\n" ..
-    "\\addcontentsline{toc}{frontchap}{" .. toc_title .. "}")
+    "\\clearpage\n" ..
+    "\\chapter*{" .. toc_title .. "}\n" ..
+    "\\addcontentsline{toc}{frontchap}{" .. toc_title .. "}\n" ..
+    "\\makeatletter\n" ..
+    "\\begin{tcolorbox}[enhanced,colback={" .. fc .. "},colframe=white,arc=5pt," ..
+    "borderline={0.5pt}{0pt}{{" .. fl .. "},dashed}," ..
+    "left=8pt,right=8pt,top=6pt,bottom=6pt,breakable]\n" ..
+    "\\@starttoc{tdo}\n" ..
+    "\\end{tcolorbox}\n" ..
+    "\\makeatother")
 end
 
 return {
