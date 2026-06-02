@@ -301,6 +301,18 @@ main.content {
     padding: 1rem 0.75rem;
   }
 
+  // Quarto fades the margin TOC out (opacity 0) when margin content (.column-margin,
+  // e.g. hoisted comments) would collide with it — collision avoidance for its
+  // single-margin layout. cnam puts the TOC in its OWN column, separate from the
+  // content's margin, so that fade is spurious: it blanks the TOC whenever a comment
+  // scrolls level with it. Force it visible. /
+  // Quarto masque la TOC (opacity 0) quand du contenu de marge la chevaucherait. Dans
+  // le layout cnam la TOC est dans sa propre colonne → ce masquage est parasite. On
+  // force la TOC visible.
+  #quarto-margin-sidebar nav#TOC {
+    opacity: 1 !important;
+  }
+
   // Hide right panel when its TOC has no items (no subsections on this page).
   // With flex, display:none automatically collapses the column — no padding hack needed.
   // Avec flex, display:none réduit automatiquement la colonne — pas besoin de padding.
