@@ -109,10 +109,10 @@ The {{< acrs cnam >}} ({{< acrl cnam >}}) was founded in 1794. The
 ::: {.callout-note}
 ## PDF vs HTML behaviour
 
-In PDF, `{{< gls label >}}` expands on the first occurrence (long form + abbreviation
+In PDF, `{{</* gls label */>}}` expands on the first occurrence (long form + abbreviation
 in parentheses) then uses the short form. In HTML, this first-occurrence logic is not
 handled by the shortcode — it always produces the short form. For consistency, prefer
-`{{< acrf label >}}` on the first occurrence in the text, and `{{< acrs label >}}`
+`{{</* acrf label */>}}` on the first occurrence in the text, and `{{</* acrs label */>}}`
 thereafter.
 :::
 
@@ -120,8 +120,8 @@ thereafter.
 
 ### Configuration in `_quarto.yml`
 
-The `quarto-comments` extension (folder `_extensions/comments/`) is configured via
-the `extensions.quarto-comments:` key in `_quarto.yml`:
+The `quarto-comments` extension (folder `_extensions/comments/`) is configured in
+`_quarto.yml`, via the `quarto-comments:` key placed under the `extensions:` block {{< todo "You will need to walk me through your various YAML files at our next progress meeting." author="ag" >}}:
 
 ````yaml
 extensions:
@@ -153,18 +153,12 @@ extensions:
 
 **Rendered in context:**
 
-Here is a sentence with a comment from the thesis supervisor (who added it directly
-in the `.qmd` file, because that is how it works!).
+Here is a sentence with a comment from the thesis supervisor (who added it directly in the {{< comment "This is a comment, to show that I too — Abbé Grégoire — am perfectly capable of editing a Quarto Markdown file myself!" author="ag" >}} `.qmd` file, because he is not shy about it!).
 
-{{< comment "This is a 'comment' type annotation by the supervisor." author="ag" >}}
+These comments are visible **only** if the `quarto-comments` option is set to `enabled: true` {{< todo "Remember to set this option to `false` before submitting to the reviewers!" author="eb" >}} in the `yaml` file — which is the case for this documentation.
 
-These annotations are only visible when `enabled: true` is set under
-`extensions.quarto-comments` in `_quarto.yml` — which is the case for this documentation.
 
-{{< todo "Remember to set this option to `false` before submitting to the reviewers!" author="eb" >}}
-
-An inline note can be added without pushing the surrounding text to the margin:
-a bibliographic reference {{< note "See Knuth 1984, chapter 12." author="ag" inline=true >}} stays in the text flow.
+It is also possible to add "long" inline comments {{< note "See Knuth 1984, chapter 12 — it would really be worth adding a discussion of this work here to show off all your knowledge of the existing literature, young apprentice." author="ag" inline=true >}} without taking up any space in the document margin. Useful to flesh out the text and add whole paragraphs. Note that, visually, the "inline" comment automatically breaks onto its own line and separates from the text in the PDF version, even when inserted mid-sentence.
 
 ::: {.callout-note}
 ## `inline=true` occupies the full line in PDF
@@ -173,8 +167,23 @@ In HTML, `inline=true` annotations appear as a compact coloured span, exactly
 as wide as their content. In PDF, the `todonotes` package renders `\todo[inline]`
 as a full-width coloured block — this is a design constraint of the package that
 cannot be worked around without losing the ability to wrap long annotations across
-lines. Use `inline=true` for short notes that must stay in the text flow; for
-longer annotations, omit `inline` to place the note in the margin instead.
+lines.
+:::
+
+::: {.callout-tip}
+## Recommended: enable `wide_margins` for proofreading
+
+For margin notes (without `inline`), it is **recommended to enable**
+`extensions.quarto-comments.wide_margins: true` in your proofreading profile. The paper
+is then widened outward by a dedicated strip (width adjustable via `extra_margin`) where
+annotations display comfortably, with a grey background that alternates by page parity
+(outer side, binding preserved).
+
+When `wide_margins: false` (the default), the paper stays at standard A4 size: notes are
+placed in the 2 cm outer margin. They therefore stay **narrow** (~1.5 cm) and long text
+wraps over several lines. The **content** layout (text block) is strictly identical whether
+`wide_margins` is `true` or `false`, and whether comments are enabled or not — only the
+margin annotation zone changes.
 :::
 
 ::: {.callout-important}

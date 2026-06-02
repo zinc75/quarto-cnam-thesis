@@ -303,7 +303,7 @@ long notes or to keep the main text readable:
 ````markdown
 The thesis must be deposited on theses.fr[^deposit] before the defence.
 
-[^deposit]: National thesis portal managed by the {{< acrs abes >}},
+[^deposit]: National thesis portal managed by the {{</* acrs abes */>}},
     accessible at <https://theses.fr>.
 ````
 
@@ -331,7 +331,7 @@ note exceeds two lines.
 
 ### Page breaks {#sec-pagebreak}
 
-Quarto provides the `{{< pagebreak >}}` shortcode to insert a page break compatible
+Quarto provides the `{{</* pagebreak */>}}` shortcode to insert a page break compatible
 with both output formats:
 
 ````markdown
@@ -342,7 +342,7 @@ End of this section's content.
 Start of the next section.
 ````
 
-In PDF, `{{< pagebreak >}}` generates `\newpage`. In HTML, it inserts a
+In PDF, `{{</* pagebreak */>}}` generates `\newpage`. In HTML, it inserts a
 `page-break-after: always` style rule — with no visible effect on screen, but useful
 if the HTML page is printed from the browser.
 

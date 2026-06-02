@@ -307,7 +307,7 @@ pour les notes longues ou pour garder le texte principal lisible :
 ````markdown
 La thèse doit être déposée sur theses.fr[^depot] avant la soutenance.
 
-[^depot]: Portail national des thèses géré par l'{{< acrs abes >}},
+[^depot]: Portail national des thèses géré par l'{{</* acrs abes */>}},
     accessible sur <https://theses.fr>.
 ````
 
@@ -335,7 +335,7 @@ visuellement la source Markdown quand la note dépasse deux lignes.
 
 ### Sauts de page {#sec-pagebreak}
 
-Quarto fournit le shortcode `{{< pagebreak >}}` pour insérer un saut de page
+Quarto fournit le shortcode `{{</* pagebreak */>}}` pour insérer un saut de page
 compatible avec les deux formats de sortie :
 
 ````markdown
@@ -346,7 +346,7 @@ Fin du contenu de cette section.
 Début de la section suivante.
 ````
 
-En PDF, `{{< pagebreak >}}` génère `\newpage`. En HTML, il insère une règle de
+En PDF, `{{</* pagebreak */>}}` génère `\newpage`. En HTML, il insère une règle de
 style `page-break-after: always` — sans effet à l'écran, mais utile si la page
 HTML est imprimée depuis le navigateur.
 

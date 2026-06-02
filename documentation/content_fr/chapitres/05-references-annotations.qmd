@@ -102,26 +102,26 @@ La numérotation {{< acrf toc >}} est générée automatiquement par Quarto.
 ::: {.render-demo}
 **Rendu :** 
 
-le {{< acrs cnam >}} ({{< acrl cnam >}}) a été fondé en 1794. Le format
+Le {{< acrs cnam >}} ({{< acrl cnam >}}) a été fondé en 1794. Le format
 {{< acrf qmd >}} est le format natif de Quarto.
 :::
 
 ::: {.callout-note}
 ## Comportement PDF vs HTML
 
-En PDF, `{{< gls label >}}` expanse à la première occurrence (forme longue + sigle
+En PDF, `{{</* gls label */>}}` expanse à la première occurrence (forme longue + sigle
 entre parenthèses) puis utilise la forme courte. En HTML, cette logique de première
 occurrence n'est pas gérée par le shortcode — il produit toujours la forme courte.
-Pour la cohérence, préférez `{{< acrf label >}}` à la première occurrence dans le
-texte, et `{{< acrs label >}}` ensuite.
+Pour la cohérence, préférez `{{</* acrf label */>}}` à la première occurrence dans le
+texte, et `{{</* acrs label */>}}` ensuite.
 :::
 
 ## Commentaires collaboratifs (`quarto-comments`) {#sec-comments}
 
 ### Configuration dans `_quarto.yml`
 
-L'extension `quarto-comments` (dossier `_extensions/comments/`) est configurée
-via la clé `extensions.quarto-comments:` dans `_quarto.yml` :
+L'extension `quarto-comments` (dossier `_extensions/comments/`) se configure dans
+`_quarto.yml`, via la clé `quarto-comments:` placée sous le bloc `extensions:` {{< todo "Il sera nécessaire de m'exposer vos différents fichiers yaml au cours de notre prochaine réunion d'avancement." author="ag" >}} :
 
 ````yaml
 extensions:
@@ -153,16 +153,12 @@ extensions:
 
 **Rendu en situation** :
 
-Voici une phrase avec un commentaire du directeur de thèse (qui a ajouté directement celui-ci dans le fichier `.qmd` parce qu'il n'est pas frileux !).
+Voici une phrase avec un commentaire du directeur de thèse (qui a ajouté directement celui-ci dans le fichier {{< comment "Ceci est un commentaire pour montrer que moi aussi, Abbé Grégoire, suis capable d'éditer facilement un Markdown Quarto ! " author="ag" >}} `.qmd` parce qu'il n'est pas frileux !).
 
-{{< comment "Ceci est un commentaire de type 'comment' par le directeur." author="ag" >}}
-
-Ces commentaires ne sont visible **que** si l'option `quarto-comments` est à `enabled : true` dans le fichier `yaml`, ce qui est le cas pour cette documentation.
-
-{{< todo "Penser à passer l'option à `false` avant soumission aux rapporteurs! " author="eb" >}}
+Ces commentaires ne sont visibles **que** si l'option `quarto-comments` est à `enabled : true` {{< todo "Penser à passer l'option à `false` avant soumission aux rapporteurs! " author="eb" >}} dans le fichier `yaml`, ce qui est le cas pour cette documentation.
 
 
-Il est aussi possible d'ajouter des commentaires en ligne : Une note bibliographique {{< note "Voir Knuth 1984, chapitre 12." author="ag" inline=true >}} sans que cela occupe de la place dans la marge.
+Il est aussi possible d'ajouter des commentaires "longs" en ligne {{< note "Voir Knuth 1984, chapitre 12, ce serait vraiment bien de rajouter une discussion sur cet ouvrage ici pour montrer tout votre savoir sur la littérature existante, jeune apprenti." author="ag" inline=true >}} sans que cela occupe de la place dans la marge du document. Utile pour compléter du texte et rajouter des paragraphes entiers. Attention, visuellement le commentaire "inline" passe automatiquement à la ligne et se sépare du texte dans la version PDF, même s'il est inséré en milieu de phrase.
 
 ::: {.callout-note}
 ## `inline=true` occupe toute la ligne en PDF
@@ -171,9 +167,23 @@ En HTML, les annotations `inline=true` apparaissent comme un span coloré compac
 exactement à la largeur de leur contenu. En PDF, le package `todonotes` rend
 `\todo[inline]` sous la forme d'un bloc coloré pleine largeur — c'est une contrainte
 de conception du package, sans contournement possible sans perdre la capacité de
-couper les annotations longues sur plusieurs lignes. Utilisez `inline=true` pour
-de courtes notes qui doivent rester dans le flot du texte ; pour des annotations
-plus longues, omettez `inline` pour placer la note en marge.
+couper les annotations longues sur plusieurs lignes.
+:::
+
+::: {.callout-tip}
+## Recommandé : activer `wide_margins` pour la relecture
+
+Pour les notes en marge (sans `inline`), il est **recommandé d'activer**
+`extensions.quarto-comments.wide_margins: true` dans le profil de relecture. Le papier
+est alors élargi vers l'extérieur d'une bande dédiée (largeur réglable via `extra_margin`)
+où les annotations s'affichent confortablement, avec un fond grisé qui alterne selon la
+parité des pages (côté extérieur, reliure préservée).
+
+Quand `wide_margins: false` (valeur par défaut), le papier reste au format A4 standard :
+les notes se placent alors dans la marge extérieure de 2 cm. Elles restent donc **étroites**
+(~1,5 cm) et les textes longs s'enroulent sur plusieurs lignes. La mise en page du **contenu**
+(bloc de texte) est rigoureusement identique que `wide_margins` soit `true` ou `false`, et
+que les commentaires soient activés ou non — seule la zone d'annotation en marge change.
 :::
 
 ::: {.callout-important}
@@ -211,8 +221,6 @@ d'invitation aux relecteurs. Hypothesis est désactivé par défaut dans tous le
 
 Les pages `resume.qmd` et `abstract.qmd` utilisent des classes CSS qui ajoutent
 une bordure gauche en HTML :
-
-{{< comment "Reformuler cette phrase, elle est trop longue." author="ag" >}}
 
 
 ````markdown
