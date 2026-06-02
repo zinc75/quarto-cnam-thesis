@@ -171,11 +171,10 @@ execute:
 
 filters:
   - quartable    # enhanced tables (colspan, rowspan, partial lines) / tables enrichies
-  # quarto-comments hoist filter (comment-hoist.lua, post-quarto): pulls mid-sentence
-  # comments out into the margin as block callouts. Inert when comments are disabled
-  # (the shortcode emits nothing → no placeholder to hoist) and on PDF (no placeholders). /
-  # Filtre de hoist quarto-comments : sort les commentaires en milieu de phrase vers la
-  # marge. Inerte si commentaires désactivés ou en PDF.
+  # quarto-comments hoist filter: floats mid-sentence comments into the margin (HTML);
+  # inert when comments are disabled and on PDF. /
+  # Filtre quarto-comments : remonte en marge les commentaires en milieu de phrase (HTML) ;
+  # inerte si commentaires désactivés et en PDF.
   - comments
 
 # Hypothesis web annotations (opt-in) — to enable, uncomment the block below and add it

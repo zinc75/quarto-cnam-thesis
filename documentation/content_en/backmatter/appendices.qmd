@@ -81,6 +81,19 @@ With `wide_margins: true`, only the **chapters that actually contain comments** 
 widened (outer grey strip); the others stay A4. See @sec-comments for shortcode syntax,
 PDF/HTML rendering, and widening details.
 
+The `comments` filter must be listed under `filters:` (already present in the template's
+`_quarto.yml`) so that, in **HTML**, a comment placed **mid-sentence** floats into the
+margin instead of breaking the paragraph:
+
+```yaml
+filters:
+  - quartable
+  - comments   # hoist inline-context comments into the margin (HTML)
+```
+
+This filter is **inert** when comments are disabled (the shortcode emits nothing) and on
+PDF (no placeholders to process) — it can stay declared permanently.
+
 ## Web annotations with Hypothesis (opt-in)
 
 To allow reviewers to annotate the HTML version directly in their browser,

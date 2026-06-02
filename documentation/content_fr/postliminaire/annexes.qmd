@@ -81,6 +81,19 @@ Avec `wide_margins: true`, seuls les **chapitres contenant réellement des comme
 sont élargis (bande grise extérieure) ; les autres restent en A4. Voir @sec-comments pour
 la syntaxe des shortcodes, le comportement PDF/HTML et les détails de l'élargissement.
 
+Le filtre `comments` doit figurer dans `filters:` (déjà présent dans le `_quarto.yml`
+du template) pour qu'en **HTML** un commentaire inséré **au milieu d'une phrase** remonte
+en marge au lieu de casser le paragraphe :
+
+```yaml
+filters:
+  - quartable
+  - comments   # hoist des commentaires inline vers la marge (HTML)
+```
+
+Ce filtre est **inerte** quand les commentaires sont désactivés (le shortcode ne produit
+rien) et en PDF (aucun placeholder à traiter) — il peut rester déclaré en permanence.
+
 ## Annotations web Hypothesis (opt-in)
 
 Pour permettre aux relecteurs d'annoter directement la version HTML dans leur
