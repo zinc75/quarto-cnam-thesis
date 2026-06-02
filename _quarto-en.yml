@@ -52,3 +52,10 @@ extensions:
   quarto-comments:
     enabled: false    # set to true to show annotations in the output / passer à true pour afficher les annotations
     show_list: false  # set to true to add the proofreading comments list in PDF / passer à true pour la liste des commentaires PDF
+    # Declare your proofreaders here (key = author= value in shortcodes) /
+    # Déclarez vos relecteurs ici (la clé = la valeur author= des shortcodes)
+    # authors:
+    #   doctorant:
+    #     name: "Prénom Nom"
+    #   directeur:
+    #     name: "Prénom Nom"

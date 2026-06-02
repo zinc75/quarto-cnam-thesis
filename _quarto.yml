@@ -136,8 +136,16 @@ code-line-numbers: true
 extensions:
   quarto-comments:
     enabled: false          # true → shows annotations in output / affiche les annotations dans le rendu
-    show_list: false        # true → adds \listoftodos in PDF (only if enabled: true) /
+    show_list: true         # true → adds \listoftodos in PDF (only if enabled: true) /
                             #        ajoute \listoftodos dans le PDF (si enabled: true)
+    wide_margins: true      # true → widen pages + grey annotation zone (margin notes) /
+                            #        élargit les pages + zone grise d'annotation (notes en marge)
+    extra_margin: "4.5cm"   # width of the widened outer band / largeur de la bande extérieure élargie
+    # Optional styling overrides (defaults shown) / Surcharges de style optionnelles (défauts indiqués) :
+    # show_author: true       # show author name on each annotation / affiche le nom de l'auteur
+    # inner_pad: "0.3cm"      # padding inside the grey zone / marge interne de la zone grise
+    # frame_color: "gray!10"  # grey zone background / fond de la zone grise
+    # frame_line: "gray!60"   # grey zone dashed line / pointillé de la zone grise
     authors:
       eb:
         name: "Eric Bavu"

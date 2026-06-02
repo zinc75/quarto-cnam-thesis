@@ -58,8 +58,6 @@ date-soutenance: "10 Octobre 1794"        # do NOT use `date:` (encoding issue) 
 # Afficher les commentaires collaboratifs dans la sortie documentation
 extensions:
   quarto-comments:
-    enabled: true
-    show_list: true
-    wide_margins: true
-    extra_margin: "4.5cm"
+    enabled: true            # show_list / wide_margins inherited from _quarto.yml /
+    extra_margin: "4.5cm"    #   show_list / wide_margins hérités de _quarto.yml
 
