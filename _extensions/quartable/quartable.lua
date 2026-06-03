@@ -821,6 +821,72 @@ local function apply_vline_markers(to_mark)
   end
 end
 
+-- ── Vlines: HTML/Reveal rendering ─────────────────────────────────────────
+--
+-- HTML has no native vertical rule, but with `border-collapse: collapse` a
+-- per-cell `border-left` / `border-right` draws a clean vertical line. We
+-- mirror the cline strategy: tag the relevant cells with a CSS class
+-- (`quartable-vl` / `quartable-vr`) and let the bundled stylesheet draw the
+-- border. The boundary math is fully reused from `collect_vlines`.
+local function add_vline_class(cell, side)
+  local cls = side == "vr" and "quartable-vr" or "quartable-vl"
+  if not cell.attr then cell.attr = pandoc.Attr() end
+  cell.attr.classes = cell.attr.classes or {}
+  for _, c in ipairs(cell.attr.classes) do
+    if c == cls then return end
+  end
+  table.insert(cell.attr.classes, cls)
+end
+
+-- Apply vlines for HTML/Reveal by tagging cells with CSS classes.
+--   * Limited (rspan=K) vlines and colspan cells aligned with a full-height
+--     boundary are already collected in `to_mark` by `collect_vlines`.
+--   * Full-height boundaries (`full_positions`) are applied by sweeping every
+--     cell: a cell whose right edge sits on a boundary gets `vr`, one whose
+--     left edge sits on a boundary gets `vl`. Marking both sides is redundant
+--     in the table interior (border-collapse merges them) but cleanly handles
+--     the table's left edge (boundary 0) and right edge (boundary n_cols).
+-- A colspan cell straddling a boundary matches neither edge, so the line is
+-- (correctly) interrupted on that row — same limitation as LaTeX.
+-- Finally, strip the `quartable-vl`/`quartable-vr` attributes so they are not
+-- emitted as stray `data-*` attributes on the rendered `<td>`/`<th>`.
+local function apply_html_vlines(tbl)
+  local full_positions, to_mark = collect_vlines(tbl)
+
+  for _, m in ipairs(to_mark) do
+    add_vline_class(m.cell, m.side)
+  end
+
+  if next(full_positions) then
+    local all_rows = {}
+    if tbl.head and tbl.head.rows then
+      for _, row in ipairs(tbl.head.rows) do table.insert(all_rows, row) end
+    end
+    for _, body in ipairs(tbl.bodies or {}) do
+      for _, row in ipairs(body.body or {}) do table.insert(all_rows, row) end
+    end
+    local _, cell_info = build_grid(all_rows)
+    for cell, info in pairs(cell_info) do
+      if full_positions[info.col_end]       then add_vline_class(cell, "vr") end
+      if full_positions[info.col_start - 1] then add_vline_class(cell, "vl") end
+    end
+  end
+
+  -- Strip the internal vline attributes (avoid data-* pollution in HTML).
+  local function strip(rows)
+    for _, row in ipairs(rows or {}) do
+      for _, cell in ipairs(row.cells) do
+        if cell.attr and cell.attr.attributes then
+          cell.attr.attributes["quartable-vl"] = nil
+          cell.attr.attributes["quartable-vr"] = nil
+        end
+      end
+    end
+  end
+  if tbl.head then strip(tbl.head.rows) end
+  for _, body in ipairs(tbl.bodies or {}) do strip(body.body) end
+end
+
 -- Modify the column spec inside `\begin{longtable}[OPT]{COLSPEC}` by
 -- injecting `|` at the requested boundaries. Returns the string unchanged
 -- if the column spec is too complex to parse (e.g. uses p{...}).
@@ -1017,6 +1083,12 @@ function Table(tbl)
   local has_vline = table_has_vline(tbl)
   local has_align = table_has_align(tbl)
 
+  -- HTML/Reveal: render vlines via CSS classes on the cells bordering each
+  -- requested boundary (border-left/border-right under border-collapse).
+  if has_vline and not is_latex then
+    apply_html_vlines(tbl)
+  end
+
   -- Detect if any colspan cell exists (post process_spans).
   local has_colspan = false
   do
@@ -1108,10 +1180,12 @@ function Table(tbl)
     local ok, latex_str = pcall(pandoc.write, doc, "latex")
 
     if ok and latex_str and latex_str ~= "" then
-      -- 3a. \multirow{N}{=} → \multirow{N}{*} (avoids overflow).
-      latex_str = latex_str:gsub("\\multirow{(%d+)}{=}", "\\multirow{%1}{*}")
+      -- 3a. \multirow{N}{=} → \multirow{N}{\linewidth} so that long text
+      --     wraps to the column width (Pandoc uses p{…} columns whose
+      --     \linewidth equals the computed column width).
+      latex_str = latex_str:gsub("\\multirow{(%d+)}{=}", "\\multirow{%1}{\\linewidth}")
       latex_str = latex_str:gsub("\\multirow%[([^%]]+)%]{(%d+)}{=}",
-                                 "\\multirow[%1]{%2}{*}")
+                                 "\\multirow[%1]{%2}{\\linewidth}")
 
       -- 3a'. Remove the \midrule that Pandoc inserts between <thead> and
       --      <tbody>. By design, quartable does not draw an automatic

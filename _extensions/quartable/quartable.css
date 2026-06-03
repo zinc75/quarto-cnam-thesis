@@ -53,6 +53,16 @@ table.quartable th.quartable-cline-bottom {
   border-bottom: 1px solid currentColor !important;
 }
 
+/* ── Vlines: vertical rules drawn as per-cell borders ──────────────────── */
+table.quartable td.quartable-vr,
+table.quartable th.quartable-vr {
+  border-right: 1px solid currentColor !important;
+}
+table.quartable td.quartable-vl,
+table.quartable th.quartable-vl {
+  border-left: 1px solid currentColor !important;
+}
+
 /* ── Colspan: horizontal centering ─────────────────────────────────────── */
 table.quartable th[colspan],
 table.quartable td[colspan] {
@@ -95,6 +105,15 @@ table.quartable th[rowspan] {
 .reveal table.quartable td.quartable-cline-bottom,
 .reveal table.quartable th.quartable-cline-bottom {
   border-bottom: 1px solid currentColor !important;
+}
+
+.reveal table.quartable td.quartable-vr,
+.reveal table.quartable th.quartable-vr {
+  border-right: 1px solid currentColor !important;
+}
+.reveal table.quartable td.quartable-vl,
+.reveal table.quartable th.quartable-vl {
+  border-left: 1px solid currentColor !important;
 }
 
 .reveal table.quartable th[colspan],
