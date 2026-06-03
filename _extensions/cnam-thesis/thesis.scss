@@ -313,6 +313,37 @@ main.content {
     opacity: 1 !important;
   }
 
+  // When a chapter has margin comments, Quarto adds `slimcontent` and narrows the
+  // text column, centring it with SYMMETRIC gutters (~206px each side) — wasting
+  // space on the LEFT even though comments only occupy the right track
+  // (body-end / page-end). Rewrite the page-columns template (main + its nested
+  // section grids) so the text column is left-anchored (all left gutters collapse,
+  // body-content becomes 1fr) while the right side — the comments margin — is kept
+  // identical. The chapter text then starts at the same left edge as a chapter
+  // without comments and is no longer cramped. /
+  // Avec des commentaires, Quarto centre une colonne de texte rétrécie (gouttières
+  // symétriques). On ré-ancre le texte à gauche (gouttières gauches à 0, texte en
+  // 1fr) en conservant la marge droite (commentaires, piste body-end → page-end).
+  body.slimcontent main.content.page-columns,
+  body.slimcontent main.content .page-columns {
+    grid-template-columns:
+      // minmax(0, 1fr) (not plain 1fr = minmax(auto, 1fr)): the text column must be
+      // allowed to shrink below its min-content, otherwise a long line (e.g. a wide
+      // code example) inflates it past the available width and pushes the right
+      // comment margin off the page. With minmax(0, 1fr) such content scrolls inside
+      // the column (standard Quarto behaviour) instead. /
+      // minmax(0, 1fr) : la colonne de texte doit pouvoir passer sous son min-content,
+      // sinon une longue ligne (ex. exemple de code large) la gonfle et pousse la marge
+      // des commentaires hors page. Avec minmax(0, 1fr), ce contenu défile à l'intérieur.
+      [screen-start screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(0, 1fr)
+      [body-content-end] 1.5em
+      [body-end] 50px
+      [body-end-outset] 55px
+      [page-end-inset] 50px
+      [page-end screen-end-inset] 1.5em
+      [screen-end] !important;
+  }
+
   // Hide right panel when its TOC has no items (no subsections on this page).
   // With flex, display:none automatically collapses the column — no padding hack needed.
   // Avec flex, display:none réduit automatiquement la colonne — pas besoin de padding.
