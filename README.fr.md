@@ -62,7 +62,7 @@ commencer à rédiger.
 ## Rendu
 
 ```bash
-# Thèse en français — PDF + HTML → _these_fr/
+# Thèse en français — PDF + HTML → _these_fr/  (par défaut : quarto render fonctionne aussi)
 quarto render --profile fr
 
 # Thèse en anglais — PDF + HTML → _thesis-en/
@@ -79,9 +79,8 @@ Le script post-render renomme la sortie en `these_<lang>_<auteur>.pdf` et
 `these_<lang>_<auteur>.tex`, et génère `images/cover.png` à partir de la page 1 du PDF
 (nécessite `poppler` ou `ImageMagick`).
 
-> **Toujours utiliser `--profile fr` ou `--profile en`.** Lancer `quarto render`
-> sans profil échoue car la liste des chapitres est définie dans les profils,
-> et non dans `_quarto.yml`.
+> **Profil par défaut :** `quarto render` sans `--profile` active automatiquement le
+> profil français. Utiliser `--profile en` pour le rendu en anglais.
 
 ## Configuration
 

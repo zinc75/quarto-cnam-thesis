@@ -61,7 +61,7 @@ writing.
 ## Rendering
 
 ```bash
-# French thesis — PDF + HTML → _these_fr/
+# French thesis — PDF + HTML → _these_fr/  (default: quarto render works too)
 quarto render --profile fr
 
 # English thesis — PDF + HTML → _thesis-en/
@@ -78,9 +78,8 @@ The post-render script renames the output to `these_<lang>_<author>.pdf` and
 `these_<lang>_<author>.tex`, and generates `images/cover.png` from PDF page 1
 (requires `poppler` or `ImageMagick`).
 
-> **Always use `--profile fr` or `--profile en`.** Running `quarto render`
-> without a profile fails because the chapter list is defined in the profiles,
-> not in `_quarto.yml`.
+> **Default profile:** `quarto render` without `--profile` activates the French
+> profile automatically. Use `--profile en` to render the English version.
 
 ## Configuration
 
