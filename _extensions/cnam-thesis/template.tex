@@ -413,10 +413,37 @@ $endif$
 \newcommand{\cnam@styledhref}[2]{%
   \cnam@orighref{#1}{\textcolor{redHESAM}{\dashuline{#2}}}%
 }
+% Internal links and cross-references: make them visibly clickable in the PDF, in
+% Cnam red with NO underline (external links / URLs keep the dashed underline above —
+% a rule reads badly under a short cross-ref that is often just a number). Internal
+% links [text](#id) emit \hyperref[id]{text}; Quarto cross-refs @fig-/@sec-/@tbl-/@eq-
+% emit a bare \ref{label} (auto-linked by hyperref). We restyle BOTH. The table of
+% contents uses \hyperlink/\hyperpage (not \ref/\hyperref), so it is untouched and keeps
+% its tocloft colours. \ref* (starred, non-linking) stays unstyled. /
+% Liens internes et renvois : rouge Cnam, SANS soulignement (les URL gardent le tireté ;
+% un soulignement sous un renvoi court — souvent un simple numéro — rend mal). La TOC
+% (\hyperlink/\hyperpage) n'est pas affectée ; \ref* reste non stylé.
+% Robust (\DeclareRobustCommand): a cross-reference may sit in a moving argument
+% (caption → LOF, section title → TOC/running head). /
+% Robustes : un renvoi peut figurer dans un argument mobile (légende, titre).
+\newcommand{\cnam@orighyperref}{}
+\DeclareRobustCommand{\cnam@styledhyperref}[2][]{%
+  \textcolor{redHESAM}{\cnam@orighyperref[#1]{#2}}%
+}
+\newcommand{\cnam@origref}{}
+\DeclareRobustCommand{\cnam@refnostar}[1]{%
+  \textcolor{redHESAM}{\cnam@origref{#1}}%
+}
+\DeclareRobustCommand{\cnam@refstar}[1]{\cnam@origref*{#1}}
+\DeclareRobustCommand{\cnam@styledref}{\@ifstar\cnam@refstar\cnam@refnostar}
 \AtBeginDocument{%
   \let\cnam@orighref\href%   % bind placeholder to the real \href
   \let\url\cnam@styledurl%
   \let\href\cnam@styledhref%
+  \let\cnam@orighyperref\hyperref%  % capture original before rebinding
+  \let\hyperref\cnam@styledhyperref%
+  \let\cnam@origref\ref%            % capture original before rebinding
+  \let\ref\cnam@styledref%
 }
 \makeatother
 
