@@ -99,7 +99,7 @@ jobs:
               :root { --cnam-red: #d20025; }
               body  { background: #f8f9fa; }
               .cnam-header { background: var(--cnam-red); color: #fff;
-                             padding: 2.5rem 1rem 2rem; text-align: center; }
+                             padding: 2.5rem 1rem 2rem; text-align: center; position: relative; }
               .cnam-header h1 { font-family: monospace; font-size: 2rem; margin-bottom: .5rem; }
               .cnam-header p  { margin: 0; opacity: .9; }
               .card-title { color: var(--cnam-red); }
@@ -112,10 +112,29 @@ jobs:
               .step-code  { background:#f4f4f4; border-radius:4px;
                             padding:.4rem .6rem; font-size:.78rem;
                             margin:0; white-space:pre-wrap; word-break:break-all; }
+              .header-cnam { position:absolute; top:1.1rem; left:1.4rem; color:#fff !important;
+                             font-weight:800; font-size:1.7rem; line-height:1; letter-spacing:.01em;
+                             text-decoration:none; opacity:.95;
+                             transition:opacity .15s ease, transform .15s ease; }
+              .header-cnam .le { font-weight:400; opacity:.85; margin-right:.18rem; }
+              .header-cnam:hover { opacity:1; transform:translateY(-1px); }
+              .header-gh { position:absolute; top:1rem; right:1.4rem; color:#fff; opacity:.9;
+                           transition:opacity .15s ease, transform .15s ease; }
+              .header-gh:hover { opacity:1; transform:translateY(-1px); }
+              .header-gh svg { width:40px; height:40px; }
+              .gh-ico { vertical-align:-2px; }
+              .step-code { position:relative; padding-right:1.9rem; }
+              .copy-btn { position:absolute; top:.25rem; right:.3rem; border:0; background:transparent;
+                          color:#adb5bd; cursor:pointer; padding:.12rem .2rem; border-radius:4px;
+                          line-height:0; transition:color .15s ease, background .15s ease; }
+              .copy-btn:hover  { color:#24292f; background:rgba(0,0,0,.06); }
+              .copy-btn.copied { color:#198754; }
             </style>
           </head>
           <body>
             <header class="cnam-header">
+              <a class="header-cnam" href="https://www.cnam.fr" target="_blank" rel="noopener" aria-label="Conservatoire national des arts et métiers"><span class="le">le</span>cnam</a>
+              <a class="header-gh" href="https://github.com/zinc75/quarto-cnam-thesis" target="_blank" rel="noopener" aria-label="Code source sur GitHub"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></a>
               <h1>quarto-cnam-thesis</h1>
               <p>Template Quarto pour les thèses du Cnam &middot; Quarto template for Cnam theses</p>
             </header>
@@ -217,8 +236,8 @@ jobs:
                 &bull; <em>On first render, TinyTeX downloads the required LaTeX packages (internet connection needed).</em>
               </p>
               <hr class="my-4">
-              <p>
-                <a class="btn btn-outline-secondary btn-sm me-2"
+              <div class="d-flex flex-wrap gap-2 align-items-center">
+                <a class="btn btn-outline-secondary btn-sm"
                    href="https://github.com/zinc75/quarto-cnam-thesis#readme">
                   README (English)
                 </a>
@@ -226,9 +245,41 @@ jobs:
                    href="https://github.com/zinc75/quarto-cnam-thesis/blob/main/README.fr.md">
                   README (Français)
                 </a>
-              </p>
+                <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1"
+                   href="https://github.com/zinc75/quarto-cnam-thesis" target="_blank" rel="noopener">
+                  <svg class="gh-ico" viewBox="0 0 16 16" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+                  Code source &middot; Source code
+                </a>
+              </div>
             </main>
+            <footer class="text-center text-muted small py-4 border-top">
+              © 2026 Éric Bavu &middot;
+              <a class="text-muted text-decoration-none" href="https://github.com/zinc75/quarto-cnam-thesis/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+            </footer>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+              (function () {
+                var COPY = '<svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>';
+                var CHECK = '<svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>';
+                document.querySelectorAll('pre.step-code').forEach(function (pre) {
+                  var btn = document.createElement('button');
+                  btn.type = 'button';
+                  btn.className = 'copy-btn';
+                  btn.title = 'Copier · Copy';
+                  btn.setAttribute('aria-label', 'Copier le code');
+                  btn.innerHTML = COPY;
+                  btn.addEventListener('click', function () {
+                    var code = pre.querySelector('code');
+                    navigator.clipboard.writeText(code.innerText).then(function () {
+                      btn.classList.add('copied');
+                      btn.innerHTML = CHECK;
+                      setTimeout(function () { btn.classList.remove('copied'); btn.innerHTML = COPY; }, 1200);
+                    });
+                  });
+                  pre.appendChild(btn);
+                });
+              }());
+            </script>
           </body>
           </html>
           LANDING_EOF
