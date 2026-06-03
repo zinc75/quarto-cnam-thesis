@@ -177,6 +177,29 @@ body {
   }
 }
 
+// Optional GitHub link in the topbar (added by header-setup.html when the
+// github-repo meta is present — typically the documentation profiles only).
+// Dark octocat on the white topbar; turns Cnam-red on hover. /
+// Lien GitHub optionnel dans la barre (ajouté quand le meta github-repo existe,
+// en général profils docs). Octocat foncé sur barre blanche ; rouge Cnam au survol.
+.cnam-topbar-gh {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  color: #444;
+  opacity: 0.85;
+  transition: color 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
+
+  &:hover { color: $primary; opacity: 1; transform: translateY(-1px); }
+
+  // Match the Cnam logo height for a balanced topbar (.cnam-topbar-logo-img).
+  // Aligner sur la hauteur du logo Cnam pour équilibrer la barre.
+  svg { width: 64px; height: 64px; display: block; }
+
+  @media (max-width: 991.98px) { svg { width: 38px; height: 38px; } }
+  @media (max-width: 479px)    { svg { width: 32px; height: 32px; } }
+}
+
 // ── Page layout: flex row + sticky glass sidebars ────────────────────────────
 // position:sticky keeps sidebars in the normal document flow — no JS-measured
 // offsets needed, no conflict with headroom, no risk of sliding under the header.

@@ -47,6 +47,7 @@ book:
 # Optionnel : remplace le préfixe de la barre HTML (n'affecte que la barre, pas la page de garde PDF).
 # Utile pour une branche documentation ou GitHub Pages.
 header-prefix: "Documentation du template Quarto cnam-thesis"
+github-repo: "https://github.com/zinc75/quarto-cnam-thesis"   # adds a GitHub link to the HTML topbar (docs only) / ajoute un lien GitHub dans la barre HTML (docs uniquement)
 btn-resume: "documentation/content_fr/liminaire/resume.html"  # "Commencer la lecture" button link in index.qmd
 date-soutenance: "10 Octobre 1794"        # do NOT use `date:` (encoding issue) / NE PAS utiliser `date:`
 

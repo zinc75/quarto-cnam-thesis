@@ -226,6 +226,17 @@ local pass1 = {
           '<meta name="header-prefix" content="' .. prefix_str .. '">')
         hi:insert(pandoc.MetaBlocks({ tag_prefix }))
       end
+      -- Optional: inject github-repo so header-setup.html adds a GitHub link to the
+      -- topbar. Set via `github-repo: "https://github.com/owner/repo"` (typically only
+      -- in the documentation profiles). Absent → no icon, no effect on thesis profiles. /
+      -- Optionnel : github-repo → header-setup.html ajoute un lien GitHub dans la barre.
+      -- Défini seulement dans les profils docs ; absent → aucune icône (profils thèse intacts).
+      if meta["github-repo"] then
+        local repo_str = pandoc.utils.stringify(meta["github-repo"])
+        local tag_repo = pandoc.RawBlock("html",
+          '<meta name="github-repo" content="' .. repo_str .. '">')
+        hi:insert(pandoc.MetaBlocks({ tag_repo }))
+      end
       meta["header-includes"] = hi
     end
 
