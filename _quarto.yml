@@ -7,6 +7,14 @@
 
 
 # ------------------------------------------------------------------------------
+# Default profile / Profil par défaut
+# "quarto render" without --profile activates "fr". Use --profile en for English.
+# "quarto render" sans --profile active "fr". Utiliser --profile en pour l'anglais.
+# ------------------------------------------------------------------------------
+profile:
+  default: fr
+
+# ------------------------------------------------------------------------------
 # TO FILL IN — Book metadata / À REMPLIR — Métadonnées du livre
 # Chapter list is defined in the language profile / La liste des chapitres est
 # définie dans le profil de langue :
