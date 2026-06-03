@@ -1,5 +1,9 @@
 # Introduction générale {.unnumbered .toc-black}
 
+::: {.callout-tip appearance="simple"}
+**Aide-mémoire** — les commandes et la syntaxe courantes sont récapitulées dans l'[annexe aide-mémoire](#sec-aide-memoire). *(Bloc à retirer en fin de rédaction.)*
+:::
+
 <!-- Starter — remplacer par votre introduction générale.
      Documentation : https://zinc75.github.io/quarto-cnam-thesis/fr/ -->
 

@@ -33,6 +33,7 @@ book:
     - content_en/backmatter/conclusion.qmd
     - content_en/backmatter/bibliography.qmd           # between conclusion and appendices / entre conclusion et annexes
   appendices:
+    - content_en/backmatter/cheatsheet.qmd         # cheat sheet (writing) — remove before submission / aide-mémoire (rédaction) — retirer avant le dépôt
     - content_en/backmatter/appendices.qmd
     - content_en/backmatter/appendices-pdfa.qmd
 

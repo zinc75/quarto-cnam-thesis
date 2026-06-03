@@ -34,6 +34,7 @@ book:
     - content_fr/postliminaire/conclusion.qmd
     - content_fr/postliminaire/bibliographie.qmd   # between conclusion and appendices / entre conclusion et annexes
   appendices:
+    - content_fr/postliminaire/aide-memoire.qmd    # aide-mémoire (rédaction) — retirer avant le dépôt / cheat sheet (writing) — remove before submission
     - content_fr/postliminaire/annexes.qmd
     - content_fr/postliminaire/annexes-pdfa.qmd
 

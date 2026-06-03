@@ -1,5 +1,9 @@
 # General Introduction {.unnumbered .toc-black}
 
+::: {.callout-tip appearance="simple"}
+**Cheat sheet** — the most common commands and syntax are summarised in the [cheat-sheet appendix](#sec-cheatsheet). *(Remove this block before submission.)*
+:::
+
 <!-- Starter — replace with your general introduction.
      Documentation: https://zinc75.github.io/quarto-cnam-thesis/en/ -->
 

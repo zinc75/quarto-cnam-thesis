@@ -473,9 +473,15 @@ local pass2 = {
         blocks:insert(el)
       end
 
-      -- \minitoc + optional page break
-      local minitoc_latex = minitoc_newpage and "\\minitoc\n\\newpage" or "\\minitoc"
-      blocks:insert(pandoc.RawBlock("latex", minitoc_latex))
+      -- \minitoc + optional page break.
+      -- Skipped when the chapter heading carries the .no-minitoc class (e.g. a
+      -- section-less appendix where an empty minitoc would be pointless). /
+      -- Ignoré quand le titre porte la classe .no-minitoc (ex. une annexe sans
+      -- sections où une minitoc vide n'aurait pas de sens).
+      if not el.classes:includes("no-minitoc") then
+        local minitoc_latex = minitoc_newpage and "\\minitoc\n\\newpage" or "\\minitoc"
+        blocks:insert(pandoc.RawBlock("latex", minitoc_latex))
+      end
       return blocks
     end
   end

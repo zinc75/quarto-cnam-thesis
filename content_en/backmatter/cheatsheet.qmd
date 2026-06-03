@@ -1,0 +1,134 @@
+# Cheat sheet — common commands & syntax {#sec-cheatsheet .appendix .no-minitoc short-title="Cheat sheet"}
+
+<!-- HELPER APPENDIX for students new to Quarto / Markdown.
+     REMOVE before submission:
+       1. drop this file from `appendices:` in _quarto-en.yml;
+       2. remove the "Cheat sheet" block at the top of each chapter.
+     Full documentation: https://zinc75.github.io/quarto-cnam-thesis/en/ -->
+
+::: {.callout-note appearance="simple"}
+**This cheat-sheet appendix is meant for the writing phase — remove it before submission.**
+:::
+
+## Jury, author, title
+
+The general configuration for the cover page lives in `_quarto.yml` and `_quarto-en.yml` — see the [online documentation](https://zinc75.github.io/quarto-cnam-thesis/en/).
+
+
+## Render the document
+
+Terminal commands, **at the project root** (VSCode and Positron offer integrated commands via an extension, but the command line is universal):
+
+
+:::: {layout="[ 34, -5, 55 ]"}
+
+::: {}
+Full PDF + HTML render:
+
+```bash
+quarto render --profile en
+```
+:::
+
+::: {}
+PDF only:
+
+```bash
+quarto render --profile en --to cnam-thesis-pdf
+```
+:::
+
+::::
+
+
+
+Live preview (automatic rebuild on every saved change to your thesis):
+
+```bash
+quarto preview --profile en --to cnam-thesis-pdf
+```
+
+
+```{=latex}
+% Local-only: put the cheat-sheet table on its own landscape page(s) for readability,
+% and colour inline code (\texttt) inside it. No background box so that long commands
+% still break at line end. All scoped by landscape + \begingroup/\endgroup.
+\begin{landscape}
+\begingroup
+\definecolor{cnamcodefg}{HTML}{6B3FA0}
+\let\cnamOrigTexttt\texttt
+\renewcommand{\texttt}[1]{\cnamOrigTexttt{\textcolor{cnamcodefg}{#1}}}
+```
+
+## Useful Markdown commands
+
+
+| Category | Description | Markdown  | Online documentation |
+|:-----|:---------------|:------------------|:-----:|
+| ===      |             |                    |      |
+| [Structure]{rs=4} | • Chapter / section / subsection title | `# Title` · `## Section` · `### Subsection` | [docs][d-headings] |
+| ^ | • Unnumbered section | `## Title {.unnumbered}` | [docs][d-numbering] |
+| ^ | • Short title (running head / table of contents) | `# Long title {short-title="Short"}` | [docs][d-shorttitle] |
+| ^ | • Page break | `{{</* pagebreak */>}}` | [docs][d-pagebreak] |
+| ===      |             |                    |      |
+| [Formatting]{rs=4} | • Bold · italic | `**bold**` · `*italic*` | [docs][d-inline] |
+| ^ | • Inline code | `` `code` `` | [docs][d-inline] |
+| ^ | • Underlined text | `[text]{.underline}` | [docs][d-inline] |
+| ^ | • Lists (bullets / numbered) | `- item` · `1. item` | [docs][d-lists] |
+| ===      |             |                    |      |
+| Bibliography | • Citation (IEEE style -> `[N]`) | `[@key]` | [docs][d-citations] |
+| ===      |             |                    |      |
+| Links | • Link to a URL | `[text](https://example.org)` | [docs][d-links] |
+| ===      |             |                    |      |
+| [Figures]{rs=2} | • Image with caption and label | `![Caption](images/x.png){#fig-x width=70%}` | [docs][d-figstatic] |
+| ^ | • Code-generated figure | `{python}` block + `#| label: fig-x` | [docs][d-figpython] |
+| ===      |             |                    |      |
+| [Mathematics]{rs=3} | • Inline equation | `$E = mc^2$` | [docs][d-eqinline] |
+| ^ | • Numbered display equation | `$$ ... $$ {#eq-x}` | [docs][d-eqblock] |
+| ^ | • System of equations | `$$\begin{cases} ... \end{cases}$$` | [docs][d-eqsys] |
+| ===      |             |                    |      |
+| [Tables]{rs=2} | • Simple Markdown table | headers + `|:--|--:|` row | [docs][d-tablesimple] |
+| ^ | • Enhanced table (`quartable`) | `[x]{rs=2}` · `[x]{cs=2}` · `===` | [docs][d-quartable] |
+| ===      |             |                    |      |
+| [Cross-references]{rs=2} | • Set a label on a target | `## Title {#sec-label}` | [docs][d-crossref] |
+| ^ | • Reference (section / figure / table / equation) | `@sec-label` · `@fig-label` · `@tbl-label` · `@eq-label` | [docs][d-crossref] |
+| ===      |             |                    |      |
+| Callouts | • Callout box | `::: {.callout-note}` · `.callout-tip` · `.callout-warning` · `.callout-important` … `:::` | [docs][d-callouts] |
+| ===      |             |                    |      |
+| [Code]{rs=2} | • Displayed code block | ```` ``` ```` + language (e.g. `python`) | [docs][d-codedisplay] |
+| ^ | • Executed code block | ```` ``` ```` + `{python}` | [docs][d-codeexec] |
+| ===      |             |                    |      |
+| [Acronyms]{rs=3} | • Declare an acronym | `{{</* acr id ABBR "Full form" */>}}` | [docs][d-glossary] |
+| ^ | • Declare a glossary term | `{{</* terme id "word" "meaning" */>}}` | [docs][d-glossary] |
+| ^ | • Use (first / short / long) | `{{</* acrf id */>}}` · `{{</* acrs id */>}}` · `{{</* acrl id */>}}` | [docs][d-glossary] |
+| ===      |             |                    |      |
+| Proofreading comments | • Margin annotation (`comment` · `todo` · `note` · `question`) | `{{</* comment "your remark" author="xx" */>}}` | [docs][d-comments] |
+
+: Common commands & syntax {#tbl-cheatsheet}
+
+```{=latex}
+\endgroup
+\end{landscape}
+```
+
+[d-headings]:    https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/01-structure.html#sec-headings
+[d-numbering]:   https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/01-structure.html#sec-numbering
+[d-shorttitle]:  https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/01-structure.html#sec-short-title
+[d-pagebreak]:   https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/01-structure.html#sec-pagebreak
+[d-inline]:      https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/01-structure.html#sec-inline
+[d-links]:       https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/01-structure.html#sec-links
+[d-lists]:       https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/01-structure.html#sec-lists
+[d-crossref]:    https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/01-structure.html#sec-crossref
+[d-figstatic]:   https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/02-figures.html#sec-fig-static
+[d-figpython]:   https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/02-figures.html#sec-fig-python
+[d-tablesimple]: https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/03-equations-tables.html#sec-tables-simple
+[d-quartable]:   https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/03-equations-tables.html#sec-quartable
+[d-eqinline]:    https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/03-equations-tables.html#sec-eq-inline
+[d-eqblock]:     https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/03-equations-tables.html#sec-eq-block
+[d-eqsys]:       https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/03-equations-tables.html#sec-eq-advanced
+[d-citations]:   https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/05-bib-references-glossary.html#sec-citations
+[d-glossary]:    https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/05-bib-references-glossary.html#sec-glossary
+[d-callouts]:    https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/04-callouts-code.html#sec-callouts
+[d-codedisplay]: https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/04-callouts-code.html#sec-code-display
+[d-codeexec]:    https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/04-callouts-code.html#sec-code-exec
+[d-comments]:    https://zinc75.github.io/quarto-cnam-thesis/en/documentation/content_en/chapters/06-annotations-comments.html#sec-comments
