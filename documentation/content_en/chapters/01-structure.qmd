@@ -141,6 +141,29 @@ cite a *book title*. Using them to decorate text or emphasise entire sentences i
 practice to avoid.
 :::
 
+### Links {#sec-links}
+
+A hyperlink is written `[display text](url)`. The URL can be absolute
+(`https://…`) or point to an internal target in the document (`#sec-label`). A bare
+URL or e-mail address placed between angle brackets `<…>` automatically becomes a
+clickable link.
+
+````markdown
+[the Cnam website](https://www.cnam.fr)
+<https://quarto.org>, <contact@example.org>
+````
+
+::: {.render-demo}
+**Output:**
+
+[the Cnam website](https://www.cnam.fr), <https://quarto.org>, <contact@example.org>.
+:::
+
+In PDF, links are rendered in Cnam red (external URLs are dash-underlined); in HTML
+they are clickable. To point to another part of the document, prefer cross-references
+`@sec-label` (see @sec-crossref): they automatically generate both the number **and**
+the link.
+
 ### Underline
 
 Markdown has no native syntax for underlining. Quarto uses the span notation with the
@@ -263,6 +286,8 @@ the thesis body, prefer a plain unordered list accompanied by a state verb ("com
 > — Robert Bringhurst [@Bringhurst2004]
 ````
 
+{{< pagebreak >}}
+
 ::: {.render-demo}
 **Output:**
 
@@ -289,9 +314,6 @@ Quarto offers two syntaxes for footnotes.
 The Cnam was founded in 1794^[Decree of the National Convention of 19 Vendémiaire
 Year III (10 October 1794).] on the initiative of Abbé Grégoire.
 ````
-
-{{< pagebreak >}}
-
 
 ::: {.render-demo}
 **Output:**

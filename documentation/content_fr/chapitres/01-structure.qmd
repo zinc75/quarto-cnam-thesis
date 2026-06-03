@@ -142,6 +142,29 @@ sa première introduction, ou à citer un *titre d'ouvrage*. Les utiliser pour
 décorer le texte ou insister sur des phrases entières est une pratique à éviter.
 :::
 
+### Liens {#sec-liens}
+
+Un lien hypertexte s'écrit `[texte affiché](url)`. L'URL peut être absolue
+(`https://…`) ou pointer vers une cible interne au document (`#sec-label`). Une URL
+ou une adresse e-mail placée entre chevrons `<…>` devient automatiquement un lien
+cliquable.
+
+````markdown
+[le site du Cnam](https://www.cnam.fr)
+<https://quarto.org>, <contact@exemple.fr>
+````
+
+::: {.render-demo}
+**Rendu :**
+
+[le site du Cnam](https://www.cnam.fr), <https://quarto.org>, <contact@exemple.fr>.
+:::
+
+En PDF, les liens sont rendus en rouge Cnam (les URL externes sont soulignées de
+tirets) ; en HTML, ils sont cliquables. Pour renvoyer vers une autre partie du
+document, préférez les cross-références `@sec-label` (voir @sec-crossref) : elles
+génèrent automatiquement le numéro **et** le lien.
+
 ### Soulignement
 
 Markdown n'a pas de syntaxe native pour le soulignement. Quarto utilise la
@@ -265,6 +288,8 @@ au registre académique.
 >
 > — Robert Bringhurst [@Bringhurst2004]
 ````
+
+{{< pagebreak >}}
 
 ::: {.render-demo}
 **Rendu :**
