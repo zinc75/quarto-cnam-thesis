@@ -56,16 +56,16 @@ chapter-openright: true  # false = for digital version without right-hand page
 index: false             # true = generates an index via \index{term}
 ```
 
-## Collaborative comments (`quarto-comments`)
+## Collaborative comments (`quarto-proofread-comments`)
 
 ```yaml
 extensions:
-  quarto-comments:
+  quarto-proofread-comments:
     enabled: true          # false before final deposit on theses.fr
-    show_list: true        # proofreading-comments list at the end (PDF)
-    wide_margins: true     # widen pages + grey strip (commented chapters)
+    show_list: true        # annotation list at the end (PDF)
+    wide_margins: true     # widen pages + grey strip (commented chapters, default)
     extra_margin: "4.5cm"  # width of the annotation strip
-    authors:
+    reviewers:
       doc:
         name: "First LAST"       # doctoral student
       dir:
@@ -77,22 +77,26 @@ extensions:
       #   color_latex: "green!30"
 ```
 
-With `wide_margins: true`, only the **chapters that actually contain comments** are
-widened (outer grey strip); the others stay A4. See @sec-comments for shortcode syntax,
+Comment syntax (Pandoc spans):
+
+```markdown
+[]{.comment by="doc" remark="Inserted comment."}
+[highlighted text]{.comment by="dir" remark="Note attached to the highlight."}
+[]{.comment by="doc" type="todo" remark="Something to do."}
+```
+
+With `wide_margins: true` (default), only the **chapters that actually contain comments** are
+widened (outer grey strip); the others stay A4. See @sec-comments for the full syntax,
 PDF/HTML rendering, and widening details.
 
-The `comments` filter must be listed under `filters:` (already present in the template's
-`_quarto.yml`) so that, in **HTML**, a comment placed **mid-sentence** floats into the
-margin instead of breaking the paragraph:
+The `proofread-comments` filter must be listed under `filters:` (already present in the
+template's `_quarto.yml`):
 
 ```yaml
 filters:
   - quartable
-  - comments   # hoist inline-context comments into the margin (HTML)
+  - proofread-comments
 ```
-
-This filter is **inert** when comments are disabled (the shortcode emits nothing) and on
-PDF (no placeholders to process) — it can stay declared permanently.
 
 ## Web annotations with Hypothesis (opt-in)
 

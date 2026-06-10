@@ -52,7 +52,7 @@ rendre le template autonome comme documentation.
 3. **Versionner régulièrement** : committez au moins après chaque session de
    rédaction, idéalement avant et après chaque réunion de direction.
 4. **Désactiver les commentaires** avant le dépôt final :
-   `extensions.quarto-comments.enabled: false` dans `_quarto.yml`.
+   `extensions.quarto-proofread-comments.enabled: false` dans `_quarto.yml`.
 :::
 
 Le template est maintenu sur GitHub. Pour signaler un problème ou proposer une

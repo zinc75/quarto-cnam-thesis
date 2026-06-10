@@ -52,7 +52,7 @@ self-sufficient as documentation.
 3. **Version regularly**: commit at least after each writing session, ideally before
    and after each supervision meeting.
 4. **Disable comments** before final submission:
-   `extensions.quarto-comments.enabled: false` in `_quarto.yml`.
+   `extensions.quarto-proofread-comments.enabled: false` in `_quarto.yml`.
 :::
 
 The template is maintained on GitHub. To report an issue or propose an improvement:
