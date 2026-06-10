@@ -4,14 +4,14 @@
 
 ### Configuration in `_quarto.yml`
 
-The `quarto-comments` extension (folder `_extensions/comments/`) is configured in
-`_quarto.yml`, via the `quarto-comments:` key placed under the `extensions:` block {{< todo "You will need to walk me through your various YAML files at our next progress meeting." author="ag" >}}:
+The `quarto-proofread-comments` extension (folder `_extensions/proofread-comments/`) is configured in
+`_quarto.yml`, via the `quarto-proofread-comments:` key placed under the `extensions:` block []{.comment by="ag" type="todo" remark="You will need to walk me through your various YAML files at our next progress meeting."}:
 
 ````yaml
 extensions:
-  quarto-comments:
+  quarto-proofread-comments:
     enabled: true
-    authors:
+    reviewers:
       eb:
         name: "Eric Bavu"
       ag:
@@ -26,28 +26,33 @@ extensions:
 {{< pagebreak >}}
 
 
-### The four comment types
+### Comment syntax
+
+The extension uses **Pandoc span** syntax inside brackets. An empty span `[]` creates an **inserted** comment (no highlighted text); a non-empty span **highlights** the text and attaches the note to it.
 
 ````markdown
-{{</* comment "Rephrase this sentence, it is too long." author="ag" */>}}
-{{</* todo "Add a figure illustrating this point." author="eb" */>}}
-{{</* note "See also Bringhurst 2004, §2.4." author="ag" */>}}
-{{</* question "Is this result reproducible on another dataset?" author="ag" inline=true */>}}
+[]{.comment by="ag" remark="Rephrase this sentence, it is too long."}
+[]{.comment by="eb" type="todo" remark="Add a figure illustrating this point."}
+[]{.comment by="ag" type="note" remark="See also Bringhurst 2004, §2.4."}
+[]{.comment by="ag" type="question" remark="Is this result reproducible on another dataset?"}
+[highlighted text]{.comment by="ag" remark="This passage deserves a rewrite."}
+[]{.comment by="eb" inline="true" remark="An inline aside, inserted in the text flow."}
 ````
+
+The four available types are `comment` (default), `todo`, `note`, and `question`.
 
 **Rendered in context:**
 
-Here is a sentence with a comment from the thesis supervisor (who added it directly in the {{< comment "This is a comment, to show that I too — Abbé Grégoire — am perfectly capable of editing a Quarto Markdown file myself!" author="ag" >}} `.qmd` file, because he is not shy about it!).
+Here is a sentence with a comment from the thesis supervisor (who added it directly in the []{.comment by="ag" remark="This is a comment, to show that I too — Abbé Grégoire — am perfectly capable of editing a Quarto Markdown file myself!"} `.qmd` file, because he is not shy about it!).
 
-These comments are visible **only** if the `quarto-comments` option is set to `enabled: true` {{< todo "Remember to set this option to `false` before submitting to the reviewers!" author="eb" >}} in the `yaml` file — which is the case for this documentation.
+These comments are visible **only** if the `quarto-proofread-comments` option is set to `enabled: true` []{.comment by="eb" type="todo" remark="Remember to set this option to false before submitting to the reviewers!"} in the `yaml` file — which is the case for this documentation.
 
-
-It is also possible to add "long" inline comments {{< note "See Knuth 1984, chapter 12 — it would really be worth adding a discussion of this work here to show off all your knowledge of the existing literature, young apprentice." author="ag" inline=true >}} without taking up any space in the document margin. Useful to flesh out the text and add whole paragraphs. Note that, visually, the "inline" comment automatically breaks onto its own line and separates from the text in the PDF version, even when inserted mid-sentence.
+It is also possible to [highlight a passage]{.comment by="ag" remark="See Knuth 1984, chapter 12 — it would really be worth adding a discussion of this work here to show off all your knowledge of the existing literature, young apprentice."} and attach a margin note to it — the highlighted text becomes the visual link between the passage and the annotation.
 
 ::: {.callout-note}
-## `inline=true` occupies the full line in PDF
+## `inline="true"` occupies the full line in PDF
 
-In HTML, `inline=true` annotations appear as a compact coloured span, exactly
+In HTML, `inline="true"` annotations appear as a compact coloured span, exactly
 as wide as their content. In PDF, the `todonotes` package renders `\todo[inline]`
 as a full-width coloured block — this is a design constraint of the package that
 cannot be worked around without losing the ability to wrap long annotations across
@@ -55,13 +60,12 @@ lines.
 :::
 
 ::: {.callout-tip}
-## Recommended: enable `wide_margins` for proofreading
+## `wide_margins: true` is the default
 
-For margin notes (without `inline`), it is **recommended to enable**
-`extensions.quarto-comments.wide_margins: true` in your proofreading profile. The paper
-is then widened outward by a dedicated strip (width adjustable via `extra_margin`) where
-annotations display comfortably, with a grey background that alternates by page parity
-(outer side, binding preserved).
+For margin notes, `extensions.quarto-proofread-comments.wide_margins: true` is the
+default value. The paper is widened outward by a dedicated strip (width adjustable
+via `extra_margin`) where annotations display comfortably, with a grey background
+that alternates by page parity (outer side, binding preserved).
 
 **Per-chapter scoping.** The widening and the grey strip appear only in the **chapters
 that actually contain comments**: a chapter without annotations stays at standard A4,
@@ -72,18 +76,17 @@ between a wide chapter and an A4 chapter, a blank spacing page (`\cleardoublepag
 inherit the previous width — irrelevant for the final deposit, where comments are off and
 every page is back to A4.
 
-When `wide_margins: false` (the default), the paper stays at standard A4 size: notes are
-placed in the 2 cm outer margin. They therefore stay **narrow** (~1.5 cm) and long text
-wraps over several lines. The **content** layout (text block) is strictly identical whether
-`wide_margins` is `true` or `false`, and whether comments are enabled or not — only the
-margin annotation zone changes.
+Set `wide_margins: false` to keep standard A4 format: notes are placed in the 2 cm
+outer margin. The **content** layout (text block) is strictly identical regardless of
+the `wide_margins` value, and whether comments are enabled or not — only the margin
+annotation zone changes.
 :::
 
 ::: {.callout-important}
 ## Disable comments before final submission
 
 Before submitting the thesis to the doctoral school and depositing it on theses.fr,
-set `extensions.quarto-comments.enabled: false` in `_quarto.yml`. Annotations must not appear in the
+set `extensions.quarto-proofread-comments.enabled: false` in `_quarto.yml`. Annotations must not appear in the
 official archived version.
 :::
 
