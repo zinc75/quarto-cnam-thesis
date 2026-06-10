@@ -41,7 +41,7 @@ $endif$
 
 % Page layout — geometry before any redefinition.
 % inner=2.5cm (binding) / outer=2cm — twoside book class mirrors these per page parity.
-% When wide_margins is active, the quarto-comments extension widens the outer margin at
+% When wide_margins is active, proofread-comments widens the outer margin at
 % \AtBeginDocument by adding qtcExtraMargin to pdfpagewidth, paperwidth and evensidemargin;
 % the cnam-thesis body block re-applies these values after \restoregeometry so the cover
 % page stays at the standard paper size. /
@@ -124,7 +124,7 @@ $endif$
 \usepackage{soul}                 % required for strikethrough (~~text~~ → \st{text})
 \usepackage[normalem]{ulem}       % \dashuline for dashed URL underline; normalem preserves \emph
 
-% Collaborative margin comments (zinc75/quarto-comments extension).
+% Collaborative margin comments (zinc75/quarto-proofread-comments extension).
 % \marginparwidth must be set BEFORE loading todonotes. /
 % \marginparwidth doit être défini AVANT le chargement de todonotes.
 % When wide_margins is active the extension resets marginparwidth at \AtBeginDocument;

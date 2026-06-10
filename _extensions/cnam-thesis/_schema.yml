@@ -80,19 +80,19 @@ options:
     description: "When true, the bibliography is placed manually via backmatter/bibliography.qmd. When false, it is placed automatically at the end of the document."
   comments:
     type: object
-    description: "Collaborative annotation settings (extension zinc75/quarto-comments)."
+    description: "Collaborative annotation settings (extension zinc75/quarto-proofread-comments). Mapped from extensions.quarto-proofread-comments by cnam-thesis.lua."
     properties:
       enabled:
         type: boolean
         default: false
         description: "When false, all comments are hidden in the output."
-      show_author:
+      show_names:
         type: boolean
         default: true
-        description: "When false, author labels are hidden on comment callouts."
-      authors:
+        description: "When false, reviewer labels are hidden on comment callouts."
+      reviewers:
         type: object
-        description: "Map of author keys to colour settings. Each key needs 'name', 'color_html', and 'color_latex'."
+        description: "Map of reviewer keys to colour settings. Each key needs 'name', optionally 'color_html' and 'color_latex'."
 
 shortcodes:
   acr:
