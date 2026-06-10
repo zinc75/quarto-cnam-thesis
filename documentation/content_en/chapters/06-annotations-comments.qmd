@@ -5,7 +5,8 @@
 ### Configuration in `_quarto.yml`
 
 The `quarto-proofread-comments` extension (folder `_extensions/proofread-comments/`) is configured in
-`_quarto.yml`, via the `quarto-proofread-comments:` key placed under the `extensions:` block []{.comment by="ag" type="todo" remark="You will need to walk me through your various YAML files at our next progress meeting."}:
+`_quarto.yml`, via the `quarto-proofread-comments:` key placed under the `extensions:` block []{.comment by="ag" type="todo" remark="You will need to walk me through your various YAML files at our next progress meeting."}.
+Full extension documentation: [zinc75.github.io/quarto-proofread-comments](https://zinc75.github.io/quarto-proofread-comments/docs.html)
 
 ````yaml
 extensions:
@@ -45,18 +46,17 @@ The four available types are `comment` (default), `todo`, `note`, and `question`
 
 Here is a sentence with a comment from the thesis supervisor (who added it directly in the []{.comment by="ag" remark="This is a comment, to show that I too — Abbé Grégoire — am perfectly capable of editing a Quarto Markdown file myself!"} `.qmd` file, because he is not shy about it!).
 
-These comments are visible **only** if the `quarto-proofread-comments` option is set to `enabled: true` []{.comment by="eb" type="todo" remark="Remember to set this option to false before submitting to the reviewers!"} in the `yaml` file — which is the case for this documentation.
+These comments are visible **only** if the `quarto-proofread-comments` option is set to `enabled: true` []{.comment by="eb" type="todo" remark="Remember to set this option to false before submitting the finalised manuscript to the doctoral school and the jury!"} in the `yaml` file — which is the case for this documentation.
 
 It is also possible to [highlight a passage]{.comment by="ag" remark="See Knuth 1984, chapter 12 — it would really be worth adding a discussion of this work here to show off all your knowledge of the existing literature, young apprentice."} and attach a margin note to it — the highlighted text becomes the visual link between the passage and the annotation.
 
 ::: {.callout-note}
-## `inline="true"` occupies the full line in PDF
+## `inline="true"`: remark inserted in the text flow
 
-In HTML, `inline="true"` annotations appear as a compact coloured span, exactly
-as wide as their content. In PDF, the `todonotes` package renders `\todo[inline]`
-as a full-width coloured block — this is a design constraint of the package that
-cannot be worked around without losing the ability to wrap long annotations across
-lines.
+With `inline="true"`, the remark is inserted **directly in the running text** — in both
+HTML and PDF — as a compact coloured badge, with no block or line break. This is the
+extension's `inline_style: "flow"` mode (the default). Useful for short asides slipped
+mid-sentence without disrupting the paragraph layout.
 :::
 
 ::: {.callout-tip}

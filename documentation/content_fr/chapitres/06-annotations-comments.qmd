@@ -5,7 +5,8 @@
 ### Configuration dans `_quarto.yml`
 
 L'extension `quarto-proofread-comments` (dossier `_extensions/proofread-comments/`) se configure dans
-`_quarto.yml`, via la clé `quarto-proofread-comments:` placée sous le bloc `extensions:` []{.comment by="ag" type="todo" remark="Il sera nécessaire de m'exposer vos différents fichiers yaml au cours de notre prochaine réunion d'avancement."} :
+`_quarto.yml`, via la clé `quarto-proofread-comments:` placée sous le bloc `extensions:` []{.comment by="ag" type="todo" remark="Il sera nécessaire de m'exposer vos différents fichiers yaml au cours de notre prochaine réunion d'avancement."}.
+Documentation complète de l'extension : [zinc75.github.io/quarto-proofread-comments](https://zinc75.github.io/quarto-proofread-comments/docs.html)
 
 ````yaml
 extensions:
@@ -45,18 +46,17 @@ Les quatre types disponibles sont `comment` (défaut), `todo`, `note` et `questi
 
 Voici une phrase avec un commentaire du directeur de thèse (qui a ajouté directement celui-ci dans le fichier []{.comment by="ag" remark="Ceci est un commentaire pour montrer que moi aussi, Abbé Grégoire, suis capable d'éditer facilement un Markdown Quarto !"} `.qmd` parce qu'il n'est pas frileux !).
 
-Ces commentaires ne sont visibles **que** si l'option `quarto-proofread-comments` est à `enabled: true` []{.comment by="eb" type="todo" remark="Penser à passer l'option à false avant soumission aux rapporteurs !"} dans le fichier `yaml`, ce qui est le cas pour cette documentation.
+Ces commentaires ne sont visibles **que** si l'option `quarto-proofread-comments` est à `enabled: true` []{.comment by="eb" type="todo" remark="Penser à passer l'option à false avant soumission du manuscrit finalisé à l'école doctorale et au jury !"} dans le fichier `yaml`, ce qui est le cas pour cette documentation.
 
 Il est aussi possible de [surligner un passage]{.comment by="ag" remark="Voir Knuth 1984, chapitre 12, ce serait vraiment bien de rajouter une discussion sur cet ouvrage ici pour montrer tout votre savoir sur la littérature existante, jeune apprenti."} et d'y attacher une note dans la marge — le texte surligné devient le lien visuel entre le passage et l'annotation.
 
 ::: {.callout-note}
-## `inline="true"` occupe toute la ligne en PDF
+## `inline="true"` : remarque insérée dans le flux du texte
 
-En HTML, les annotations `inline="true"` apparaissent comme un span coloré compact,
-exactement à la largeur de leur contenu. En PDF, le package `todonotes` rend
-`\todo[inline]` sous la forme d'un bloc coloré pleine largeur — c'est une contrainte
-de conception du package, sans contournement possible sans perdre la capacité de
-couper les annotations longues sur plusieurs lignes.
+Avec `inline="true"`, la remarque s'insère **directement dans le texte courant** — en HTML
+comme en PDF — sous la forme d'un badge coloré compact, sans notion de bloc ni de saut de
+ligne. C'est le mode `inline_style: "flow"` (défaut) de l'extension. Utile pour des apartés
+courts glissés au milieu d'une phrase sans perturber la mise en page du paragraphe.
 :::
 
 ::: {.callout-tip}
