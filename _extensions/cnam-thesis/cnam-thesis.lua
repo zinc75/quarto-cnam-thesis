@@ -91,7 +91,7 @@ local pagestyle_sections = false  -- differentiated page numbering per section
 -- Phase 3 — per-chapter wide_margins scoping (set by pass1, used by pass_wide).
 -- wide_scoping: true only when comments + wide_margins are on AND output is LaTeX.
 -- comment_chapter_titles: set of normalised chapter titles (from the source files
--- listed in book.chapters/appendices) that contain a real comment shortcode. /
+-- listed in book.chapters/appendices) that contain a comment span. /
 -- Phase 3 — élargissement limité aux chapitres avec commentaires.
 local wide_scoping = false
 local comment_chapter_titles = {}
@@ -102,11 +102,11 @@ local function norm_title(s)
 end
 
 -- Scan one source .qmd file: return its first level-1 title (with trailing {…}
--- attributes stripped) and whether it contains a real comment shortcode
--- ({{< comment|todo|note|question …>}}). Fenced code blocks are skipped (escaped
--- examples live there) and escaped shortcodes ({{</* …*/>}}, "/" right after "{{<")
--- never match the "{{<%s+" pattern. Returns nil if the file cannot be opened. /
--- Scanne un .qmd : titre de niveau 1 + présence d'un vrai shortcode de commentaire.
+-- attributes stripped) and whether it contains a comment span or shortcode.
+-- Detects: [text]{.comment …} (proofread-comments span syntax) and the legacy
+-- {{< comment|todo|note|question …>}} shortcodes. Fenced code blocks are skipped.
+-- Returns nil if the file cannot be opened. /
+-- Scanne un .qmd : titre de niveau 1 + présence d'un span/shortcode de commentaire.
 local function scan_source_file(path)
   local f = io.open(path, "r")
   if not f then return nil, false end
@@ -119,8 +119,13 @@ local function scan_source_file(path)
         local t = line:match("^#%s+(.+)$")
         if t then title = (t:gsub("%s*%b{}%s*$", "")) end
       end
-      if not has and (line:find("{{<%s+comment") or line:find("{{<%s+todo")
-        or line:find("{{<%s+note") or line:find("{{<%s+question")) then
+      if not has and (
+        line:find("{%.comment")                    -- span syntax: [text]{.comment …}
+        or line:find("{{<%s+comment")              -- legacy shortcodes
+        or line:find("{{<%s+todo")
+        or line:find("{{<%s+note")
+        or line:find("{{<%s+question")
+      ) then
         has = true
       end
     end
@@ -253,20 +258,20 @@ local pass1 = {
       meta["header-includes"] = hi
     end
 
-    -- Map extensions["quarto-comments"] → meta.comments so that template.tex
+    -- Map extensions["quarto-proofread-comments"] → meta.comments so that template.tex
     -- can access it as $if(comments.enabled)$, $if(comments.wide_margins)$, etc.
     -- (Pandoc template syntax cannot index a map with a hyphenated key directly.)
     if FORMAT == "latex" then
-      local qc = meta.extensions and meta.extensions["quarto-comments"]
+      local qc = meta.extensions and meta.extensions["quarto-proofread-comments"]
       if qc then
         meta.comments = qc
         -- Phase-3 scoping: only when comments + wide_margins are on. Pre-scan the
-        -- source files (book.chapters/appendices) to know which chapters carry a
-        -- comment, since the shortcodes are opaque custom nodes in the AST. /
+        -- source files (book.chapters/appendices) to detect comment spans in source.
+        -- Spans are plain text in .qmd, so they are visible to a line scanner here. /
         -- Scoping phase 3 : pré-scan des fichiers sources pour repérer les chapitres
-        -- commentés (les shortcodes sont des custom nodes opaques dans l'AST).
+        -- avec des spans de commentaire (visibles en texte brut dans les .qmd).
         local enabled = read_bool(qc.enabled, true)
-        local wide    = read_bool(qc.wide_margins, false)
+        local wide    = read_bool(qc.wide_margins, true)
         wide_scoping  = enabled and wide
         if wide_scoping and meta.book then
           scan_book_list(meta.book.chapters)
@@ -284,7 +289,7 @@ local pass1 = {
 -- into raw \chapter). Segments the top-level blocks by level-1 Header and inserts
 -- \qtcWideOn right after the heading of chapters whose title is in
 -- comment_chapter_titles, \qtcWideOff otherwise. \qtcWideOn/\qtcWideOff (defined by
--- the quarto-comments extension when wide_margins is on) toggle the page widening
+-- proofread-comments when wide_margins is on) toggle the page widening
 -- (read at \shipout) and gate the grey zone via \ifqtcWide; \chapter issues
 -- \clearpage so each toggle lands on a page boundary. /
 -- Passe phase 3 : segmente par Header niveau 1 (avant pass2) et injecte
