@@ -1,4 +1,5 @@
 # Files excluded from `quarto use template`
+template.qmd
 _reference/
 documentation/
 _freeze/
