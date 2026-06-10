@@ -24,7 +24,7 @@ Produces a **PDF** that conforms to the official Cnam 2024–2025 template and a
 - HTML home page with auto-generated cover image (extracted from PDF page 1), jury table and thesis metadata
 - PDF download button in the HTML sidebar, linking to the compiled PDF
 - Glossary and acronym pages rendered in both PDF and HTML
-- Collaborative margin comments via the [`quarto-comments`](https://github.com/zinc75/quarto-comments) extension, with optional `wide_margins` widening applied **only to the chapters that actually contain comments**
+- Collaborative margin comments via the [`quarto-proofread-comments`](https://github.com/zinc75/quarto-proofread-comments) extension, with `wide_margins` widening (on by default) applied **only to the chapters that actually contain comments**
 
 ## Prerequisites
 
