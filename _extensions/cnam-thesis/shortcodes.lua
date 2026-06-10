@@ -412,17 +412,20 @@ end
 
 -- ── listoftodos ───────────────────────────────────────────────────────────────
 -- {{< listoftodos >}}
--- PDF only: inserts \clearpage\listoftodos when extensions.quarto-comments.enabled
--- is true (or absent/unset — defaults to enabled). Returns nothing in HTML.
--- Placed at the end of tables.qmd, after \listoffigures.
+-- PDF only: inserts \clearpage\listoftodos when
+-- extensions.quarto-proofread-comments.enabled and .show_list are both true.
+-- Returns nothing in HTML.
+-- Note: proofread-comments injects \listoftodos via include_text("before-body"),
+-- which is silently dropped in cnam-thesis (before-body.tex partial does not
+-- expose $before-body$). This shortcode is the cnam-thesis glue that fills the gap.
 local function listoftodos(args, kwargs, meta)
   -- Only meaningful in PDF
   if not quarto.doc.is_format("pdf") then return pandoc.Null() end
 
   local config_meta = meta and meta.extensions
-    and meta.extensions["quarto-comments"]
+    and meta.extensions["quarto-proofread-comments"]
 
-  -- No quarto-comments config at all → nothing to do
+  -- No proofread-comments config at all → nothing to do
   if not config_meta then return pandoc.Null() end
 
   -- Helper: read a boolean MetaValue
@@ -449,13 +452,12 @@ local function listoftodos(args, kwargs, meta)
     and pandoc.utils.stringify(meta["thesis-lang"]) or "fr"
   local toc_title = lang == "fr" and "Commentaires de relecture" or "Proofreading comments"
 
-  -- Styled list box — mirrors the upstream quarto-comments list styling that is
-  -- normally injected via include_text("before-body", ...). That injection is
-  -- silently dropped in cnam-thesis because the before-body.tex partial does not
-  -- expose the Pandoc $before-body$ variable, so we reproduce the box here
-  -- (template glue). Cnam theme: white background, thin Cnam-red (redHESAM)
-  -- dashed border — intentionally decoupled from the extension's
-  -- frame_color / frame_line keys, which drive only the wide_margins grey zone.
+  -- Styled list box — cnam-thesis glue: proofread-comments injects \listoftodos via
+  -- include_text("before-body", ...), which is dropped here because before-body.tex
+  -- does not expose $before-body$. We render the box directly as a RawBlock instead.
+  -- Cnam theme: white background, thin Cnam-red (redHESAM) dashed border —
+  -- intentionally decoupled from the extension's frame_color / frame_line keys,
+  -- which drive only the wide_margins grey zone.
   -- Title + TOC entry use cnam's "frontchap" style (front-matter chapter); only
   -- the list content (\@starttoc{tdo}) is wrapped in the box.
   -- tcolorbox + skins,breakable are already loaded by template.tex. /
