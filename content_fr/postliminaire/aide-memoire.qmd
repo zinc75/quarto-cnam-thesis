@@ -102,7 +102,7 @@ quarto preview --profile fr --to cnam-thesis-pdf
 | ^ | • Déclarer un terme de glossaire | `{{</* terme id "mot" "sens du mot" */>}}` | [doc][d-glossaire] |
 | ^ | • Utiliser (1re occ. / court / long) | `{{</* acrf id */>}}` · `{{</* acrs id */>}}` · `{{</* acrl id */>}}` | [doc][d-glossaire] |
 | ===       |             |                     |     |
-| Commentaires de relecture | • Annotation insérée (`comment` · `todo` · `note` · `question`) | `[]{.comment by="xx" remark="votre remarque"}` | [doc][d-comments] |
+| [Commentaires de relecture]{rs=2} | • Annotation insérée (`comment` · `todo` · `note` · `question`) | `[]{.comment by="xx" remark="votre remarque"}` | [doc][d-comments] |
 | ^ | • Texte surligné + note en marge | `[texte]{.comment by="xx" remark="note"}` | [doc][d-comments] |
 
 : Commandes et syntaxe courantes {#tbl-aide-memoire}

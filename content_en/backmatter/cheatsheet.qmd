@@ -102,7 +102,7 @@ quarto preview --profile en --to cnam-thesis-pdf
 | ^ | • Declare a glossary term | `{{</* terme id "word" "meaning" */>}}` | [docs][d-glossary] |
 | ^ | • Use (first / short / long) | `{{</* acrf id */>}}` · `{{</* acrs id */>}}` · `{{</* acrl id */>}}` | [docs][d-glossary] |
 | ===      |             |                    |      |
-| Proofreading comments | • Inserted annotation (`comment` · `todo` · `note` · `question`) | `[]{.comment by="xx" remark="your remark"}` | [docs][d-comments] |
+| [Proofreading comments]{rs=2} | • Inserted annotation (`comment` · `todo` · `note` · `question`) | `[]{.comment by="xx" remark="your remark"}` | [docs][d-comments] |
 | ^ | • Highlighted text + margin note | `[text]{.comment by="xx" remark="note"}` | [docs][d-comments] |
 
 : Common commands & syntax {#tbl-cheatsheet}
