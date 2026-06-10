@@ -1,0 +1,4 @@
+---
+# Dummy template.qmd file so that https://m.canouil.dev/quarto-extensions/ classifies it as a template.
+# This file is useless otherwise, do not edit.
+---
