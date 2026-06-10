@@ -27,6 +27,10 @@ _reference/
 *.xmpdata
 pdfa.xmpi
 
+# soulpos auxiliary files (proofread-comments highlight positions)
+*.upa
+*.upb
+
 # BibTeX
 *.blg
 *.bbl
