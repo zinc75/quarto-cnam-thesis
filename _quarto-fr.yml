@@ -27,7 +27,7 @@ book:
     - content_fr/liminaire/glossaire-entries.qmd   # remove if glossaire: false / supprimer si glossaire: false
     - content_fr/liminaire/acronymes.qmd           # remove if glossaire: false / supprimer si glossaire: false
     - content_fr/liminaire/glossaire.qmd           # remove if no glossary terms / supprimer si pas de termes
-    - content_fr/liminaire/listoftodos.qmd         # do not remove — inert when show_list: false in extensions.quarto-comments
+    - content_fr/liminaire/listoftodos.qmd         # do not remove — inert when show_list: false in extensions.quarto-proofread-comments
     - content_fr/chapitres/00-introduction.qmd
     - content_fr/chapitres/01-chapitre1.qmd        # ← add your chapters here / ajouter vos chapitres ici
     - content_fr/chapitres/02-chapitre2.qmd
@@ -45,12 +45,12 @@ btn-resume: "content_fr/liminaire/resume.html"   # "Start reading" button link i
 # Override collaborative comments settings for this profile /
 # Surcharger les paramètres de commentaires collaboratifs pour ce profil
 extensions:
-  quarto-comments:
+  quarto-proofread-comments:
     enabled: false    # set to true to show annotations in the output / passer à true pour afficher les annotations
     show_list: false  # set to true to add the proofreading comments list in PDF / passer à true pour la liste des commentaires PDF
-    # Declare your proofreaders here (key = author= value in shortcodes) /
-    # Déclarez vos relecteurs ici (la clé = la valeur author= des shortcodes)
-    # authors:
+    # Declare your proofreaders here (key = by= value in comment spans) /
+    # Déclarez vos relecteurs ici (la clé = la valeur by= des spans de commentaire)
+    # reviewers:
     #   doctorant:
     #     name: "Prénom Nom"
     #   directeur:

@@ -26,7 +26,7 @@ book:
     - documentation/content_fr/liminaire/glossaire-entries.qmd        # remove if glossaire: false / supprimer si glossaire: false
     - documentation/content_fr/liminaire/acronymes.qmd                # remove if glossaire: false / supprimer si glossaire: false
     - documentation/content_fr/liminaire/glossaire.qmd                # remove if no glossary terms / supprimer si pas de termes
-    - documentation/content_fr/liminaire/listoftodos.qmd              # do not remove — inert when show_list: false in extensions.quarto-comments
+    - documentation/content_fr/liminaire/listoftodos.qmd              # do not remove — inert when show_list: false in extensions.quarto-proofread-comments
     - documentation/content_fr/chapitres/00-introduction.qmd
     - documentation/content_fr/chapitres/01-structure.qmd             # ← add your chapters here / ajouter vos chapitres ici
     - documentation/content_fr/chapitres/02-figures.qmd
@@ -54,6 +54,6 @@ date-soutenance: "10 Octobre 1794"        # do NOT use `date:` (encoding issue) 
 # Show collaborative comments in the documentation output /
 # Afficher les commentaires collaboratifs dans la sortie documentation
 extensions:
-  quarto-comments:
+  quarto-proofread-comments:
     enabled: true            # show_list / wide_margins inherited from _quarto.yml /
     extra_margin: "4.5cm"    #   show_list / wide_margins hérités de _quarto.yml

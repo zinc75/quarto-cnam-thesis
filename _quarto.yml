@@ -136,25 +136,30 @@ code-line-numbers: true
 
 # ------------------------------------------------------------------------------
 # TO FILL IN — Collaborative comments / À REMPLIR — Commentaires collaboratifs
-# Extension zinc75/quarto-comments: {{< comment >}}, {{< todo >}}, {{< note >}},
-# {{< question >}}.
-# Add as many authors as needed; each needs a unique key, a name, and colours.
-# Ajouter autant d'auteurs que nécessaire ; chaque auteur a une clé, un nom et des couleurs.
+# Extension zinc75/quarto-proofread-comments: [text]{.comment by="key" remark="…"}
+# Syntax / Syntaxe :
+#   inserted comment  : []{.comment by="eb" remark="My note."}
+#   highlighted text  : [word]{.comment by="eb" remark="My note."}
+#   todo              : []{.comment by="eb" type="todo" remark="Fix this."}
+# Add as many reviewers as needed; each needs a unique key and a name.
+# Ajouter autant de relecteurs que nécessaire ; chaque relecteur a une clé et un nom.
 # ------------------------------------------------------------------------------
 extensions:
-  quarto-comments:
+  quarto-proofread-comments:
     enabled: false          # true → shows annotations in output / affiche les annotations dans le rendu
-    show_list: true         # true → adds \listoftodos in PDF (only if enabled: true) /
-                            #        ajoute \listoftodos dans le PDF (si enabled: true)
+    show_list: true         # true → adds annotation list in PDF (only if enabled: true) /
+                            #        ajoute la liste des annotations dans le PDF (si enabled: true)
     wide_margins: true      # true → widen pages + grey annotation zone (margin notes) /
                             #        élargit les pages + zone grise d'annotation (notes en marge)
     extra_margin: "4.5cm"   # width of the widened outer band / largeur de la bande extérieure élargie
     # Optional styling overrides (defaults shown) / Surcharges de style optionnelles (défauts indiqués) :
-    # show_author: true       # show author name on each annotation / affiche le nom de l'auteur
+    # show_names: true        # show reviewer name on each annotation / affiche le nom du relecteur
+    # list_title: "Annotations"  # title of the annotation list / titre de la liste
+    # connector: "numbered"   # "numbered" or "bezier" connector style / style de connecteur
     # inner_pad: "0.3cm"      # padding inside the grey zone / marge interne de la zone grise
     # frame_color: "gray!10"  # grey zone background / fond de la zone grise
     # frame_line: "gray!60"   # grey zone dashed line / pointillé de la zone grise
-    authors:
+    reviewers:
       eb:
         name: "Eric Bavu"
       ag:
@@ -179,11 +184,7 @@ execute:
 
 filters:
   - quartable    # enhanced tables (colspan, rowspan, partial lines) / tables enrichies
-  # quarto-comments hoist filter: floats mid-sentence comments into the margin (HTML);
-  # inert when comments are disabled and on PDF. /
-  # Filtre quarto-comments : remonte en marge les commentaires en milieu de phrase (HTML) ;
-  # inerte si commentaires désactivés et en PDF.
-  - comments
+  - proofread-comments  # proofread-comments rendering filter (post-quarto)
 
 # Hypothesis web annotations (opt-in) — to enable, uncomment the block below and add it
 # under format.cnam-thesis-html. Annotations are stored on hypothes.is servers and tied to
