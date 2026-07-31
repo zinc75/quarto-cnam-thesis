@@ -331,9 +331,18 @@ end
 -- ── Splitting into multiple TableBody (midrule) ───────────────────────────
 
 -- pandoc.TableBody() is not exposed as a constructor in every Pandoc version
--- shipped with Quarto: clone the existing body by copying its fields instead.
+-- shipped with Quarto: try it first, and fall back to cloning the existing
+-- body by copying its fields. The fallback's setmetatable(getmetatable(body))
+-- only works on older Pandoc: newer versions protect the metatable (a
+-- `__metatable` field makes getmetatable() return `false` instead of a
+-- table), which would otherwise crash setmetatable.
 local function clone_body(body, rows)
-  local nb = setmetatable({}, getmetatable(body))
+  if pandoc.TableBody then
+    local ok, nb = pcall(pandoc.TableBody, rows, body.head, body.row_head_columns, body.attr)
+    if ok then return nb end
+  end
+  local mt = getmetatable(body)
+  local nb = setmetatable({}, type(mt) == "table" and mt or nil)
   for k, v in pairs(body) do nb[k] = v end
   nb.body = rows
   return nb
